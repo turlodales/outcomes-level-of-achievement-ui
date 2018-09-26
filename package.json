@@ -1,0 +1,39 @@
+{
+  "name": "d2l-outcomes-level-of-achievements",
+  "version": "0.113.0",
+  "description": "Polymer-based web components for D2L Outcome Level of Achievements",
+  "private": true,
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "postinstall": "polymer install --variants",
+    "serve": "polymer analyze > analysis.json && polymer serve",
+    "test": "npm run test:lint && npm run test:wct",
+    "test:lint": "npm run test:lint:wc && npm run test:lint:html",
+    "test:lint:html": "eslint *.html",
+    "test:lint:wc": "polymer lint",
+    "test:local": "npm run test:lint && npm run test:wct:local",
+    "test:wct": "polymer test",
+    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
+    "test:wct:debug": "cross-env LAUNCHPAD_BROWSERS=chrome wct --config-file debug.wct.conf.json -p --skip-plugin sauce"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements.git"
+  },
+  "keywords": [
+    "D2L",
+    "Outcomes"
+  ],
+  "author": "D2L Corporation",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "eslint": "^4.19.1",
+    "eslint-config-brightspace": "^0.4.0",
+    "eslint-plugin-html": "^4.0.5",
+    "polymer-cli": "^1.7.7"
+  },
+  "dependencies": {}
+}

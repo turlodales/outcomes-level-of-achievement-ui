@@ -1,0 +1,54 @@
+{
+  "name": "d2l-outcomes-level-of-achievements-ui",
+  "homepage": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements-ui",
+  "authors": [
+    "D2L Corporation"
+  ],
+  "description": "Polymer Web-Component for showing Outcomes Levels of Achievement",
+  "main": "outcomes-level-of-achievement.html",
+  "keywords": [
+    "d2l",
+    "outcomes"
+  ],
+  "license": "Apache-2.0",
+  "private": true,
+  "ignore": [
+    ".editorconfig",
+    ".eslintrc.json",
+    ".gitignore",
+    ".travis.yml",
+    "package.json",
+    "polymer.json",
+    "wct.conf.json",
+    "test",
+    "demo"
+  ],
+  "dependencies": {
+    "d2l-fetch": "Brightspace/d2l-fetch#^1.8.0",
+    "d2l-fetch-siren-entity-behavior": "Brightspace/d2l-fetch-siren-entity-behavior#^5.0.2",
+    "d2l-hm-constants-behavior": "git://github.com/Brightspace/d2l-hm-constants-behavior.git#^5.17.0",
+    "d2l-inputs": "^1.0.2",
+    "d2l-localize-behavior": "^1.1.0",
+    "d2l-typography": "^6.1.2",
+    "d2l-fastdom-import": "Brightspace/fastdom-import#^1.0.2",
+    "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#^0.0.7",
+    "polymer": "1 - 2"
+  },
+  "devDependencies": {
+    "fetch": "^2.0.3",
+    "iron-component-page": "^2.0.0",
+    "iron-demo-helpers": "^2.0.0",
+    "promise-polyfill": "PolymerLabs/promise-polyfill#^2.0.1",
+    "web-component-tester": "^6.5.0"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.9.1"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7.24"
+      }
+    }
+  }
+}

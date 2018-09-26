@@ -1,0 +1,23 @@
+language: node_js
+node_js: node
+dist: trusty
+sudo: required
+before_script:
+- npm run test:lint
+script:
+- set -e
+- polymer test --skip-plugin sauce
+- 'if [ "$TRAVIS_BRANCH" == "master" ]; then node modify_wct_sauce_config.js; fi'
+- 'if [ "$TRAVIS_BRANCH" == "master" ]; then polymer test --skip-plugin local; fi'
+env:
+  global:
+  - REPO_NAME=d2l-outcomes-level-of-achievements
+addons:
+  sauce_connect: true
+  firefox: latest
+  chrome: stable
+  apt:
+    packages:
+    - gdebi
+    - oracle-java9-installer
+    - oracle-java9-set-default
