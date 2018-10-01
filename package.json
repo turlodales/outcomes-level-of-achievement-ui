@@ -1,6 +1,6 @@
 {
   "name": "d2l-outcomes-level-of-achievements",
-  "version": "0.113.0",
+  "version": "0.0.1",
   "description": "Polymer-based web components for D2L Outcome Level of Achievements",
   "private": true,
   "directories": {

@@ -1,23 +1,17 @@
 language: node_js
 node_js: node
-dist: trusty
-sudo: required
-before_script:
-- npm run test:lint
+addons:
+  chrome: stable
 script:
-- set -e
-- polymer test --skip-plugin sauce
-- 'if [ "$TRAVIS_BRANCH" == "master" ]; then node modify_wct_sauce_config.js; fi'
-- 'if [ "$TRAVIS_BRANCH" == "master" ]; then polymer test --skip-plugin local; fi'
+- npm run lint
+- |
+  if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+    echo "Pull request with secure environment variables, running Sauce tests...";
+    npm run test:wct || travis_terminate 1;
+  else
+    echo "Not a pull request and/or no secure environment variables, running headless tests...";
+    npm run test:wct:local || travis_terminate 1;
+  fi
 env:
   global:
   - REPO_NAME=d2l-outcomes-level-of-achievements
-addons:
-  sauce_connect: true
-  firefox: latest
-  chrome: stable
-  apt:
-    packages:
-    - gdebi
-    - oracle-java9-installer
-    - oracle-java9-set-default

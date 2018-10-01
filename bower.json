@@ -17,6 +17,7 @@
     ".eslintrc.json",
     ".gitignore",
     ".travis.yml",
+    "CODEOWNERS",
     "package.json",
     "polymer.json",
     "wct.conf.json",
