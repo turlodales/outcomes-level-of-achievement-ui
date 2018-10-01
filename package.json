@@ -14,8 +14,8 @@
     "test:lint:html": "eslint *.html",
     "test:lint:wc": "polymer lint",
     "test:local": "npm run test:lint && npm run test:wct:local",
-    "test:wct": "polymer test",
-    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
+    "test:wct": "polymer test --skip-plugin local",
+    "test:wct:local": "polymer test --skip-plugin sauce",
     "test:wct:debug": "cross-env LAUNCHPAD_BROWSERS=chrome wct --config-file debug.wct.conf.json -p --skip-plugin sauce"
   },
   "repository": {
