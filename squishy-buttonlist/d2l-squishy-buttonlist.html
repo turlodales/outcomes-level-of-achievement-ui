@@ -1,0 +1,168 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
+<link rel="import" href="./keycodes-behavior.html">
+
+<!--
+`d2l-squishy-buttonlist`
+Polymer Web-Component to display squishy button lists
+
+@demo demo/index.html
+-->
+<dom-module id="d2l-squishy-buttonlist">
+	<template strip-whitespace>
+		<style>
+			:host{
+				display:block;
+			}
+			.levels-container {
+				display: inline-flex;
+				height: 32px;
+				width: 100%;
+			}
+			.levels {
+				display: inline-flex;
+				width: 100%;
+			}
+
+			/* TODO: no idea at all if this is going to work */
+			:slotted(d2l-squishy-button[selected]) + :slotted(d2l-squishy-button:not(:focus)) {
+				border-left: none !important; /* TODO: Remove the temporary !important text */
+			}
+
+			/* TODO: this may have issues, worst case make these classes */
+			::slotted(d2l-squishy-button:last-of-type) {
+				border-top-right-radius: 6px;
+				border-bottom-right-radius: 6px;
+				border-right: solid 1px var(--d2l-color-mica);
+			}
+
+			::slotted(d2l-squishy-button:first-of-type) {
+				border-top-left-radius: 6px;
+				border-bottom-left-radius: 6px;
+				border-left: solid 1px var(--d2l-color-mica);
+			}
+
+			::slotted(:last-of-type(d2l-squishy-button):focus) {
+				border: solid 1px rgba(0, 111, 191, 0.4);
+			}
+			::slotted(:last-of-type(d2l-squishy-button)[selected]) {
+				border: solid 1px var(--d2l-color-galena);
+			}
+			::slotted(:last-of-type(d2l-squishy-button)[selected]:focus) {
+				border: solid 1px rgba(0, 111, 191, 0.4);
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+		<div class="levels-container">
+			<div class="levels" role="tablist">
+				<slot></slot>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-squishy-buttonlist',
+
+			properties: {
+				/**
+				 * The total number of levels,
+				 * can perhaps figure this out with code
+				 */
+				total: {
+					type: Number,
+					notify: true
+				},
+
+				/**
+				 * The selected level
+				 */
+				selectedIndex: {
+					type: Number,
+					notify: true
+				},
+
+				readOnly: {
+					type: Boolean,
+					value: false
+				}
+			},
+
+			behaviors: [
+				D2L.PolymerBehaviors.OutcomesLOA.KeyCodesBehavior
+			],
+
+			listeners: {
+				'item-selected': '_onItemSelected',
+				'keydown': '_onKeyDown'
+			},
+
+			_handleDomChanges: function() {
+				this._getListOfAllButtons();
+			},
+
+			_getListOfAllButtons() {
+				var buttonList = []; // Polymer.dom(this.root).querySelector('.d2l-tabs-container-list');
+				var childrenArray = this.getEffectiveChildren();
+				this._buttons = childrenArray.filter(function(tag) {
+					return tag.tagType === 'D2L-SQUISHY-BUTTON';
+				});
+			},
+
+			_buttonIsSelected: function(selected, item) {
+				// TODO: is this the right thing?
+				return selected === item.index;
+			},
+
+			_buttonIsLast: function(levelEntities, index) {
+				return ((levelEntities || []).length - 1 === index);
+			},
+
+			_getSquishyButton: function(eventPath) {
+				if (!eventPath) {
+					return null;
+				}
+
+				for (var i = 0; i<eventPath.length; i++) {
+					if (eventPath[i].nodeName === 'D2L-SQUISHY-BUTTON') {
+						return eventPath[i];
+					}
+				}
+
+				return null;
+			},
+
+			_onKeyDown: function(event) {
+				console.log(event, event.currentTarget);
+				var button = this._getSquishyButton(event.path);
+                console.dir(button);
+
+				if (!button) {
+					return;
+				}
+
+				switch (event.keyCode) {
+					case this._keyCodes.LEFT:
+						if (!!button.previousElementSibling) {
+							button.previousElementSibling.focus();
+							event.preventDefault();
+						}
+						break;
+					case this._keyCodes.RIGHT:
+						if (!!button.nextElementSibling) {
+							button.nextElementSibling.focus();
+							event.preventDefault();
+						}
+						break;
+				}
+			},
+
+			_onItemSelected: function(event) {
+				this.selected = event.detail.index;
+			}
+		});
+	</script>
+</dom-module>

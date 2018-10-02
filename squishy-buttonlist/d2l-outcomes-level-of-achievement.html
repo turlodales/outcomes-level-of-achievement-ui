@@ -1,0 +1,236 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-fetch/d2l-fetch.html">
+<link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
+<link rel="import" href="../../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
+<!--<link rel="import" href="./assessment-result-behavior.html">-->
+<link rel="import" href="../localize-behavior.html">
+<!--<link rel="import" href="./d2l-rubric-entity-behavior.html">-->
+<link rel="import" href="../../d2l-icons/d2l-icon.html">
+<!--<link rel="import" href="./siren-entity.html">-->
+<link rel="import" href="./d2l-squishy-buttonlist.html">
+<link rel="import" href="./d2l-squishy-button.html">
+
+<dom-module id="d2l-rubric-levels-mobile">
+	<template strip-whitespace>
+		<style>
+			:host{
+				display:block;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+		<d2l-squishy-buttonlist>
+			<template is="dom-repeat" items="[[levelEntities]]">
+				<d2l-squishy-button
+					index="[[index]]"
+					selected="[[_buttonIsSelected(selected, item)]]"
+					aria-label="Test aria label"
+					read-only="[[readOnly]]"
+					last-button="[[_buttonIsLast(levelEntities, index)]]"
+				>
+					S_BUTTON
+				</d2l-squishy-button>
+			</template>
+		</d2l-squishy-buttonlist>
+		<div class="levels-container">
+			<div class="levels" role="tablist" hidden$=[[_isEditingScore(editingScore)]]>
+				<template is="dom-repeat" items="[[levelEntities]]">
+					<div
+						id="level-tab[[index]]"
+						class$="[[_getLevelClassName(index, selected, item, assessedLevelHref)]]"
+						on-tap="handleTap"
+						data-index="[[index]]"
+						role="tab"
+						on-keydown="_onKeyDown"
+						tabindex="0"
+						aria-selected$="[[_isSelected(index, selected)]]"
+						aria-controls$="level-description-panel[[index]]"
+						aria-label$="[[_getLevelLabelName(item, assessedLevelHref)]]"
+						data-cell-href$="[[_getCriterionCellHref(criterionCells, index)]]"
+					>
+						<d2l-icon hidden$="[[!_isAssessedLevel(item, assessedLevelHref)]]"class="check-icon" icon='d2l-tier1:check'></d2l-icon>
+						<div hidden$="[[_isAssessedLevel(item, assessedLevelHref)]]" class$="[[_getLevelTextClassName(index, selected)]]">
+							[[item.properties.name]]
+						</div>
+					</div>
+				</template>
+			</div>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-rubric-levels-mobile',
+
+			properties: {
+				/**
+				 * The total number of levels
+				 */
+				total: {
+					type: Number,
+					notify: true
+				},
+
+				/**
+				 * The selected level
+				 */
+				selected: {
+					type: Number,
+					notify: true
+				},
+
+				levelEntities: {
+					type: Array,
+					notify: true
+				},
+
+				assessmentHref: {
+					type: String,
+					value: null
+				},
+
+				assessedLevelHref:{
+					type: String,
+					value:null
+				},
+
+				readOnly: {
+					type: Boolean
+				},
+
+				criterionCells: {
+					type: Array,
+					value: null
+				},
+
+				criterionHref: {
+					type: String,
+					value: null
+				},
+
+				editingScore: {
+					type: Object,
+					value: false
+				}
+			},
+
+			behaviors: [
+				D2L.PolymerBehaviors.Rubric.EntityBehavior,
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				D2L.PolymerBehaviors.Rubric.LocalizeBehavior,
+				D2L.PolymerBehaviors.Rubric.AssessmentResultBehavior
+			],
+
+			observers: [
+				'_onEntityChanged(entity)'
+			],
+
+			_keyCodes: {
+				ENTER: 13,
+				LEFT: 37,
+				RIGHT: 39
+			},
+
+			_onKeyDown: function(event) {
+				switch (event.keyCode) {
+					case this._keyCodes.ENTER:
+						this.selected = event.currentTarget.dataIndex;
+						if (!this.readOnly) {
+							this.doAction(event.currentTarget.dataset);
+							// this.assessCriterionCell(event.currentTarget.dataset.cellHref);
+						}
+						break;
+					case this._keyCodes.LEFT:
+						if (event.currentTarget.dataIndex !== 0) {
+							event.currentTarget.previousSibling.focus();
+							event.preventDefault();
+						}
+						break;
+					case this._keyCodes.RIGHT:
+						if (event.currentTarget.dataIndex !== this.total - 1) {
+							event.currentTarget.nextSibling.focus();
+							event.preventDefault();
+						}
+						break;
+				}
+			},
+
+			_isSelected: function(index, selected) {
+				return index === selected;
+			},
+
+			_onEntityChanged: function(entity) {
+				if (!entity) {
+					return;
+				}
+				this.total = entity.properties.total;
+				this.levelEntities = entity.getSubEntitiesByClass(this.HypermediaClasses.rubrics.level);
+			},
+
+			_getLevelClassName: function(index, selected, level, assessedLevelHref) {
+				var className = 'level';
+				if (index === selected) {
+					className += ' selected';
+				}
+				if (this._isAssessedLevel(level, assessedLevelHref)) {
+					className += ' assessed';
+				}
+				if (index === this.total - 1) {
+					className += ' last';
+				}
+				return className;
+			},
+
+			_getLevelTextClassName: function(index, selected) {
+				if (index === selected) {
+					return 'level-name selected';
+				}
+				return 'level-name';
+			},
+
+			_selectLevel: function(event) {
+				this.selected = event.currentTarget.dataIndex;
+			},
+
+			_isAssessedLevel: function(levelEntity, assessedLevelHref) {
+				// TODO: this should ber at the tab level
+				return false;
+
+				/*if (this.getSelfLink(levelEntity) === assessedLevelHref) {
+					return true;
+				}
+				return false;*/
+			},
+
+			/*
+			getSelfLink: function(entity) {
+				return entity && (entity.getLinkByRel('self') || {}).href || '';
+			},
+			*/
+			_getLevelLabelName: function(item, assessedLevelHref) {
+				// if (this._isAssessedLevel(item, assessedLevelHref)) {
+				//	return item.properties.name;
+				//}
+				return undefined;
+			},
+
+			_getCriterionCellHref: function(criterionCells, index) {
+				return this.getSelfLink(criterionCells[index]);
+			},
+
+			doAction: function(dataset) {
+
+			},
+
+			handleTap: function(event) {
+				this._selectLevel(event);
+				if (this.readOnly) {
+					return;
+				}
+				this.assessCriterionCell(event.currentTarget.dataset.cellHref);
+			},
+		});
+	</script>
+</dom-module>

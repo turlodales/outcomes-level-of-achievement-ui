@@ -1,0 +1,147 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
+<link rel="import" href="./keycodes-behavior.html">
+
+<dom-module id="d2l-squishy-button">
+	<template strip-whitespace>
+		<style>
+			:host {
+				overflow: hidden;
+			}
+
+			.level {
+				background: var(--d2l-color-white);
+				border: solid 1px var(--d2l-color-mica);
+				border-right: none;
+				color: var(--d2l-color-galena);
+				display: flex;
+				flex: 1;
+				height: 100%;
+				outline: none;
+				overflow: hidden;
+				text-align: center;
+			}
+
+			/* Colors will be based on the level */
+			:host(:hover) .level {
+				background-color: var(--d2l-color-gypsum);
+				cursor: pointer;
+			}
+
+			:host([selected]) .level {
+				background-color: var(--d2l-color-gypsum);
+				border: solid 1px var(--d2l-color-galena);
+			}
+
+			:host([focused]) .level {
+				background-color: var(--d2l-color-gypsum);
+				border: solid 1px rgba(0, 111, 191, 0.4);
+				box-shadow: 0 0 0 4px rgb(178, 211, 235);
+				z-index: 0;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<!-- TODO: this may need additional styling... -->
+		<button class="level" on-keydown="_onKeyDown">
+			<!-- TODO: WHAT GOES HERE??? -->
+			<slot></slot>
+		</button>
+	</template>
+	<script>
+		Polymer({
+			is: 'd2l-squishy-button',
+			/*
+			hostAttributes: {
+				tabindex: 0,
+			},
+			*/
+			properties: {
+				selected: {
+					type: Boolean,
+					reflectToAttribute: true,
+					computed: '_isSelected(index, selectedIndex)'
+				},
+
+				// this should ideally be a thing provided by the menu
+				readOnly: {
+					type: Boolean,
+					value: false
+				},
+
+				// this should ideally be a thing provided by the menu
+				selectedIndex: {
+					type: Number,
+					value: 0
+				},
+
+				ariaLabel: {
+					type: String
+				},
+
+				focused: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
+				}
+			},
+
+			listeners: {
+				'keydown': '_onKeyDown'
+			},
+
+			behaviors: [
+				D2L.PolymerBehaviors.OutcomesLOA.KeyCodesBehavior
+			],
+
+			attached: function() {
+				Polymer.RenderStatus.afterNextRender(this, function () {
+					this.addEventListener('focus', this._onFocus, true);
+					this.addEventListener('blur', this._onBlur, true);
+				}.bind(this));
+			},
+
+			detached: function() {
+				this.removeEventListener('focus', this._onFocus);
+				this.removeEventListener('blur', this._onBlur);
+			},
+
+			_onKeyDown: function (event) {
+				if (event.keyCode === this._keyCodes.ENTER) {
+					this.buttonSelected(event.currentTarget.dataset);
+				}
+			},
+
+			_isSelected: function (index, selected) {
+				return index === selected;
+			},
+
+			handleTap: function (event) {
+				this._selectLevel(event);
+				if (this.readOnly) {
+					return;
+				}
+				this.buttonSelected(event.currentTarget.dataset);
+			},
+
+			buttonSelected: function (dataset) {
+				window.dispatchEvent(new CustomEvent('item-selected', {
+					detail: dataset
+				}));
+			},
+			focus: function() {
+				this.$$('.level').focus();
+			},
+			_onFocus: function () {
+				this.focused = true;
+			},
+			_onBlur: function () {
+				this.focused = false;
+			}
+		});
+	</script>
+</dom-module>

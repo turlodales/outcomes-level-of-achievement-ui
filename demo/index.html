@@ -24,6 +24,9 @@
 	<link rel="import" href="../../d2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.html">
 	<link rel="import" href="./fetch-siren-entity-whitelist.html">
 	<link rel="import" href="../d2l-outcomes-level-of-achievements.html">
+	<link rel="import" href="../squishy-buttonlist/d2l-squishy-buttonlist.html">
+	<link rel="import" href="../squishy-buttonlist/d2l-squishy-button.html">
+
 	<link rel="import" href="../../d2l-typography/d2l-typography.html">
 
 	<style is="custom-style" include="demo-pages-shared-styles">
@@ -42,6 +45,20 @@
 		<h1>d2l-outcomes-level-of-achievements demo</h1>
 		<demo-snippet>
 			<d2l-outcomes-level-of-achievements></d2l-outcomes-level-of-achievements>
+		</demo-snippet>
+
+		<h1>d2l-squishy-buttonlist demo</h1>
+		<demo-snippet>
+			<d2l-squishy-buttonlist
+				selected-entity="{{selected}}"
+				selected-index="{{selectedIndex}}"
+				clicking-changes-selection="true"
+				buttons-are-clickable="true"
+			>
+				<d2l-squishy-button index="0" selected-index="{{selectedIndex}}"> LEVEL 1 </d2l-squishy-button>
+				<d2l-squishy-button index="1" selected-index="{{selectedIndex}}"> LEVEL 2 </d2l-squishy-button>
+				<d2l-squishy-button index="2" selected-index="{{selectedIndex}}"> LEVEL 3 </d2l-squishy-button>
+			</d2l-squishy-buttonlist>
 		</demo-snippet>
 	</div>
 </body>
