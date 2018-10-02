@@ -13,7 +13,7 @@
 				color: var(--d2l-color-galena);
 				display: flex;
 				flex: 1;
-				height: 100%;
+				height: 30px;
 				outline: none;
 				overflow: hidden;
 				text-align: center;
@@ -47,6 +47,21 @@
 
 			[hidden] {
 				display: none !important;
+			}
+
+			/* Default inside styling */
+			::slotted(*) {
+				@apply --d2l-body-small-text;
+				margin: 5px auto 5px auto;
+				padding-left: 5px;
+				padding-right: 5px;
+				word-break: break-all;
+				overflow: hidden;
+			}
+
+			:host([selected]) ::slotted(*) {
+				font-weight: 700;
+				color: var(--d2l-color-ferrite);
 			}
 		</style>
 
@@ -82,6 +97,11 @@
 				index: {
 					type: Number,
 					reflectToAttribute: true
+				},
+
+				buttonData: {
+					type: Object,
+					value: function() { return {}; }
 				}
 			},
 
@@ -122,7 +142,8 @@
 			itemSelected: function (event) {
 				this.dispatchEvent(new CustomEvent('item-selected', {
 					detail: {
-						index: this.index
+						index: this.index,
+						data: this.buttonData
 					},
 					bubbles: true
 				}));

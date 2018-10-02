@@ -1,4 +1,3 @@
-<!-- TODO: find the truncating code from the rubrics project -->
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
@@ -27,7 +26,7 @@ Polymer Web-Component to display squishy button lists
 				width: calc(100% - 1px);
 			}
 
-			:slotted(d2l-squishy-button[selected] + d2l-squishy-button:not([focused])) {
+			::slotted(d2l-squishy-button[selected] + d2l-squishy-button:not([focused])) {
 				border-left: none;
 			}
 
