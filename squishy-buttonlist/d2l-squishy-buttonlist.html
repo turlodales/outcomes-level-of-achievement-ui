@@ -73,27 +73,10 @@ Polymer Web-Component to display squishy button lists
 			is: 'd2l-squishy-buttonlist',
 
 			properties: {
-				/**
-				 * The total number of levels,
-				 * can perhaps figure this out with code
-				 */
-				total: {
-					type: Number,
-					notify: true
-				},
-
-				/**
-				 * The selected level
-				 */
 				selectedIndex: {
 					type: Number,
 					notify: true,
 					observer: '_updateButtonSelectedAttribute'
-				},
-
-				readOnly: {
-					type: Boolean,
-					value: false
 				}
 			},
 
