@@ -1,10 +1,9 @@
 <!-- TODO: Verify the event flow -->
-<!-- TODO: Set up read only -->
 
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
-<link rel="import" href="./keycodes-behavior.html">
+<link rel="import" href="./d2l-squishy-buttonlist-behavior.html">
 
 <dom-module id="d2l-squishy-button">
 	<template strip-whitespace>
@@ -29,8 +28,8 @@
 			}
 
 			:host([selected])::before,
-			:host([focused])::before,
-			:host(:hover)::before {
+			:host([focused]:not([read-only]))::before,
+			:host(:hover:not([read-only]))::before {
 				background-color: var(--d2l-squishy-button-color, var(--d2l-color-galena));
 				opacity: 0.1;
 				content: "";
@@ -57,6 +56,11 @@
 				width: 100%;
 				z-index: 1;
 				cursor: pointer;
+			}
+
+			:host([read-only]) {
+				pointer-events: none;
+				cursor: default;
 			}
 
 			[hidden] {
@@ -112,6 +116,13 @@
 				buttonData: {
 					type: Object,
 					value: function() { return {}; }
+				},
+
+				readOnly: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true,
+					observer: '_readOnlyChanged'
 				}
 			},
 
@@ -121,7 +132,7 @@
 			},
 
 			behaviors: [
-				D2L.PolymerBehaviors.OutcomesLOA.KeyCodesBehavior
+				D2L.PolymerBehaviors.OutcomesLOA.SquishyButtonListBehavior
 			],
 
 			attached: function() {
@@ -136,7 +147,15 @@
 				this.removeEventListener('blur', this._onBlur);
 			},
 
+			ready: function() {
+				this._readOnlyChanged(this.readOnly);
+			},
+
 			_onKeyDown: function (event) {
+				if (this.readOnly) {
+					return;
+				}
+
 				if (event.keyCode === this._keyCodes.ENTER) {
 					this.itemSelected(event.currentTarget.dataset);
 				}
@@ -146,6 +165,7 @@
 				if (this.readOnly) {
 					return;
 				}
+
 				this.itemSelected(event.currentTarget.dataset);
 				this.focus();
 			},
@@ -161,16 +181,41 @@
 			},
 
 			focus: function() {
+				if (this.readOnly) {
+					return;
+				}
 				this.$$('.d2l-squishy-button-inner').focus();
 			},
 
 			_onFocus: function () {
+				if (this.readOnly) {
+					return;
+				}
 				this.focused = true;
 			},
 
 			_onBlur: function () {
 				this.focused = false;
+			},
+
+			_readOnlyChanged: function(readOnly) {
+				var button = this.$$('.d2l-squishy-button-inner');
+
+				if (readOnly && button.getAttribute('tabindex') === "-1") {
+					return;
+				}
+
+				if (readOnly) {
+					this._prevTabIndex = button.hasAttribute('tabindex') ? button.getAttribute('tabindex') : null;
+					button.setAttribute('tabindex', '-1');
+				} else if (this._prevTabIndex !== null) {
+					button.setAttribute('tabindex', this._prevTabIndex);
+					this._prevTabIndex = null;
+				} else {
+					button.removeAttribute('tabindex');
+				}
 			}
+
 		});
 	</script>
 </dom-module>

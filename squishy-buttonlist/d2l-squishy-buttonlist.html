@@ -1,7 +1,7 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
-<link rel="import" href="./keycodes-behavior.html">
+<link rel="import" href="./d2l-squishy-buttonlist-behavior.html">
 
 <!--
 `d2l-squishy-buttonlist`
@@ -71,12 +71,13 @@ Polymer Web-Component to display squishy button lists
 				},
 				readOnly: {
 					type: Boolean,
-					value: false
+					value: false,
+					reflectToAttribute: true
 				}
 			},
 
 			behaviors: [
-				D2L.PolymerBehaviors.OutcomesLOA.KeyCodesBehavior
+				D2L.PolymerBehaviors.OutcomesLOA.SquishyButtonListBehavior
 			],
 
 			listeners: {
@@ -90,24 +91,30 @@ Polymer Web-Component to display squishy button lists
 
 			_handleDomChanges: function() {
 				this._getListOfAllButtons();
-				this._setButtonIndexes();
+				this._setButtonProperties();
 			},
 
 			_getListOfAllButtons() {
 				var buttonList = [];
 				var childrenArray = this.getEffectiveChildren();
 				this._buttons = childrenArray.filter(function(tag) {
-					return tag.nodeName === 'D2L-SQUISHY-BUTTON';
-				});
+					return tag.nodeName === this._buttonTagName;
+				}.bind(this));
 			},
 
-			_setButtonIndexes() {
+			_setButtonProperties() {
 				if (!this._buttons) {
 					return;
 				}
 
 				for (var i=0; i < this._buttons.length; i++) {
-					this._buttons[i].setAttribute('index', i);
+					var button = this._buttons[i];
+					button.setAttribute('index', i);
+					if (this.readOnly) {
+						button.setAttribute('read-only', this.readOnly);
+					} else {
+						button.removeAttribute('read-only', this.readOnly);
+					}
 				}
 			},
 
@@ -132,7 +139,7 @@ Polymer Web-Component to display squishy button lists
 				}
 
 				for (var i = 0; i<eventPath.length; i++) {
-					if (eventPath[i].nodeName === 'D2L-SQUISHY-BUTTON') {
+					if (eventPath[i].nodeName === this._buttonTagName) {
 						return eventPath[i];
 					}
 				}
@@ -143,7 +150,7 @@ Polymer Web-Component to display squishy button lists
 			_onKeyDown: function(event) {
 				var button = this._getSquishyButtonFromEventPath(event.path);
 
-				if (!button) {
+				if (!button || this.readOnly) {
 					return;
 				}
 
