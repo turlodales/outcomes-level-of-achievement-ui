@@ -1,3 +1,6 @@
+<!-- TODO: Verify the event flow -->
+<!-- TODO: Set up read only -->
+
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
@@ -7,7 +10,7 @@
 	<template strip-whitespace>
 		<style>
 			:host {
-				background: var(--d2l-color-white);
+				background: none;
 				border: solid 1px var(--d2l-color-mica);
 				border-right: none;
 				color: var(--d2l-color-galena);
@@ -17,32 +20,46 @@
 				outline: none;
 				overflow: hidden;
 				text-align: center;
+				position: relative;
+				z-index: 0;
 			}
 
 			:host(:hover) {
-				background-color: var(--d2l-color-gypsum);
 				cursor: pointer;
 			}
 
 			:host([selected]) {
-				background-color: var(--d2l-color-gypsum);
-				border: solid 1px var(--d2l-color-galena);
+				border: solid 1px var(--d2l-squishy-button-color, var(--d2l-color-galena));
+			}
+
+			:host([selected])::before,
+			:host([focused])::before,
+			:host(:hover)::before {
+				background-color: var(--d2l-squishy-button-color, var(--d2l-color-gypsum));
+				opacity: 0.1;
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
 			}
 
 			:host([focused]) {
-				background-color: var(--d2l-color-gypsum);
-				border: solid 1px rgba(0, 111, 191, 0.4);
+				border: solid 1px var(--d2l-squishy-button-color, rgba(0, 111, 191, 0.4));
 				box-shadow: 0 0 0 4px rgb(178, 211, 235);
-				z-index: 0;
+				z-index: 2;
 			}
 
-			.level,
-			.level:focus,
-			.level:hover {
+			.d2l-squishy-button-inner,
+			.d2l-squishy-button-inner:focus,
+			.d2l-squishy-button-inner:hover {
 				background: none;
 				border: none;
 				outline: none;
 				width: 100%;
+				z-index: 1;
 			}
 
 			[hidden] {
@@ -65,7 +82,7 @@
 			}
 		</style>
 
-		<button class="level" on-keydown="_onKeyDown" aria-label="{{ariaLabel}}">
+		<button class="d2l-squishy-button-inner" on-keydown="_onKeyDown" aria-label="{{ariaLabel}}">
 			<slot></slot>
 		</button>
 	</template>
@@ -132,6 +149,7 @@
 					return;
 				}
 				this.itemSelected(event.currentTarget.dataset);
+				this.focus();
 			},
 
 			itemSelected: function (event) {
@@ -145,7 +163,7 @@
 			},
 
 			focus: function() {
-				this.$$('.level').focus();
+				this.$$('.d2l-squishy-button-inner').focus();
 			},
 
 			_onFocus: function () {

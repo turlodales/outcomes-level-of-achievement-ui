@@ -15,13 +15,14 @@ Polymer Web-Component to display squishy button lists
 			:host {
 				display:block;
 				height: 32px;
+				background: white;
 			}
-			.levels-container {
+			.d2l-squishy-buttons-container {
 				display: inline-flex;
 				height: 32px;
 				width: 100%;
 			}
-			.levels {
+			.d2l-squishy-buttons {
 				display: inline-flex;
 				width: calc(100% - 1px);
 			}
@@ -48,22 +49,12 @@ Polymer Web-Component to display squishy button lists
 				border-left: solid 1px var(--d2l-color-mica);
 			}
 
-			::slotted(:last-of-type(d2l-squishy-button)[focused]) {
-				border: solid 1px rgba(0, 111, 191, 0.4);
-			}
-			::slotted(:last-of-type(d2l-squishy-button)[selected]) {
-				border: solid 1px var(--d2l-color-galena);
-			}
-			::slotted(:last-of-type(d2l-squishy-button)[selected][focused]) {
-				border: solid 1px rgba(0, 111, 191, 0.4);
-			}
-
 			[hidden] {
 				display: none !important;
 			}
 		</style>
-		<div class="levels-container">
-			<div class="levels" role="tablist">
+		<div class="d2l-squishy-buttons-container">
+			<div class="d2l-squishy-buttons" role="tablist">
 				<slot></slot>
 			</div>
 		</div>
@@ -77,6 +68,10 @@ Polymer Web-Component to display squishy button lists
 					type: Number,
 					notify: true,
 					observer: '_updateButtonSelectedAttribute'
+				},
+				readOnly: {
+					type: Boolean,
+					value: false
 				}
 			},
 
@@ -163,6 +158,7 @@ Polymer Web-Component to display squishy button lists
 
 			_onItemSelected: function(event) {
 				this.selectedIndex = event.detail.index;
+				event.preventDefault();
 			}
 		});
 	</script>
