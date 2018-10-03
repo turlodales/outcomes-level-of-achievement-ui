@@ -1,3 +1,4 @@
+<!-- TODO: A "resting-color" -->
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
@@ -22,13 +23,13 @@
 			}
 
 			:host([selected]) {
-				border: solid 1px var(--d2l-squishy-button-color, var(--d2l-color-galena));
+				border: solid 1px var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
 			:host([selected])::before,
 			:host([focused]:not([read-only]))::before,
 			:host(:hover:not([read-only]))::before {
-				background-color: var(--d2l-squishy-button-color, var(--d2l-color-galena));
+				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 				opacity: 0.1;
 				content: "";
 				position: absolute;
@@ -40,7 +41,7 @@
 			}
 
 			:host([focused]) {
-				border: solid 1px var(--d2l-squishy-button-color, rgba(0, 111, 191, 0.4));
+				border: solid 1px var(--d2l-squishy-button-selected-color, rgba(0, 111, 191, 0.4));
 				box-shadow: 0 0 0 4px rgb(178, 211, 235);
 				z-index: 2;
 			}
