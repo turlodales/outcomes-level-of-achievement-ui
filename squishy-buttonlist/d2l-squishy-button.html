@@ -24,10 +24,6 @@
 				z-index: 0;
 			}
 
-			:host(:hover) {
-				cursor: pointer;
-			}
-
 			:host([selected]) {
 				border: solid 1px var(--d2l-squishy-button-color, var(--d2l-color-galena));
 			}
@@ -35,7 +31,7 @@
 			:host([selected])::before,
 			:host([focused])::before,
 			:host(:hover)::before {
-				background-color: var(--d2l-squishy-button-color, var(--d2l-color-gypsum));
+				background-color: var(--d2l-squishy-button-color, var(--d2l-color-galena));
 				opacity: 0.1;
 				content: "";
 				position: absolute;
@@ -60,6 +56,7 @@
 				outline: none;
 				width: 100%;
 				z-index: 1;
+				cursor: pointer;
 			}
 
 			[hidden] {
@@ -74,6 +71,7 @@
 				padding-right: 5px;
 				word-break: break-all;
 				overflow: hidden;
+				pointer-events: none;
 			}
 
 			:host([selected]) ::slotted(*) {
