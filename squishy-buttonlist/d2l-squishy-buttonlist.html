@@ -3,12 +3,6 @@
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 <link rel="import" href="./d2l-squishy-buttonlist-behavior.html">
 
-<!--
-`d2l-squishy-buttonlist`
-Polymer Web-Component to display squishy button lists
-
-@demo demo/index.html
--->
 <dom-module id="d2l-squishy-buttonlist">
 	<template strip-whitespace>
 		<style>
@@ -174,7 +168,7 @@ Polymer Web-Component to display squishy button lists
 
 			_onItemSelected: function(event) {
 				this.selectedIndex = event.detail.index;
-				event.preventDefault();
+				// Let the event continue so that consumers of this can handle them
 			}
 		});
 	</script>
