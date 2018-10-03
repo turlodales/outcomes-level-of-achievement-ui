@@ -86,7 +86,16 @@ Polymer Web-Component to display squishy button lists
 			},
 
 			ready: function() {
-				this._handleDomChanges();
+				Polymer.RenderStatus.afterNextRender(this, function() {
+					this._handleDomChanges();
+					this._slotObserver = Polymer.dom(this).observeNodes(this._handleDomChanges);
+				});
+			},
+
+			detached: function() {
+				if (this._slotObserver) {
+					Polymer.dom(this).unobserveNodes(this._slotObserver);
+				}
 			},
 
 			_handleDomChanges: function() {
