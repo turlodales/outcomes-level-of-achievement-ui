@@ -11,20 +11,19 @@ Polymer Web-Component to display levels of achievements
 <dom-module id="d2l-outcomes-level-of-achievements">
 	<template strip-whitespace>
 		<style>
-			.container {
+			d2l-squishy-buttonlist {
 				width: 100%;
-				height: 35px;
 			}
 		</style>
-		<div class="container">
-			<d2l-squishy-buttonlist>
-				<template is="dom-repeat" items={{_buttons}}>
-					<d2l-squishy-button style$="--d2l-squishy-button-selected-color: {{item.color}}">
-						<div> {{item.content}} </div>
-					</d2l-squishy-button>
-				</template>
-			</d2l-squishy-buttonlist>
-		</div>
+
+		<d2l-squishy-buttonlist>
+			<template is="dom-repeat" items=[[_buttons]]>
+				<d2l-squishy-button style$="--d2l-squishy-button-selected-color: [[item.color]]">
+					<div> [[item.content]] </div>
+				</d2l-squishy-button>
+			</template>
+		</d2l-squishy-buttonlist>
+
 	</template>
 	<script>
 		Polymer({

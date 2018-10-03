@@ -1,4 +1,4 @@
-<!-- TODO: A "resting-color" -->
+<!-- TODO: A "non-selected-color" -->
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
@@ -14,11 +14,11 @@
 				color: var(--d2l-color-galena);
 				display: flex;
 				flex: 1;
-				height: 30px;
+				height: 1.5rem;
 				outline: none;
 				overflow: hidden;
-				text-align: center;
 				position: relative;
+				text-align: center;
 				z-index: 0;
 			}
 
@@ -30,13 +30,13 @@
 			:host([focused]:not([read-only]))::before,
 			:host(:hover:not([read-only]))::before {
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
-				opacity: 0.1;
 				content: "";
+				height: 100%;
+				left: 0;
+				opacity: 0.1;
 				position: absolute;
 				top: 0;
-				left: 0;
 				width: 100%;
-				height: 100%;
 				z-index: -1;
 			}
 
@@ -51,15 +51,15 @@
 			.d2l-squishy-button-inner:hover {
 				background: none;
 				border: none;
+				cursor: pointer;
 				outline: none;
 				width: 100%;
 				z-index: 1;
-				cursor: pointer;
 			}
 
 			:host([read-only]) {
-				pointer-events: none;
 				cursor: default;
+				pointer-events: none;
 			}
 
 			[hidden] {
@@ -69,17 +69,17 @@
 			/* Default inside styling */
 			::slotted(*) {
 				@apply --d2l-body-small-text;
-				margin: 5px auto 5px auto;
+				margin: 0.25rem auto 0.25rem auto;
+				overflow: hidden;
 				padding-left: 5px;
 				padding-right: 5px;
-				word-break: break-all;
-				overflow: hidden;
 				pointer-events: none;
+				word-break: break-all;
 			}
 
 			:host([selected]) ::slotted(*) {
-				font-weight: 700;
 				color: var(--d2l-color-ferrite);
+				font-weight: 700;
 			}
 		</style>
 
