@@ -2,7 +2,6 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
-<link rel="import" href="./d2l-squishy-buttonlist-behavior.html">
 
 <dom-module id="d2l-squishy-button">
 <template strip-whitespace>
@@ -27,7 +26,7 @@
 			}
 
 			:host([selected])::before,
-			:host([focused]:not([read-only]))::before,
+			:host(:focus:not([read-only]))::before,
 			:host(:hover:not([read-only]))::before {
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 				content: "";
@@ -40,14 +39,13 @@
 				z-index: -1;
 			}
 
-			:host([focused]) {
+			:host(:focus) {
 				border: solid 1px var(--d2l-squishy-button-selected-color, rgba(0, 111, 191, 0.4));
 				box-shadow: 0 0 0 4px rgb(178, 211, 235);
 				z-index: 2;
 			}
 
 			.d2l-squishy-button-inner,
-			.d2l-squishy-button-inner:focus,
 			.d2l-squishy-button-inner:hover {
 				background: none;
 				border: none;
@@ -83,7 +81,7 @@
 			}
 		</style>
 
-		<div class="d2l-squishy-button-inner" on-keydown="_onKeyDown" aria-label="{{ariaLabel}}">
+		<div class="d2l-squishy-button-inner" on-keydown="_onKeyDown">
 			<slot></slot>
 		</div>
 	</template>
@@ -92,19 +90,13 @@
 			is: 'd2l-squishy-button',
 
 			hostAttributes: {
-				tabindex: "-1",
+				tabindex: '-1',
 				role: 'radio'
 			},
 
 			properties: {
 				selected: {
 					type: Boolean,
-					reflectToAttribute: true
-				},
-
-				focused: {
-					type: Boolean,
-					value: false,
 					reflectToAttribute: true
 				},
 
@@ -124,10 +116,6 @@
 				'tap': '_handleTap'
 			},
 
-			behaviors: [
-				D2L.PolymerBehaviors.OutcomesLOA.SquishyButtonListBehavior
-			],
-
 			attached: function() {
 				Polymer.RenderStatus.afterNextRender(this, function () {
 					this.addEventListener('focus', this._onFocus, true);
@@ -140,7 +128,9 @@
 				this.removeEventListener('blur', this._onBlur);
 			},
 
-			ready: function() {},
+			_keyCodes: {
+				ENTER: 13
+			},
 
 			_onKeyDown: function (event) {
 				if (this.readOnly) {
@@ -159,7 +149,6 @@
 
 				event.preventDefault();
 				this.itemSelected(event.currentTarget.dataset);
-				this.focus();
 			},
 
 			itemSelected: function () {
@@ -170,19 +159,7 @@
 					},
 					bubbles: true
 				}));
-			},
-
-			_onFocus: function () {
-				if (this.readOnly) {
-					return;
-				}
-				this.focused = true;
-			},
-
-			_onBlur: function () {
-				this.focused = false;
 			}
-
 		});
 	</script>
 </dom-module>
