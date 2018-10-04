@@ -1,5 +1,6 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-polymer-behaviors/d2l-focusable-arrowkeys-behavior.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 <link rel="import" href="./d2l-squishy-buttonlist-behavior.html">
 
@@ -11,10 +12,7 @@
 				height: 1.6rem;
 				background: white;
 			}
-			.d2l-squishy-buttons-container {
-				display: inline-flex;
-				width: 100%;
-			}
+
 			.d2l-squishy-buttons {
 				display: inline-flex;
 				width: calc(100% - 1px);
@@ -46,10 +44,9 @@
 				display: none !important;
 			}
 		</style>
-		<div class="d2l-squishy-buttons-container">
-			<div class="d2l-squishy-buttons" role="tablist">
-				<slot></slot>
-			</div>
+
+		<div class="d2l-squishy-buttons">
+			<slot></slot>
 		</div>
 	</template>
 	<script>
@@ -65,8 +62,18 @@
 				readOnly: {
 					type: Boolean,
 					value: false,
+					reflectToAttribute: true,
+					observer: '_readOnlyChanged'
+				},
+				ariaLabel: {
+					type: String,
 					reflectToAttribute: true
 				}
+			},
+
+			hostAttributes: {
+				tabindex: "0",
+				role: 'radiogroup'
 			},
 
 			behaviors: [
@@ -82,13 +89,19 @@
 				Polymer.RenderStatus.afterNextRender(this, function() {
 					this._handleDomChanges();
 					this._slotObserver = Polymer.dom(this).observeNodes(this._handleDomChanges);
+					this.addEventListener('focus', this._onFocus, true);
+					this.addEventListener('blur', this._onBlur, true);
 				});
+
+				this._readOnlyChanged(this.readOnly);
 			},
 
 			detached: function() {
 				if (this._slotObserver) {
 					Polymer.dom(this).unobserveNodes(this._slotObserver);
 				}
+				this.removeEventListener('focus', this._onFocus);
+				this.removeEventListener('blur', this._onBlur);
 			},
 
 			_handleDomChanges: function() {
@@ -128,9 +141,11 @@
 				for (var i=0; i < this._buttons.length; i++) {
 					var isSelected = i === selectedIndex;
 					if (isSelected) {
-						this._buttons[i].setAttribute('selected', 'true');
+                        this._buttons[i].setAttribute('selected', 'true');
+						this._buttons[i].setAttribute('aria-checked', 'true');
 					} else {
 						this._buttons[i].removeAttribute('selected');
+						this._buttons[i].setAttribute('aria-checked', 'false');
 					}
 				}
 			},
@@ -168,6 +183,54 @@
 			_onItemSelected: function(event) {
 				this.selectedIndex = event.detail.index;
 				// Let the event continue so that consumers of this can handle them
+			},
+
+			_onFocus: function (event) {
+				if (this.readOnly || this._focused) {
+					return;
+				}
+
+				this._pushTabIndex("-1");
+
+				if ( (this._buttons || [])[0] && event.target.nodeName === 'D2L-SQUISHY-BUTTONLIST' ) {
+					this._buttons[0].focus();
+				}
+				this._focused = true;
+			},
+
+			_onBlur: function(event) {
+				this._focused = false;
+				this._popTabIndex("-1");
+			},
+
+			_pushTabIndex: function(tabindex) {
+				if (this._prevTabIndex === null || this._prevTabIndex === undefined) {
+					this._prevTabIndex = this.hasAttribute('tabindex') ?  this.getAttribute('tabindex') : null;
+				}
+				this.setAttribute('tabindex', tabindex);
+			},
+
+			_popTabIndex: function() {
+				this.setAttribute('tabindex', this._prevTabIndex);
+				this._prevTabIndex = null;
+			},
+
+			_readOnlyChanged: function(readOnly) {
+				var buttonList = this;
+
+				if (readOnly && buttonList.getAttribute('tabindex') === '-1'
+					|| !readOnly && buttonList.getAttribute('tabindex') === '0'
+				) {
+					return;
+				}
+
+				if (readOnly) {
+					this._pushTabIndex("-1")
+				} else if (this._prevTabIndex !== null && this._prevTabIndex !== '-1') {
+					this._popTabIndex();
+				} else {
+					buttonList.setAttribute('tabindex', '0');
+				}
 			}
 		});
 	</script>

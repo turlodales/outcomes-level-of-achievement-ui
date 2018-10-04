@@ -83,22 +83,23 @@
 			}
 		</style>
 
-		<button class="d2l-squishy-button-inner" on-keydown="_onKeyDown" aria-label="{{ariaLabel}}">
+		<div class="d2l-squishy-button-inner" on-keydown="_onKeyDown" aria-label="{{ariaLabel}}">
 			<slot></slot>
-		</button>
+		</div>
 	</template>
 	<script>
 		Polymer({
 			is: 'd2l-squishy-button',
 
+			hostAttributes: {
+				tabindex: "-1",
+				role: 'radio'
+			},
+
 			properties: {
 				selected: {
 					type: Boolean,
 					reflectToAttribute: true
-				},
-
-				ariaLabel: {
-					type: String
 				},
 
 				focused: {
@@ -115,13 +116,6 @@
 				buttonData: {
 					type: Object,
 					value: function() { return {}; }
-				},
-
-				readOnly: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true,
-					observer: '_readOnlyChanged'
 				}
 			},
 
@@ -146,9 +140,7 @@
 				this.removeEventListener('blur', this._onBlur);
 			},
 
-			ready: function() {
-				this._readOnlyChanged(this.readOnly);
-			},
+			ready: function() {},
 
 			_onKeyDown: function (event) {
 				if (this.readOnly) {
@@ -165,11 +157,12 @@
 					return;
 				}
 
+				event.preventDefault();
 				this.itemSelected(event.currentTarget.dataset);
 				this.focus();
 			},
 
-			itemSelected: function (event) {
+			itemSelected: function () {
 				this.dispatchEvent(new CustomEvent('item-selected', {
 					detail: {
 						index: this.index,
@@ -177,13 +170,6 @@
 					},
 					bubbles: true
 				}));
-			},
-
-			focus: function() {
-				if (this.readOnly) {
-					return;
-				}
-				this.$$('.d2l-squishy-button-inner').focus();
 			},
 
 			_onFocus: function () {
@@ -195,24 +181,6 @@
 
 			_onBlur: function () {
 				this.focused = false;
-			},
-
-			_readOnlyChanged: function(readOnly) {
-				var button = this.$$('.d2l-squishy-button-inner');
-
-				if (readOnly && button.getAttribute('tabindex') === "-1") {
-					return;
-				}
-
-				if (readOnly) {
-					this._prevTabIndex = button.hasAttribute('tabindex') ? button.getAttribute('tabindex') : null;
-					button.setAttribute('tabindex', '-1');
-				} else if (this._prevTabIndex !== null) {
-					button.setAttribute('tabindex', this._prevTabIndex);
-					this._prevTabIndex = null;
-				} else {
-					button.removeAttribute('tabindex');
-				}
 			}
 
 		});
