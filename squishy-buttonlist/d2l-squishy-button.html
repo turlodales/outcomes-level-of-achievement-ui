@@ -1,4 +1,3 @@
-<!-- TODO: A "non-selected-color" -->
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
@@ -25,10 +24,8 @@
 				border: solid 1px var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
-			:host([selected])::before,
-			:host(:focus:not([read-only]))::before,
-			:host(:hover:not([read-only]))::before {
-				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+			:host::before {
+				background-color: none;
 				content: "";
 				height: 100%;
 				left: 0;
@@ -39,8 +36,22 @@
 				z-index: -1;
 			}
 
+			:host([selected])::before,
+			:host(:focus:not([read-only]))::before,
+			:host(:hover:not([read-only]))::before {
+				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+			}
+
+			:host(:not([selected]):not(:focus)) {
+				border: solid 1px var(--d2l-squishy-button-non-selected-color, var(--d2l-color-mica));
+			}
+
+			:host(:not([selected]):not(:focus):not(:hover))::before {
+				background-color: var(--d2l-squishy-button-non-selected-color, var(--d2l-color-galena));
+			}
+
 			:host(:focus) {
-				border: solid 1px var(--d2l-squishy-button-selected-color, rgba(0, 111, 191, 0.4));
+				border: solid 1px var(--d2l-squishy-button-selected-color, var(--d2l-color-celestine));
 				box-shadow: 0 0 0 4px rgb(178, 211, 235);
 				z-index: 2;
 			}
