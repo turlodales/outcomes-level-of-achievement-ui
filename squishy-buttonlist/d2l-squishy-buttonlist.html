@@ -39,6 +39,11 @@
 				border-left: solid 1px var(--d2l-color-mica);
 			}
 
+			:host([read-only]) {
+				cursor: default;
+				pointer-events: none;
+			}
+
 			[hidden] {
 				display: none !important;
 			}

@@ -25,7 +25,7 @@
 			}
 
 			:host::before {
-				background-color: none;
+				background-color: var(--d2l-squishy-button-non-selected-color, none);
 				content: "";
 				height: 100%;
 				left: 0;
@@ -37,17 +37,13 @@
 			}
 
 			:host([selected])::before,
-			:host(:focus:not([read-only]))::before,
-			:host(:hover:not([read-only]))::before {
+			:host(:focus)::before,
+			:host(:hover)::before {
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
 			:host(:not([selected]):not(:focus)) {
 				border: solid 1px var(--d2l-squishy-button-non-selected-color, var(--d2l-color-mica));
-			}
-
-			:host(:not([selected]):not(:focus):not(:hover))::before {
-				background-color: var(--d2l-squishy-button-non-selected-color, var(--d2l-color-galena));
 			}
 
 			:host(:focus) {
@@ -64,11 +60,6 @@
 				outline: none;
 				width: 100%;
 				z-index: 1;
-			}
-
-			:host([read-only]) {
-				cursor: default;
-				pointer-events: none;
 			}
 
 			[hidden] {
