@@ -19,7 +19,7 @@
 			'./components/d2l-squishy-button-selector.html'
 		];
 
-		var shadyTests = baseTests.map(function(x) { return x + '?wc-shadydom=true&wc-ce=true'; });
+		var shadyTests = baseTests.map(function(x) { return x + '?wc-shadydom=true'; });
 		var shadowTests = baseTests.map(function(x) { return x + '?dom=shadow'; });
 
 		WCT.loadSuites(Array.prototype.concat(baseTests, shadyTests, shadowTests));
