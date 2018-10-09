@@ -3,6 +3,12 @@
 <link rel="import" href="../../d2l-polymer-behaviors/d2l-focusable-arrowkeys-behavior.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 
+<!--
+`d2l-squishy-button-selector`
+Polymer Web-Component for a responsive list of selectable buttons
+
+@demo demo/d2l-squishy-button-selector.html
+-->
 <dom-module id="d2l-squishy-button-selector">
 	<template strip-whitespace>
 		<style>
@@ -17,26 +23,18 @@
 				width: calc(100% - 1px);
 			}
 
-			::slotted(d2l-squishy-button[selected] + d2l-squishy-button:not(:focus)) {
-				border-left: none;
-			}
-
 			::slotted(d2l-squishy-button:last-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 			}
 
-			::slotted(d2l-squishy-button:last-of-type:not(:focus):not([selected])) {
+			::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
 				border-right: solid 1px var(--d2l-color-mica);
 			}
 
 			::slotted(d2l-squishy-button:first-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
-			}
-
-			::slotted(d2l-squishy-button:first-of-type:not(:focus):not([selected])) {
-				border-left: solid 1px var(--d2l-color-mica);
 			}
 
 			:host([read-only]) {
@@ -147,14 +145,21 @@
 					return;
 				}
 
+				var isSelected = false
 				for (var i=0; i < this._buttons.length; i++) {
-					var isSelected = i === selectedIndex;
+					var rightOfSelected = isSelected;
+					isSelected = i === selectedIndex;
 					if (isSelected) {
 						this._buttons[i].setAttribute('selected', 'true');
 						this._buttons[i].setAttribute('aria-checked', 'true');
 					} else {
 						this._buttons[i].removeAttribute('selected');
 						this._buttons[i].setAttribute('aria-checked', 'false');
+						if ( rightOfSelected ) {
+							this._buttons[i].setAttribute('right-of-selected', 'true');
+						} else {
+							this._buttons[i].removeAttribute('right-of-selected');
+						}
 					}
 				}
 			},

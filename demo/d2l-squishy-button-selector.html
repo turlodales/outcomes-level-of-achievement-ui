@@ -1,10 +1,11 @@
 <!doctype html>
+
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-	<title>d2l-outcomes-level-of-achievements demo</title>
+	<title>d2l-squishy-button-selector demo</title>
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script>
@@ -21,16 +22,13 @@
 
 	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-	<link rel="import" href="../../d2l-fetch-siren-entity-behavior/d2l-fetch-siren-entity-behavior.html">
-	<link rel="import" href="./fetch-siren-entity-whitelist.html">
-	<link rel="import" href="../d2l-outcomes-level-of-achievements.html">
 	<link rel="import" href="../squishy-button-selector/d2l-squishy-button-selector.html">
 	<link rel="import" href="../squishy-button-selector/d2l-squishy-button.html">
 
 	<link rel="import" href="../../d2l-typography/d2l-typography.html">
-
-	<style is="custom-style" include="demo-pages-shared-styles">
-	</style>
+	<custom-style>
+		<style is="custom-style" include="demo-pages-shared-styles"></style>
+	</custom-style>
 	<custom-style include="d2l-typography">
 		<style is="custom-style" include="d2l-typography">
 			html {
@@ -42,16 +40,11 @@
 </head>
 <body class="d2l-typography">
 	<div class="vertical-section-container centered">
-		<h1>d2l-outcomes-level-of-achievements demo</h1>
-		<demo-snippet>
-			<d2l-outcomes-level-of-achievements></d2l-outcomes-level-of-achievements>
-		</demo-snippet>
-
 		<h1>d2l-squishy-button-selector demo</h1>
 		<demo-snippet>
 			<d2l-squishy-button-selector selected-index="0">
 				<d2l-squishy-button style="--d2l-squishy-button-selected-color: red;"> <div> LEVEL 1 </div> </d2l-squishy-button>
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: blue; --d2l-squishy-button-non-selected-color: orange;"> <div> LEVEL 2 </div> </d2l-squishy-button>
+				<d2l-squishy-button style="--d2l-squishy-button-selected-color: blue;"> <div> LEVEL 2 </div> </d2l-squishy-button>
 				<d2l-squishy-button style="--d2l-squishy-button-selected-color: green;"> <div> LEVEL 3 </div> </d2l-squishy-button>
 			</d2l-squishy-button-selector>
 		</demo-snippet>
