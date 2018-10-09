@@ -83,7 +83,7 @@
 			}
 		</style>
 
-		<div class="d2l-squishy-button-inner" on-keydown="_onKeyDown">
+		<div class="d2l-squishy-button-inner">
 			<slot></slot>
 		</div>
 	</template>
@@ -118,18 +118,6 @@
 				'tap': '_handleTap'
 			},
 
-			attached: function() {
-				Polymer.RenderStatus.afterNextRender(this, function () {
-					this.addEventListener('focus', this._onFocus, true);
-					this.addEventListener('blur', this._onBlur, true);
-				}.bind(this));
-			},
-
-			detached: function() {
-				this.removeEventListener('focus', this._onFocus);
-				this.removeEventListener('blur', this._onBlur);
-			},
-
 			_keyCodes: {
 				ENTER: 13
 			},
@@ -140,7 +128,7 @@
 				}
 
 				if (event.keyCode === this._keyCodes.ENTER) {
-					this.itemSelected(event.currentTarget.dataset);
+					this._dispatchItemSelectedEvent(event.currentTarget.dataset);
 				}
 			},
 
@@ -150,11 +138,11 @@
 				}
 
 				event.preventDefault();
-				this.itemSelected(event.currentTarget.dataset);
+				this._dispatchItemSelectedEvent(event.currentTarget.dataset);
 			},
 
-			itemSelected: function () {
-				this.dispatchEvent(new CustomEvent('item-selected', {
+			_dispatchItemSelectedEvent: function () {
+				this.dispatchEvent(new CustomEvent('d2l-squishy-button-selected', {
 					detail: {
 						index: this.index,
 						data: this.buttonData

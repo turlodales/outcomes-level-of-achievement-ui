@@ -85,7 +85,7 @@
 			],
 
 			listeners: {
-				'item-selected': '_onItemSelected'
+				'd2l-squishy-button-selected': '_onItemSelected'
 			},
 
 			ready: function() {
@@ -172,8 +172,9 @@
 
 				this._pushTabIndex('-1');
 
-				if ( (this._buttons || [])[0] && event.target.nodeName === 'D2L-SQUISHY-BUTTONLIST' ) {
-					this._buttons[0].focus();
+				var focusIndex = (this.selectedIndex > -1 && this.selectedIndex) || 0;
+				if ( (this._buttons || [])[focusIndex] && event.target.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR' ) {
+					this._buttons[focusIndex].focus();
 				}
 				this._focused = true;
 			},
