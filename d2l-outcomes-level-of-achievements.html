@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="squishy-buttonlist/d2l-squishy-buttonlist.html">
-<link rel="import" href="squishy-buttonlist/d2l-squishy-button.html">
+<link rel="import" href="squishy-button-selector/d2l-squishy-button-selector.html">
+<link rel="import" href="squishy-button-selector/d2l-squishy-button.html">
 
 <!--
 `d2l-outcomes-level-of-achievements`
@@ -11,18 +11,18 @@ Polymer Web-Component to display levels of achievements
 <dom-module id="d2l-outcomes-level-of-achievements">
 	<template strip-whitespace>
 		<style>
-			d2l-squishy-buttonlist {
+			d2l-squishy-button-selector {
 				width: 100%;
 			}
 		</style>
 
-		<d2l-squishy-buttonlist>
+		<d2l-squishy-button-selector>
 			<template is="dom-repeat" items=[[_buttons]]>
 				<d2l-squishy-button style$="--d2l-squishy-button-selected-color: [[item.color]]">
 					<div> [[item.content]] </div>
 				</d2l-squishy-button>
 			</template>
-		</d2l-squishy-buttonlist>
+		</d2l-squishy-button-selector>
 
 	</template>
 	<script>
