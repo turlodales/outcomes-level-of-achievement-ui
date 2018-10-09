@@ -22,7 +22,7 @@
 		var shadyTests = baseTests.map(function(x) { return x + '?wc-shadydom=true&wc-ce=true'; });
 		var shadowTests = baseTests.map(function(x) { return x + '?dom=shadow'; });
 
-		WCT.loadSuites(Array.prototype.concat(baseTests, shadyTests, shadowTests, shadowLazyTests));
+		WCT.loadSuites(Array.prototype.concat(baseTests, shadyTests, shadowTests));
 	</script>
 </body>
 
