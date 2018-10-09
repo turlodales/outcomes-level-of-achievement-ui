@@ -128,7 +128,7 @@
 				}
 
 				if (event.keyCode === this._keyCodes.ENTER) {
-					this._dispatchItemSelectedEvent(event.currentTarget.dataset);
+					this._dispatchItemSelectedEvent();
 				}
 			},
 
@@ -138,7 +138,7 @@
 				}
 
 				event.preventDefault();
-				this._dispatchItemSelectedEvent(event.currentTarget.dataset);
+				this._dispatchItemSelectedEvent();
 			},
 
 			_dispatchItemSelectedEvent: function () {

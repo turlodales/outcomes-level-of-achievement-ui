@@ -120,11 +120,10 @@
 			},
 
 			_getListOfAllButtons() {
-				var buttonList = [];
 				var childrenArray = this.getEffectiveChildren();
 				this._buttons = childrenArray.filter(function(tag) {
 					return tag.nodeName === 'D2L-SQUISHY-BUTTON';
-				}.bind(this));
+				}) || [];
 			},
 
 			_setButtonProperties() {
