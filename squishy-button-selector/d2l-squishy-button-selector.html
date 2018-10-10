@@ -23,16 +23,16 @@ Polymer Web-Component for a responsive list of selectable buttons
 				width: calc(100% - 1px);
 			}
 
-			::slotted(d2l-squishy-button:last-of-type) {
+			div ::slotted(d2l-squishy-button:last-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 			}
 
-			::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
+			div ::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
 				border-right: solid 1px var(--d2l-color-mica);
 			}
 
-			::slotted(d2l-squishy-button:first-of-type) {
+			div ::slotted(d2l-squishy-button:first-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
 			}

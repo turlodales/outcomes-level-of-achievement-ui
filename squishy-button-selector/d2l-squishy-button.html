@@ -73,7 +73,7 @@
 			}
 
 			/* Default inside styling */
-			::slotted(*) {
+			div ::slotted(*) {
 				@apply --d2l-body-small-text;
 				margin: 0.25rem auto 0.25rem auto;
 				overflow: hidden;
@@ -83,7 +83,7 @@
 				word-break: break-all;
 			}
 
-			:host([selected]) ::slotted(*) {
+			:host([selected]) div ::slotted(*) {
 				color: var(--d2l-color-ferrite);
 				font-weight: 700;
 			}
