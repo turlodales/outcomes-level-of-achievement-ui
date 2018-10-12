@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>d2l-squichy-button-selector</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+		<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../../web-component-tester/browser.js"></script>
+		<script src="../../../fetch/fetch.js"></script>
+
+		<link rel="import" href="../../squishy-button-selector/d2l-squishy-button-selector.html">
+		<link rel="import" href="../../squishy-button-selector/d2l-squishy-button.html">
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<d2l-squishy-button-selector>
+					<d2l-squishy-button>BUTTON 1</d2l-squishy-button>
+					<d2l-squishy-button>BUTTON 2</d2l-squishy-button>
+					<d2l-squishy-button>BUTTON 3</d2l-squishy-button>
+				</d2l-squishy-button-selector>
+			</template>
+		</test-fixture>
+		<test-fixture id="empty">
+			<template>
+				<d2l-squishy-button-selector></d2l-squishy-button-selector>
+			</template>
+		</test-fixture>
+
+		<script src="d2l-squishy-button-selector.js"></script>
+	</body>
+</html>

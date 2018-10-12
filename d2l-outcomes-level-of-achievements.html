@@ -1,9 +1,29 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="squishy-button-selector/d2l-squishy-button-selector.html">
+<link rel="import" href="squishy-button-selector/d2l-squishy-button.html">
 
+<!--
+`d2l-outcomes-level-of-achievements`
+Polymer Web-Component to display levels of achievements
+
+@demo demo/d2l-outcomes-level-of-achievements.html
+-->
 <dom-module id="d2l-outcomes-level-of-achievements">
 	<template strip-whitespace>
-		<style></style>
-		<div></div>
+		<style>
+			d2l-squishy-button-selector {
+				width: 100%;
+			}
+		</style>
+
+		<d2l-squishy-button-selector>
+			<template is="dom-repeat" items=[[_buttons]]>
+				<d2l-squishy-button style$="--d2l-squishy-button-selected-color: [[item.color]]">
+					<div> [[item.content]] </div>
+				</d2l-squishy-button>
+			</template>
+		</d2l-squishy-button-selector>
+
 	</template>
 	<script>
 		Polymer({
@@ -20,6 +40,16 @@
 				_token: {
 					type: String,
 					value: null
+				},
+				_buttons: {
+					type: Array,
+					value: function() {
+						return [
+							{ content: 'level 1', color: 'red' },
+							{ content: 'level 2', color: 'blue' },
+							{ content: 'level 3', color: 'green' }
+						];
+					}
 				}
 			},
 			behaviors: []
