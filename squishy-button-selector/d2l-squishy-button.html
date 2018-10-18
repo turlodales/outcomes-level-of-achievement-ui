@@ -127,7 +127,8 @@
 			},
 
 			_keyCodes: {
-				ENTER: 13
+				ENTER: 13,
+				SPACE: 32
 			},
 
 			_onKeyDown: function (event) {
@@ -135,8 +136,9 @@
 					return;
 				}
 
-				if (event.keyCode === this._keyCodes.ENTER) {
+				if (event.keyCode === this._keyCodes.ENTER || event.keyCode === this._keyCodes.SPACE) {
 					this._dispatchItemSelectedEvent();
+					event.preventDefault();
 				}
 			},
 
