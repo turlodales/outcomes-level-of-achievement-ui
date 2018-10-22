@@ -27,13 +27,66 @@ Polymer Web-Component for a responsive list of selectable buttons
 				border-bottom-right-radius: 6px;
 			}
 
-			div ::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
-				border-right: solid 1px var(--d2l-color-mica);
+			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type) {
+				border-top-left-radius: 6px;
+				border-bottom-left-radius: 6px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type) {
+				border-top-left-radius: 6px;
+				border-bottom-left-radius: 6px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
 			}
 
 			div ::slotted(d2l-squishy-button:first-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
+			}
+
+			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:first-of-type) {
+				border-top-right-radius: 6px;
+				border-bottom-right-radius: 6px;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:first-of-type) {
+				border-top-right-radius: 6px;
+				border-bottom-right-radius: 6px;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:not([selected]):not(:focus)) {
+				border-right: solid 1px var(--d2l-color-mica);
+				border-left: solid 1px transparent;
+			}
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:not([selected]):not(:focus)) {
+				border-right: solid 1px var(--d2l-color-mica);
+				border-left: solid 1px transparent;
+			}
+
+			div ::slotted(d2l-squishy-button[right-of-selected]:not(:focus)) {
+				border-left: solid 1px transparent;
+			}
+			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button[right-of-selected]:not(:focus)) {
+				border-right: solid 1px transparent;
+			}
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button[right-of-selected]:not(:focus)) {
+				border-right: solid 1px transparent;
+			}
+
+			div ::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
+				border-right: solid 1px var(--d2l-color-mica);
+			}
+			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
+				border-left: solid 1px var(--d2l-color-mica);
+			}
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type:not([selected]):not(:focus)) {
+				border-left: solid 1px var(--d2l-color-mica);
 			}
 
 			:host([disabled]) {
@@ -159,17 +212,18 @@ Polymer Web-Component for a responsive list of selectable buttons
 				for (var i=0; i < this._buttons.length; i++) {
 					var rightOfSelected = isSelected;
 					isSelected = i === selectedIndex;
+
 					if (isSelected) {
 						this._buttons[i].setAttribute('selected', 'true');
 						this._buttons[i].setAttribute('aria-checked', 'true');
 					} else {
 						this._buttons[i].removeAttribute('selected');
 						this._buttons[i].setAttribute('aria-checked', 'false');
-						if ( rightOfSelected ) {
-							this._buttons[i].setAttribute('right-of-selected', 'true');
-						} else {
-							this._buttons[i].removeAttribute('right-of-selected');
-						}
+					}
+					if (rightOfSelected) {
+						this._buttons[i].setAttribute('right-of-selected', 'true');
+					} else {
+						this._buttons[i].removeAttribute('right-of-selected');
 					}
 				}
 			},

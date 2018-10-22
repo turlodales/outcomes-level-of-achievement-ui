@@ -7,8 +7,6 @@
 		<style>
 			:host {
 				background: none;
-				border: solid 1px var(--d2l-color-mica);
-				border-right: solid 1px var(--d2l-squishy-button-non-selected-color, transparent);
 				color: var(--d2l-color-galena);
 				display: flex;
 				flex: 1;
@@ -25,7 +23,7 @@
 			}
 
 			:host::before {
-				background-color: var(--d2l-squishy-button-non-selected-color, none);
+				background-color: none;
 				content: "";
 				height: 100%;
 				left: 0;
@@ -43,13 +41,9 @@
 			}
 
 			:host(:not([selected]):not(:focus)) {
-				border-top: solid 1px var(--d2l-squishy-button-non-selected-color, var(--d2l-color-mica));
-				border-bottom: solid 1px var(--d2l-squishy-button-non-selected-color, var(--d2l-color-mica));
-				border-left: solid 1px var(--d2l-squishy-button-non-selected-color, var(--d2l-color-mica));
-			}
-
-			:host([right-of-selected]:not([selected]):not(:focus)) {
-				border-left: solid 1px var(--d2l-squishy-button-non-selected-color, transparent);
+				border-top: solid 1px var(--d2l-color-mica);
+				border-bottom: solid 1px var(--d2l-color-mica);
+				border-left: solid 1px var(--d2l-color-mica);
 			}
 
 			:host(:focus) {
