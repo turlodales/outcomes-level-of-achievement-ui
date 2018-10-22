@@ -134,6 +134,7 @@
 				if (event.keyCode === this._keyCodes.ENTER || event.keyCode === this._keyCodes.SPACE) {
 					this.selected = true;
 					event.preventDefault();
+					this._dispatchItemSelectedEvent(true);
 				}
 			},
 
@@ -142,6 +143,7 @@
 					return;
 				}
 
+				this._dispatchItemSelectedEvent(true);
 				this.selected = true;
 				event.preventDefault();
 			},
@@ -151,11 +153,12 @@
 					return;
 				}
 
-				this._dispatchItemSelectedEvent();
+				this._dispatchItemSelectedEvent(false);
 			},
 
-			_dispatchItemSelectedEvent: function () {
-				this.dispatchEvent(new CustomEvent('d2l-squishy-button-selected', {
+			_dispatchItemSelectedEvent: function (selected) {
+				var eventName = selected ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
+				this.dispatchEvent(new CustomEvent(eventName, {
 					detail: {
 						index: this.index,
 						data: this.buttonData

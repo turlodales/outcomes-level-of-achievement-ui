@@ -135,7 +135,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 			],
 
 			listeners: {
-				'd2l-squishy-button-selected': '_onItemSelected'
+				'd2l-squishy-button-selection-changed': '_onItemSelected'
 			},
 
 			ready: function() {
@@ -230,7 +230,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 
 			_onItemSelected: function(event) {
 				this.selectedIndex = event.detail.index;
-				// Let the event continue so that consumers of this can handle them
+				event.preventDefault();
 			},
 
 			_onFocus: function (event) {
