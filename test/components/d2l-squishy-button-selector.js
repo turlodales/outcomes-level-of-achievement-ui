@@ -93,29 +93,29 @@ describe('<d2l-squishy-button-selector>', function() {
 		});
 	});
 
-	describe('_readOnlyChanged', function() {
+	describe('_disabledChanged', function() {
 		function verifyTabindex(num) {
 			expect(element.getAttribute('tabindex')).to.equal(num.toString());
 		}
 
 		it('sets the tabindex to -1 when readonly', function() {
 			verifyTabindex(0);
-			element.setAttribute('read-only', true);
+			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
 		});
 
 		it('sets the tabindex to 0 when changing back from readonly', function() {
-			element.setAttribute('read-only', true);
+			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
-			element.removeAttribute('read-only');
+			element.removeAttribute('disabled');
 			verifyTabindex(0);
 		});
 
 		it('If possible, sets the tabindex to its previous value when changing back from readonly', function() {
 			element.setAttribute('tabindex', '3');
-			element.setAttribute('read-only', true);
+			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
-			element.removeAttribute('read-only');
+			element.removeAttribute('disabled');
 			verifyTabindex(3);
 		});
 	});
@@ -134,8 +134,8 @@ describe('<d2l-squishy-button-selector>', function() {
 			expect(element._buttons[1].focus.called).to.equal(true);
 		});
 
-		it('focuses nothing if readOnly is true', function() {
-			element.setAttribute('read-only', true);
+		it('focuses nothing if disabled is true', function() {
+			element.setAttribute('disabled', true);
 			element.selectedIndex = 1;
 			element._buttons[1].focus = sinon.spy();
 			element._onFocus({ target: element });

@@ -1,4 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-polymer-siren-behaviors/store/entity-store.html">
+<link rel="import" href="../d2l-polymer-siren-behaviors/store/entity-behavior.html">
+<link rel="import" href="../d2l-polymer-siren-behaviors/store/siren-action-behavior.html">
+<link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
+<link rel="import" href="d2l-outcomes-loa-demonstration-level.html">
 <link rel="import" href="squishy-button-selector/d2l-squishy-button-selector.html">
 <link rel="import" href="squishy-button-selector/d2l-squishy-button.html">
 
@@ -14,12 +19,20 @@ Polymer Web-Component to display levels of achievements
 			d2l-squishy-button-selector {
 				width: 100%;
 			}
+
+			d2l-squishy-button[selected] {
+				pointer-events: none;
+			}
+
+			:host {
+				display: block;
+			}
 		</style>
 
-		<d2l-squishy-button-selector>
-			<template is="dom-repeat" items=[[_buttons]]>
-				<d2l-squishy-button style$="--d2l-squishy-button-selected-color: [[item.color]]">
-					<div> [[item.content]] </div>
+		<d2l-squishy-button-selector disabled="[[!_hasAction]]">
+			<template is="dom-repeat" items="[[_getDemonstrationLevels(entity)]]">
+				<d2l-squishy-button selected="[[item.selected]]" button-data="[[_getButtonData(item)]]" style$="[[_getButtonStyle(item)]]">
+					<d2l-outcomes-loa-demonstration-level href="[[item.entity]]" token="[[token]]"></d2l-outcomes-loa-demonstration-level>
 				</d2l-squishy-button>
 			</template>
 		</d2l-squishy-button-selector>
@@ -29,29 +42,66 @@ Polymer Web-Component to display levels of achievements
 		Polymer({
 			is: 'd2l-outcomes-level-of-achievements',
 			properties: {
-				href: {
-					type: String,
-					value: null
-				},
-				getToken: {
-					type: Function,
-					value: null
-				},
-				_token: {
-					type: String,
-					value: null
-				},
-				_buttons: {
-					type: Array,
-					value: function() {
-						return [
-							{ content: 'level 1', color: 'red' },
-							{ content: 'level 2', color: 'blue' },
-							{ content: 'level 3', color: 'green' }
-						];
-					}
-				}
+				_hasAction: Boolean
 			},
-			behaviors: []
+
+			behaviors: [
+				D2L.PolymerBehaviors.Siren.EntityBehavior,
+				D2L.PolymerBehaviors.Siren.SirenActionBehavior,
+				window.D2L.Hypermedia.HMConstantsBehavior
+			],
+
+			ready: function() {
+				this._onItemSelected = this._onItemSelected.bind(this);
+				this.$$('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
+			},
+
+			detached: function() {
+				this.$$('d2l-squishy-button-selector').removeEventListener('d2l-squishy-button-selected', this._onItemSelected);
+			},
+
+			_getDemonstrationLevels: function(entity) {
+				if (!entity) {
+					return null;
+				}
+				var demonstrationLevels = [];
+				var hasAction = false;
+
+				entity.getSubEntitiesByClass(this.HypermediaClasses.outcomes.demonstratableLevel).forEach(function(e) {
+					var selected = e.hasClass(this.HypermediaClasses.outcomes.selected);
+					hasAction = hasAction || e.hasActionByName(this.HypermediaActions.select);
+
+					demonstrationLevels.push({
+						entity: e.getLinkByRel('https://api.brightspace.com/rels/__todo_level').href,
+						action: e.getActionByName(this.HypermediaActions.outcomes.select),
+						selected: selected
+					});
+				}.bind(this));
+
+				this._hasAction = hasAction;
+				return demonstrationLevels;
+			},
+			_getButtonData: function(item) {
+				return {
+					action: item.action
+				};
+			},
+			_getButtonStyle: function() {
+				// TODO when colors are added
+				return ''; //outcome.color ? '--d2l-squishy-button-selected-color: ' + outcome.color : '';
+			},
+			_onItemSelected: function(event) {
+				var action = event.detail.data.action;
+				if (!action) {
+					return;
+				}
+
+				this.performSirenAction(action)
+					.catch(function() {})
+					.then(function() {
+						window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+					}.bind(this));
+			}
 		});
 	</script>
+</dom-module>

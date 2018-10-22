@@ -1,0 +1,29 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../d2l-polymer-siren-behaviors/store/entity-store.html">
+<link rel="import" href="../d2l-polymer-siren-behaviors/store/entity-behavior.html">
+
+<!--
+`d2l-outcomes-loa-demonstration-level`
+Polymer Web-Component to display levels of achievements
+-->
+<dom-module id="d2l-outcomes-loa-demonstration-level">
+	<template strip-whitespace>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+
+		[[entity.properties.name]]
+	</template>
+
+	<script>
+		Polymer({
+			is: 'd2l-outcomes-loa-demonstration-level',
+			behaviors: [
+				D2L.PolymerBehaviors.Siren.EntityBehavior
+			]
+		});
+	</script>
+</dom-module>
