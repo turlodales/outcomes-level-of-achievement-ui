@@ -72,7 +72,7 @@ Polymer Web-Component to display levels of achievements
 					hasAction = hasAction || e.hasActionByName(this.HypermediaActions.select);
 
 					demonstrationLevels.push({
-						entity: e.getLinkByRel('https://demonstrations.api.brightspace.com/rels/level').href,
+						entity: e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href,
 						action: e.getActionByName(this.HypermediaActions.outcomes.select),
 						selected: selected
 					});
