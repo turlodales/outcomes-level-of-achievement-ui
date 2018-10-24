@@ -113,6 +113,11 @@
 				buttonData: {
 					type: Object,
 					value: function() { return {}; }
+				},
+
+				color: {
+					type: String,
+					observer: '_updateColor'
 				}
 			},
 
@@ -124,6 +129,11 @@
 			_keyCodes: {
 				ENTER: 13,
 				SPACE: 32
+			},
+
+			_updateColor: function(color) {
+				this.customStyle['--d2l-squishy-button-selected-color'] = color;
+				this.updateStyles();
 			},
 
 			_onKeyDown: function (event) {

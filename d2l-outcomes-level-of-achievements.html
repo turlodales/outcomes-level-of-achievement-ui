@@ -31,8 +31,8 @@ Polymer Web-Component to display levels of achievements
 
 		<d2l-squishy-button-selector disabled="[[!_hasAction]]">
 			<template is="dom-repeat" items="[[_getDemonstrationLevels(entity)]]">
-				<d2l-squishy-button selected="[[item.selected]]" button-data="[[_getButtonData(item)]]" style$="[[_getButtonStyle(item)]]">
-					<d2l-outcomes-loa-demonstration-level href="[[item.entity]]" token="[[token]]"></d2l-outcomes-loa-demonstration-level>
+				<d2l-squishy-button color="[[item.color]]" selected="[[item.selected]]" button-data="[[_getButtonData(item)]]">
+					<d2l-outcomes-loa-demonstration-level color="{{item.color}}" item="[[item]]" href="[[item.entity]]" token="[[token]]"></d2l-outcomes-loa-demonstration-level>
 				</d2l-squishy-button>
 			</template>
 		</d2l-squishy-button-selector>
@@ -85,10 +85,6 @@ Polymer Web-Component to display levels of achievements
 				return {
 					action: item.action
 				};
-			},
-			_getButtonStyle: function() {
-				// TODO when colors are added
-				return ''; //outcome.color ? '--d2l-squishy-button-selected-color: ' + outcome.color : '';
 			},
 			_onItemSelected: function(event) {
 				var action = event.detail.data.action;

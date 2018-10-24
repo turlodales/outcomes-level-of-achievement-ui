@@ -23,7 +23,37 @@ Polymer Web-Component to display levels of achievements
 			is: 'd2l-outcomes-loa-demonstration-level',
 			behaviors: [
 				D2L.PolymerBehaviors.Siren.EntityBehavior
-			]
+			],
+			properties: {
+				color: {
+					type: String,
+					notify: true
+				},
+				item: {
+					type: Object,
+					observer: '_itemChanged'
+				}
+			},
+			observers: [
+				'_updateColor(entity, item)'
+			],
+
+			_itemChanged: function(newItem, oldItem) {
+				if (!newItem) {
+					return;
+				}
+				if (!newItem.color && oldItem && oldItem.color) {
+					newItem.color = oldItem.color;
+				}
+			},
+
+			_updateColor: function(entity) {
+				if (!entity) {
+					return;
+				}
+
+				this.color = entity.properties.color;
+			}
 		});
 	</script>
 </dom-module>
