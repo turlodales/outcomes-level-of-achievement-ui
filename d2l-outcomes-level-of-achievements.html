@@ -41,6 +41,7 @@ Polymer Web-Component to display levels of achievements
 	<script>
 		Polymer({
 			is: 'd2l-outcomes-level-of-achievements',
+
 			properties: {
 				_hasAction: Boolean
 			},
@@ -94,9 +95,6 @@ Polymer Web-Component to display levels of achievements
 
 				this.performSirenAction(action)
 					.catch(function() {})
-					.then(function() {
-						window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
-					}.bind(this));
 			}
 		});
 	</script>
