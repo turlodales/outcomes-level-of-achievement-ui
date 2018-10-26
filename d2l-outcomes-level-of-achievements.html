@@ -20,10 +20,6 @@ Polymer Web-Component to display levels of achievements
 				width: 100%;
 			}
 
-			d2l-squishy-button[selected] {
-				pointer-events: none;
-			}
-
 			:host {
 				display: block;
 			}
@@ -70,11 +66,12 @@ Polymer Web-Component to display levels of achievements
 
 				entity.getSubEntitiesByClass(this.HypermediaClasses.outcomes.demonstratableLevel).forEach(function(e) {
 					var selected = e.hasClass(this.HypermediaClasses.outcomes.selected);
-					hasAction = hasAction || e.hasActionByName(this.HypermediaActions.select);
+					var action = e.getActionByName(this.HypermediaActions.outcomes.select) || e.getActionByName('deselect');
+					hasAction = hasAction || !!action;
 
 					demonstrationLevels.push({
 						entity: e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href,
-						action: e.getActionByName(this.HypermediaActions.outcomes.select),
+						action: action,
 						selected: selected
 					});
 				}.bind(this));

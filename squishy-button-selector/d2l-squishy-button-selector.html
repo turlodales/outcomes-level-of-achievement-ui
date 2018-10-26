@@ -229,7 +229,11 @@ Polymer Web-Component for a responsive list of selectable buttons
 			},
 
 			_onItemSelected: function(event) {
-				this.selectedIndex = event.detail.index;
+				if (event.detail.selected) {
+					this.selectedIndex = event.detail.index;
+				} else if (this.selectedIndex === event.detail.index) {
+					this.selectedIndex = undefined;
+				}
 				event.preventDefault();
 			},
 

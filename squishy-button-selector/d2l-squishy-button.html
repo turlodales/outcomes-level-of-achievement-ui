@@ -144,7 +144,7 @@
 				if (event.keyCode === this._keyCodes.ENTER || event.keyCode === this._keyCodes.SPACE) {
 					this.selected = true;
 					event.preventDefault();
-					this._dispatchItemSelectedEvent(true);
+					this._dispatchItemSelectedEvent(true, true);
 				}
 			},
 
@@ -153,25 +153,26 @@
 					return;
 				}
 
-				this._dispatchItemSelectedEvent(true);
+				this._dispatchItemSelectedEvent(true, true);
 				this.selected = true;
 				event.preventDefault();
 			},
 
 			_handleSelected: function(newVal, oldVal) {
-				if (newVal === false) {
+				if (newVal === false && newVal == oldVal) {
 					return;
 				}
 
-				this._dispatchItemSelectedEvent(false);
+				this._dispatchItemSelectedEvent(false, newVal);
 			},
 
-			_dispatchItemSelectedEvent: function (selected) {
-				var eventName = selected ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
+			_dispatchItemSelectedEvent: function (triggeredByUserAction, selected) {
+				var eventName = triggeredByUserAction ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
 				this.dispatchEvent(new CustomEvent(eventName, {
 					detail: {
 						index: this.index,
-						data: this.buttonData
+						data: this.buttonData,
+						selected: selected
 					},
 					bubbles: true
 				}));

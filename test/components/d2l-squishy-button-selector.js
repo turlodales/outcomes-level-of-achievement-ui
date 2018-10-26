@@ -87,7 +87,7 @@ describe('<d2l-squishy-button-selector>', function() {
 	describe('d2l-squishy-button-selected event', function() {
 		it('should set selectedIndex to the selected button', function() {
 			[0, 1, 2].forEach(function(num) {
-				element._buttons[num]._dispatchItemSelectedEvent();
+				element._buttons[num]._dispatchItemSelectedEvent(false, true);
 				expect(element.selectedIndex).to.equal(num);
 			});
 		});
