@@ -25,7 +25,7 @@ Polymer Web-Component to display levels of achievements
 			}
 		</style>
 
-		<d2l-squishy-button-selector disabled="[[!_hasAction]]">
+		<d2l-squishy-button-selector>
 			<template is="dom-repeat" items="[[_getDemonstrationLevels(entity)]]">
 				<d2l-squishy-button color="[[item.color]]" selected="[[item.selected]]" button-data="[[_getButtonData(item)]]">
 					<d2l-outcomes-loa-demonstration-level color="{{item.color}}" item="[[item]]" href="[[item.entity]]" token="[[token]]"></d2l-outcomes-loa-demonstration-level>
@@ -39,7 +39,17 @@ Polymer Web-Component to display levels of achievements
 			is: 'd2l-outcomes-level-of-achievements',
 
 			properties: {
-				_hasAction: Boolean
+				readOnly: {
+					type: Boolean,
+					value: false,
+					observer: '_readOnlyChanged'
+				},
+
+
+				_hasAction: {
+					type: Boolean,
+					observer: '_hasActionChanged'
+				}
 			},
 
 			behaviors: [
@@ -92,6 +102,21 @@ Polymer Web-Component to display levels of achievements
 
 				this.performSirenAction(action)
 					.catch(function() {});
+			},
+			_readOnlyChanged: function(readOnly) {
+				this._maybeDisable(readOnly, this._hasAction);
+			},
+			_hasActionChanged: function(hasAction) {
+				this._maybeDisable(this.readOnly, hasAction);
+			},
+			_maybeDisable: function(readOnly, hasAction) {
+				var selector = this.$$('d2l-squishy-button-selector');
+				if (readOnly || hasAction === false) {
+					selector.setAttribute('disabled', '');
+					return;
+				}
+
+				selector.removeAttribute('disabled');
 			}
 		});
 	</script>
