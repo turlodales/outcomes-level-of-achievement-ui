@@ -40,16 +40,10 @@
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
-			:host(:not([selected]):not(:focus)) {
+			:host(:not([selected])) {
 				border-top: solid 1px var(--d2l-color-mica);
 				border-bottom: solid 1px var(--d2l-color-mica);
 				border-left: solid 1px var(--d2l-color-mica);
-			}
-
-			:host(:focus) {
-				border: solid 1px var(--d2l-squishy-button-selected-color, var(--d2l-color-celestine));
-				box-shadow: 0 0 0 4px rgb(178, 211, 235);
-				z-index: 2;
 			}
 
 			.d2l-squishy-button-inner,
