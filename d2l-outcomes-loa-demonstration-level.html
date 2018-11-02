@@ -38,6 +38,9 @@ Polymer Web-Component to display levels of achievements
 			observers: [
 				'_updateColor(entity, item)'
 			],
+			listeners: {
+				'd2l-siren-entity-changed': '_updateColor'
+			},
 
 			_itemChanged: function(newItem, oldItem) {
 				if (!newItem) {
@@ -49,7 +52,7 @@ Polymer Web-Component to display levels of achievements
 			},
 
 			_updateColor: function(entity) {
-				if (!entity) {
+				if (!entity || !entity.properties) {
 					return;
 				}
 
