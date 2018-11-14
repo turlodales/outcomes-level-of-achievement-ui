@@ -172,14 +172,14 @@ Polymer Web-Component for a responsive list of selectable buttons
 				this._updateButtonSelectedAttribute();
 			},
 
-			_getListOfAllButtons() {
+			_getListOfAllButtons: function() {
 				var childrenArray = this.getEffectiveChildren();
 				this._buttons = childrenArray.filter(function(tag) {
 					return tag.nodeName === 'D2L-SQUISHY-BUTTON';
 				}) || [];
 			},
 
-			_setButtonProperties() {
+			_setButtonProperties: function() {
 				if (!this._buttons) {
 					return;
 				}
@@ -195,7 +195,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 				}
 			},
 
-			_updateButtonSelectedAttribute(selectedIndex) {
+			_updateButtonSelectedAttribute: function(selectedIndex) {
 				if (!this._buttons) {
 					return;
 				}
