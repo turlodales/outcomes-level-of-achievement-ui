@@ -126,8 +126,9 @@
 			},
 
 			_updateColor: function(color) {
-				this.customStyle['--d2l-squishy-button-selected-color'] = color;
-				this.updateStyles();
+				this.updateStyles({
+					'--d2l-squishy-button-selected-color': color
+				});
 			},
 
 			_onKeyDown: function (event) {
