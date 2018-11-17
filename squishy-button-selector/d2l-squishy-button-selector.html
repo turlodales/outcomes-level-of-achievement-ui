@@ -29,14 +29,8 @@ Polymer Web-Component for a responsive list of selectable buttons
 				margin-right: -1px;
 			}
 
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type),
 			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type) {
-				border-top-left-radius: 6px;
-				border-bottom-left-radius: 6px;
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
 				border-top-right-radius: 0;
@@ -48,6 +42,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 				border-bottom-left-radius: 6px;
 			}
 
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:first-of-type),
 			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:first-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
@@ -55,18 +50,8 @@ Polymer Web-Component for a responsive list of selectable buttons
 				border-bottom-left-radius: 0;
 			}
 
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:first-of-type) {
-				border-top-right-radius: 6px;
-				border-bottom-right-radius: 6px;
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-			}
-
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:not([selected])),
 			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:not([selected])) {
-				border-right: solid 1px var(--d2l-color-mica);
-				border-left: solid 1px transparent;
-			}
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:not([selected])) {
 				border-right: solid 1px var(--d2l-color-mica);
 				border-left: solid 1px transparent;
 			}
@@ -74,20 +59,16 @@ Polymer Web-Component for a responsive list of selectable buttons
 			div ::slotted(d2l-squishy-button[right-of-selected]) {
 				border-left: solid 1px transparent;
 			}
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button[right-of-selected]),
 			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button[right-of-selected]) {
-				border-right: solid 1px transparent;
-			}
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button[right-of-selected]) {
 				border-right: solid 1px transparent;
 			}
 
 			div ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
 				border-right: solid 1px var(--d2l-color-mica);
 			}
+			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type:not([selected]))
 			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
-				border-left: solid 1px var(--d2l-color-mica);
-			}
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
 				border-left: solid 1px var(--d2l-color-mica);
 			}
 
