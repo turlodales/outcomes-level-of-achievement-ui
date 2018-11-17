@@ -139,9 +139,9 @@ Polymer Web-Component for a responsive list of selectable buttons
 					var button = this._buttons[i];
 					button.setAttribute('index', i);
 					if (this.disabled) {
-						button.setAttribute('disabled', this.disabled);
+						button.setAttribute('disabled', '');
 					} else {
-						button.removeAttribute('disabled', this.disabled);
+						button.removeAttribute('disabled');
 					}
 				}
 			},
@@ -163,7 +163,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 
 				for (var i=0; i < this._buttons.length; i++) {
 					if (i === selectedIndex) {
-						this._buttons[i].setAttribute('selected', 'true');
+						this._buttons[i].setAttribute('selected', '');
 						this._buttons[i].setAttribute('aria-checked', 'true');
 					} else {
 						this._buttons[i].removeAttribute('selected');
@@ -171,7 +171,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 					}
 
 					if (i > selectedIndex) {
-						this._buttons[i].setAttribute('right-of-selected', 'true');
+						this._buttons[i].setAttribute('right-of-selected', '');
 					} else {
 						this._buttons[i].removeAttribute('right-of-selected');
 					}
