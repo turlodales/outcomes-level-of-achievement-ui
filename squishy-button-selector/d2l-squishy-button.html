@@ -6,16 +6,24 @@
 <template strip-whitespace>
 		<style>
 			:host {
-				background: none;
-				color: var(--d2l-color-galena);
-				display: block;
-				flex: 1 0 auto;
-				outline: none;
-				overflow: hidden;
-				position: relative;
-				text-align: center;
-				z-index: 0;
+				flex: 1;
+
+				@apply --d2l-body-small-text;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				padding: 0 5px;
+				box-sizing: border-box;
+
 				cursor: pointer;
+				outline: none;
+
+				margin: 0;
+				color: var(--d2l-color-galena);
+				overflow: hidden;
+				word-break: break-all;
 
 				--d2l-squishy-button-border-width: 1px;
 			}
@@ -34,9 +42,15 @@
 			}
 			:host([selected]) {
 				border: var(--d2l-squishy-button-border-width) solid var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+				color: var(--d2l-color-ferrite);
+				font-weight: 700;
 				z-index: 1;
 			}
 
+			:host {
+				position: relative;
+				z-index: 0;
+			}
 			:host::before {
 				background-color: none;
 				content: "";
@@ -48,6 +62,9 @@
 				width: 100%;
 				z-index: -1;
 			}
+			::slotted(*) {
+				z-index: 1;
+			}
 
 			:host([selected])::before,
 			:host(:focus)::before,
@@ -55,43 +72,16 @@
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
-			.d2l-squishy-button-inner {
-				background: none;
-				border: none;
-				outline: none;
-				width: 100%;
-				z-index: 1;
-				height: 100%;
-				overflow: hidden;
-				display:flex;
-				align-items: center;
-				justify-content: center;
-				box-sizing: border-box;
-			}
-
 			[hidden] {
 				display: none !important;
 			}
 
-			/* Default inside styling */
-			div {
-				@apply --d2l-body-small-text;
-				overflow: hidden;
-				padding-left: 5px;
-				padding-right: 5px;
+			::slotted(*) {
 				pointer-events: none;
-				word-break: break-all;
-			}
-
-			:host([selected]) div {
-				color: var(--d2l-color-ferrite);
-				font-weight: 700;
 			}
 		</style>
 
-		<div class="d2l-squishy-button-inner">
-			<slot></slot>
-		</div>
+		<slot></slot>
 	</template>
 	<script>
 		Polymer({
