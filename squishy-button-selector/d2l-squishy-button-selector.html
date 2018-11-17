@@ -169,12 +169,6 @@ Polymer Web-Component for a responsive list of selectable buttons
 						this._buttons[i].removeAttribute('selected');
 						this._buttons[i].setAttribute('aria-checked', 'false');
 					}
-
-					if (i > selectedIndex) {
-						this._buttons[i].setAttribute('right-of-selected', '');
-					} else {
-						this._buttons[i].removeAttribute('right-of-selected');
-					}
 				}
 			},
 
