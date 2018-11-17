@@ -8,18 +8,33 @@
 			:host {
 				background: none;
 				color: var(--d2l-color-galena);
-				display: flex;
-				flex: 1;
-				height: 1.5rem;
+				display: block;
+				flex: 1 0 auto;
 				outline: none;
 				overflow: hidden;
 				position: relative;
 				text-align: center;
 				z-index: 0;
+				cursor: pointer;
+
+				--d2l-squishy-button-border-width: 1px;
 			}
 
+			:host {
+				border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-mica);
+				margin-left: calc(-1 * var(--d2l-squishy-button-border-width));
+			}
+			:host(:dir(rtl)),
+			:host-context([dir="rtl"]) {
+				margin-left: 0;
+				margin-right: calc(-1 * var(--d2l-squishy-button-border-width));
+			}
+			:host(:first-of-type) {
+				margin: 0;
+			}
 			:host([selected]) {
-				border: solid 1px var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+				border: var(--d2l-squishy-button-border-width) solid var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+				z-index: 1;
 			}
 
 			:host::before {
@@ -40,22 +55,18 @@
 				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
-			:host(:not([selected])) {
-				border-top: solid 1px var(--d2l-color-mica);
-				border-bottom: solid 1px var(--d2l-color-mica);
-				border-left: solid 1px var(--d2l-color-mica);
-			}
-
-			.d2l-squishy-button-inner,
-			.d2l-squishy-button-inner:hover {
+			.d2l-squishy-button-inner {
 				background: none;
 				border: none;
-				cursor: pointer;
 				outline: none;
 				width: 100%;
 				z-index: 1;
-				height: 95%;
+				height: 100%;
 				overflow: hidden;
+				display:flex;
+				align-items: center;
+				justify-content: center;
+				box-sizing: border-box;
 			}
 
 			[hidden] {
@@ -63,9 +74,8 @@
 			}
 
 			/* Default inside styling */
-			div ::slotted(*) {
+			div {
 				@apply --d2l-body-small-text;
-				margin: 0.25rem auto 0.25rem auto;
 				overflow: hidden;
 				padding-left: 5px;
 				padding-right: 5px;
@@ -73,7 +83,7 @@
 				word-break: break-all;
 			}
 
-			:host([selected]) div ::slotted(*) {
+			:host([selected]) div {
 				color: var(--d2l-color-ferrite);
 				font-weight: 700;
 			}
