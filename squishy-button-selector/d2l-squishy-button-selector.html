@@ -12,63 +12,59 @@ Polymer Web-Component for a responsive list of selectable buttons
 	<template strip-whitespace>
 		<style>
 			:host {
-				display:block;
+				display: flex;
 				height: 1.6rem;
 				background: white;
 				border-radius: 6px;
-			}
-
-			.d2l-squishy-buttons {
-				display: inline-flex;
 				width: calc(100% - 1px);
 			}
 
-			div ::slotted(d2l-squishy-button:last-of-type) {
+			::slotted(d2l-squishy-button:last-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 				margin-right: -1px;
 			}
 
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type),
-			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type) {
+			:host(:dir(rtl)) ::slotted(d2l-squishy-button:last-of-type),
+			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:last-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
 			}
 
-			div ::slotted(d2l-squishy-button:first-of-type) {
+			::slotted(d2l-squishy-button:first-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
 			}
 
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:first-of-type),
-			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:first-of-type) {
+			:host(:dir(rtl)) ::slotted(d2l-squishy-button:first-of-type),
+			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:first-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 				border-top-left-radius: 0;
 				border-bottom-left-radius: 0;
 			}
 
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:not([selected])),
-			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:not([selected])) {
+			:host(:dir(rtl)) ::slotted(d2l-squishy-button:not([selected])),
+			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:not([selected])) {
 				border-right: solid 1px var(--d2l-color-mica);
 				border-left: solid 1px transparent;
 			}
 
-			div ::slotted(d2l-squishy-button[right-of-selected]) {
+			::slotted(d2l-squishy-button[right-of-selected]) {
 				border-left: solid 1px transparent;
 			}
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button[right-of-selected]),
-			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button[right-of-selected]) {
+			:host(:dir(rtl)) ::slotted(d2l-squishy-button[right-of-selected]),
+			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button[right-of-selected]) {
 				border-right: solid 1px transparent;
 			}
 
-			div ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
+			::slotted(d2l-squishy-button:last-of-type:not([selected])) {
 				border-right: solid 1px var(--d2l-color-mica);
 			}
-			:host(:dir(rtl)) div ::slotted(d2l-squishy-button:last-of-type:not([selected]))
-			:host-context([dir="rtl"]) div ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
+			:host(:dir(rtl)) ::slotted(d2l-squishy-button:last-of-type:not([selected]))
+			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:last-of-type:not([selected])) {
 				border-left: solid 1px var(--d2l-color-mica);
 			}
 
@@ -82,9 +78,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 			}
 		</style>
 
-		<div class="d2l-squishy-buttons">
-			<slot></slot>
-		</div>
+		<slot></slot>
 	</template>
 	<script>
 		Polymer({
@@ -128,7 +122,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 					this.addEventListener('focus', this._onFocus, true);
 					this.addEventListener('blur', this._onBlur, true);
 
-					this.arrowKeyFocusablesContainer = this.$$('.d2l-squishy-buttons');
+					this.arrowKeyFocusablesContainer = this;
 					this.arrowKeyFocusablesProvider = function() {
 						return Promise.resolve(this._buttons);
 					}.bind(this);
