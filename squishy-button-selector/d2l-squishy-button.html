@@ -22,8 +22,8 @@
 
 				margin: 0;
 				color: var(--d2l-color-galena);
-				overflow: hidden;
 				white-space: nowrap;
+				overflow: hidden;
 
 				--d2l-squishy-button-border-width: 1px;
 			}
@@ -71,12 +71,16 @@
 				display: none !important;
 			}
 
+			div {
+				overflow: hidden;
+			}
+
 			::slotted(*) {
 				pointer-events: none;
 			}
 		</style>
 
-		<slot></slot>
+		<div><slot></slot></div>
 	</template>
 	<script>
 		Polymer({
