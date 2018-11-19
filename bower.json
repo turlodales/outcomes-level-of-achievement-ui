@@ -29,7 +29,7 @@
     "d2l-localize-behavior": "^1.1.0",
     "d2l-typography": "^6.1.2",
     "d2l-fastdom-import": "Brightspace/fastdom-import#^1.0.2",
-    "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#^0.1.0",
+    "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#^0.3.1",
     "polymer": "1 - 2",
     "d2l-polymer-behaviors": "^1.8.0",
     "d2l-tooltip": "^2.0.4"
