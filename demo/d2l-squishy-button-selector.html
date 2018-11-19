@@ -24,6 +24,7 @@
 	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 	<link rel="import" href="../squishy-button-selector/d2l-squishy-button-selector.html">
 	<link rel="import" href="../squishy-button-selector/d2l-squishy-button.html">
+	<link rel="import" href="../../d2l-tooltip/d2l-tooltip.html">
 
 	<link rel="import" href="../../d2l-typography/d2l-typography.html">
 	<custom-style>
@@ -42,28 +43,28 @@
 	<div class="vertical-section-container centered">
 		<h1>d2l-squishy-button-selector demo</h1>
 		<demo-snippet>
-			<d2l-squishy-button-selector selected-index="0">
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: red;"> <div> LEVEL 1 </div> </d2l-squishy-button>
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: blue;"> <div> LEVEL 2 </div> </d2l-squishy-button>
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: green;"> <div> LEVEL 3 </div> </d2l-squishy-button>
+			<d2l-squishy-button-selector tooltip-position="top" selected-index="0">
+				<d2l-squishy-button id="item1" color="red">LEVEL 1</d2l-squishy-button>
+				<d2l-squishy-button id="item2" color="blue">LEVEL 2</d2l-squishy-button>
+				<d2l-squishy-button id="item3" color="green">LEVEL 3</d2l-squishy-button>
 			</d2l-squishy-button-selector>
 		</demo-snippet>
 
 		<h1>d2l-squishy-button-selector default colors</h1>
 		<demo-snippet>
 			<d2l-squishy-button-selector>
-				<d2l-squishy-button> <div> LEVEL 1 </div> </d2l-squishy-button>
-				<d2l-squishy-button> <div> LEVEL 2 </div> </d2l-squishy-button>
-				<d2l-squishy-button> <div> LEVEL 3 </div> </d2l-squishy-button>
+				<d2l-squishy-button id="a">LEVEL 1</d2l-squishy-button>
+				<d2l-squishy-button id="b">LEVEL 2</d2l-squishy-button>
+				<d2l-squishy-button id="c">LEVEL 3</d2l-squishy-button>
 			</d2l-squishy-button-selector>
 		</demo-snippet>
 
 		<h1>d2l-squishy-button-selector disabled</h1>
 		<demo-snippet>
 			<d2l-squishy-button-selector disabled selected-index="1">
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: red;"> <div> LEVEL 1 </div> </d2l-squishy-button>
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: blue;"> <div> LEVEL 2 </div> </d2l-squishy-button>
-				<d2l-squishy-button style="--d2l-squishy-button-selected-color: green;"> <div> LEVEL 3 </div> </d2l-squishy-button>
+				<d2l-squishy-button id="x" color="red">LEVEL 1</d2l-squishy-button>
+				<d2l-squishy-button id="y" color="blue">LEVEL 2</d2l-squishy-button>
+				<d2l-squishy-button id="z" color="green">LEVEL 3</d2l-squishy-button>
 			</d2l-squishy-button-selector>
 		</demo-snippet>
 	</div>

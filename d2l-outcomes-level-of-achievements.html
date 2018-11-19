@@ -3,7 +3,6 @@
 <link rel="import" href="../d2l-polymer-siren-behaviors/store/entity-behavior.html">
 <link rel="import" href="../d2l-polymer-siren-behaviors/store/siren-action-behavior.html">
 <link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
-<link rel="import" href="d2l-outcomes-loa-demonstration-level.html">
 <link rel="import" href="squishy-button-selector/d2l-squishy-button-selector.html">
 <link rel="import" href="squishy-button-selector/d2l-squishy-button.html">
 
@@ -29,10 +28,17 @@ Polymer Web-Component to display levels of achievements
 			}
 		</style>
 
-		<d2l-squishy-button-selector>
-			<template is="dom-repeat" items="[[_getDemonstrationLevels(entity)]]">
-				<d2l-squishy-button color="[[item.color]]" selected="[[item.selected]]" button-data="[[_getButtonData(item)]]">
-					<d2l-outcomes-loa-demonstration-level color="{{item.color}}" item="[[item]]" href="[[item.entity]]" token="[[token]]"></d2l-outcomes-loa-demonstration-level>
+		<d2l-squishy-button-selector
+			tooltip-position="top"
+		>
+			<template is="dom-repeat" items="[[_demonstrationLevels]]">
+				<d2l-squishy-button
+					color="[[item.color]]"
+					selected="[[item.selected]]"
+					button-data="[[_getButtonData(item)]]"
+					id="item-[[index]]"
+				>
+					[[item.text]]
 				</d2l-squishy-button>
 			</template>
 		</d2l-squishy-button-selector>
@@ -52,8 +58,16 @@ Polymer Web-Component to display levels of achievements
 				_hasAction: {
 					type: Boolean,
 					observer: '_hasActionChanged'
+				},
+
+				_demonstrationLevels: {
+					type: Array
 				}
 			},
+
+			observers: [
+				'_getDemonstrationLevels(entity)'
+			],
 
 			behaviors: [
 				D2L.PolymerBehaviors.Siren.EntityBehavior,
@@ -74,23 +88,26 @@ Polymer Web-Component to display levels of achievements
 				if (!entity) {
 					return null;
 				}
-				var demonstrationLevels = [];
-				var hasAction = false;
 
-				entity.getSubEntitiesByClass(this.HypermediaClasses.outcomes.demonstratableLevel).forEach(function(e) {
+				Promise.all(entity.getSubEntitiesByClass(this.HypermediaClasses.outcomes.demonstratableLevel).map(function(e) {
 					var selected = e.hasClass(this.HypermediaClasses.outcomes.selected);
 					var action = e.getActionByName(this.HypermediaActions.outcomes.select) || e.getActionByName('deselect');
-					hasAction = hasAction || !!action;
+					var entityHref = e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href;
 
-					demonstrationLevels.push({
-						entity: e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href,
-						action: action,
-						selected: selected
+					return window.D2L.Siren.EntityStore.fetch(entityHref, this.token, true).then(function(levelRequest) {
+						var levelEntity = levelRequest.entity;
+						return {
+							action: action,
+							selected: selected,
+							color: levelEntity && levelEntity.properties.color,
+							text: levelEntity && levelEntity.properties.name
+						};
 					});
+				}.bind(this))).then(function(demonstrationLevels) {
+					this._demonstrationLevels = demonstrationLevels;
+					this._hasAction = demonstrationLevels.some(function(level) { return !!level.action; });
 				}.bind(this));
 
-				this._hasAction = hasAction;
-				return demonstrationLevels;
 			},
 			_getButtonData: function(item) {
 				return {

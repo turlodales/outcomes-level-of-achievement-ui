@@ -15,6 +15,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 				display: flex;
 				height: 1.6rem;
 				background: white;
+				position: relative;
 				border-radius: 6px;
 			}
 
@@ -75,6 +76,10 @@ Polymer Web-Component for a responsive list of selectable buttons
 				ariaLabel: {
 					type: String,
 					reflectToAttribute: true
+				},
+				tooltipPosition: {
+					type: String,
+					reflectToAttribute: true
 				}
 			},
 
@@ -88,7 +93,8 @@ Polymer Web-Component for a responsive list of selectable buttons
 			],
 
 			listeners: {
-				'd2l-squishy-button-selection-changed': '_onItemSelected'
+				'd2l-squishy-button-selection-changed': '_onItemSelected',
+				'squishy-button-text-changed': '_setShortTextIfAppropriate'
 			},
 
 			ready: function() {
@@ -97,6 +103,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 					this._slotObserver = Polymer.dom(this).observeNodes(this._handleDomChanges);
 					this.addEventListener('focus', this._onFocus, true);
 					this.addEventListener('blur', this._onBlur, true);
+					this.addEventListener('mouseover', this._onHover, true);
 
 					this.arrowKeyFocusablesContainer = this;
 					this.arrowKeyFocusablesProvider = function() {
@@ -104,6 +111,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 					}.bind(this);
 
 					this._updateButtonSelectedAttribute(this.selectedIndex);
+					this._setShortTextIfAppropriate();
 				});
 
 				this._disabledChanged(this.disabled);
@@ -115,6 +123,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 				}
 				this.removeEventListener('focus', this._onFocus);
 				this.removeEventListener('blur', this._onBlur);
+				this.removeEventListener('mouseover', this._onHover);
 			},
 
 			_handleDomChanges: function() {
@@ -142,6 +151,9 @@ Polymer Web-Component for a responsive list of selectable buttons
 						button.setAttribute('disabled', '');
 					} else {
 						button.removeAttribute('disabled');
+					}
+					if (this.tooltipPosition) {
+						button.setAttribute('tooltip-position', this.tooltipPosition);
 					}
 				}
 			},
@@ -179,6 +191,55 @@ Polymer Web-Component for a responsive list of selectable buttons
 					this.selectedIndex = undefined;
 				}
 				event.preventDefault();
+			},
+
+			_setShortTextIfAppropriate: function() {
+				if (!this._buttons || this._buttons.length === 0) {
+					return;
+				}
+
+				var regex = /([^\d]*)(\d+)$/;
+
+				var toMatch;
+				var prevNum;
+
+				var toSet = [];
+				var hasShortText = true;
+
+				for(var i=0; i<this._buttons.length; i++) {
+					var text = this._buttons[i].getAttribute('text');
+					var match = regex.exec(text || '');
+					if (!match) {
+						hasShortText = false;
+						break;
+					}
+					var preText = match[1];
+					var num = Number.parseInt(match[2]);
+					if (!toMatch) {
+						toMatch = preText;
+						prevNum = num;
+					} else {
+						if (preText !== toMatch || num !== ++prevNum) {
+							hasShortText = false;
+							break;
+						}
+					}
+
+					toSet.push({
+						button: this._buttons[i],
+						text: num
+					});
+				}
+
+				if (hasShortText) {
+					toSet.forEach(function(item) {
+						item.button.setAttribute('short-text', item.text);
+					});
+				} else {
+					this._buttons.forEach(function(button) {
+						button.removeAttribute('short-text');
+					})
+				}
 			},
 
 			_onFocus: function (event) {

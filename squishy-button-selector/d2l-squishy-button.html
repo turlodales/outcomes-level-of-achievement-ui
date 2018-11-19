@@ -1,5 +1,7 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../d2l-colors/d2l-colors.html">
+<link rel="import" href="../../d2l-polymer-behaviors/d2l-dom.html">
+<link rel="import" href="../../d2l-tooltip/d2l-tooltip.html">
 <link rel="import" href="../../d2l-typography/d2l-typography-shared-styles.html">
 
 <dom-module id="d2l-squishy-button">
@@ -7,18 +9,10 @@
 		<style>
 			:host {
 				flex: 1;
-
-				@apply --d2l-body-small-text;
-
-				display: flex;
-				justify-content: center;
-				align-items: center;
+				display: block;
 
 				cursor: pointer;
 				outline: none;
-
-				margin: 0;
-				color: var(--d2l-color-galena);
 
 				--d2l-squishy-button-border-width: 1px;
 			}
@@ -38,36 +32,29 @@
 			}
 			:host([selected]) {
 				border: var(--d2l-squishy-button-border-width) solid var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
-				color: var(--d2l-color-ferrite);
-				font-weight: 700;
 				z-index: 1;
-			}
-
-			:host {
-				position: relative;
-				z-index: 0;
-			}
-			:host([selected])::before,
-			:host(:focus)::before,
-			:host(:hover)::before {
-				content: "";
-
-				position: absolute;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-
-				opacity: 0.1;
-				z-index: -1;
-				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
 			}
 
 			[hidden] {
 				display: none !important;
 			}
 
-			div {
+			.d2l-squishy-button-container {
+				@apply --d2l-body-small-text;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				margin: 0;
+				color: var(--d2l-color-galena);
+			}
+			:host([selected]) .d2l-squishy-button-container {
+				color: var(--d2l-color-ferrite);
+				font-weight: 700;
+			}
+
+			.d2l-squishy-button-inner {
 				max-height: 100%;
 				border: 5px solid transparent; /* padding, but outside the content box */
 				box-sizing: border-box;
@@ -77,12 +64,48 @@
 				text-align: center;
 			}
 
+			.d2l-squishy-button-container {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+			}
+			.d2l-squishy-button-container::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+
+				opacity: 0.1;
+				z-index: -1;
+			}
+			:host([selected]) .d2l-squishy-button-container::before,
+			:host(:focus) .d2l-squishy-button-container::before,
+			:host(:hover) .d2l-squishy-button-container::before {
+				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+			}
+
 			::slotted(*) {
 				pointer-events: none;
 			}
 		</style>
 
-		<div><slot></slot></div>
+		<d2l-tooltip
+			id="tooltip[[index]]"
+			hidden$="[[!_textOverflowing]]"
+			position$="[[tooltipPosition]]"
+			boundary="[[_containerBoundary]]"
+			aria-hidden
+		>[[text]]</d2l-tooltip>
+
+		<div class="d2l-squishy-button-container">
+			<div id="textwrapper" class="d2l-squishy-button-inner">
+				<div aria-hidden hidden$="[[!_showShortText(shortText, _textOverflowing)]]">[[shortText]]</div>
+				<div id="textarea"><slot></slot></div>
+			</div>
+		</div>
 	</template>
 	<script>
 		Polymer({
@@ -113,7 +136,34 @@
 				color: {
 					type: String,
 					observer: '_updateColor'
-				}
+				},
+
+				text: {
+					type: String,
+					reflectToAttribute: true,
+					observer: '_measureSize'
+				},
+
+				shortText: {
+					type: String,
+					reflectToAttribute: true
+				},
+
+				_textOverflowing: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
+				},
+
+				tooltipPosition: {
+					type: String,
+					value: 'bottom',
+					reflectToAttribute: true
+				},
+
+				_containerBoundary: {
+					type: Object
+				},
 			},
 
 			listeners: {
@@ -121,15 +171,70 @@
 				'tap': '_handleTap'
 			},
 
+			ready: function() {
+				Polymer.RenderStatus.afterNextRender(this, function() {
+					this.__squishySelector = D2L.Dom.findComposedAncestor(this, function(node) {
+						if (!node || node.nodeType !== 1) {
+							return false;
+						}
+
+						return node.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR';
+					});
+
+					this._measureSize = this._measureSize.bind(this);
+					this._handleDomChanges = this._handleDomChanges.bind(this);
+
+					window.addEventListener('resize', this._measureSize);
+					this._slotObserver = Polymer.dom(this).observeNodes(this._handleDomChanges);
+
+					this._measureSize();
+					this._updateColor(this.color);
+				});
+			},
+
+			detached: function() {
+				this.__squishySelector = null;
+				window.removeEventListener('resize', this._measureSize);
+				if (this._slotObserver) {
+					Polymer.dom(this).unobserveNodes(this._slotObserver);
+				}
+			},
+
+			_handleDomChanges: function() {
+				this.text = this.textContent;
+				this.dispatchEvent(new CustomEvent('squishy-button-text-changed', { bubbles: true } ));
+			},
+
 			_keyCodes: {
 				ENTER: 13,
 				SPACE: 32
 			},
 
+			_showShortText: function(shortText, textOverflowing) {
+				return shortText && textOverflowing;
+			},
+
+			_measureSize: function() {
+				fastdom.measure(function() {
+					var innerHeight = this.$.textarea.offsetHeight;
+					var outerHeight = this.$.textwrapper.offsetHeight;
+					this._textOverflowing = innerHeight > outerHeight;
+
+					this._containerBoundary = {
+						left: 0,
+						right: (this.__squishySelector || this).offsetWidth
+					};
+				}.bind(this));
+			},
+
+			_getTextClass(shortText, textOverflowing) {
+				return this._showShortText(shortText, textOverflowing) ? 'squishy-button-hide' : '';
+			},
+
 			_updateColor: function(color) {
-				this.updateStyles({
-					'--d2l-squishy-button-selected-color': color
-				});
+				if (color) {
+					this.updateStyles({'--d2l-squishy-button-selected-color': color });
+				}
 			},
 
 			_onKeyDown: function (event) {
