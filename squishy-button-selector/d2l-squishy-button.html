@@ -123,6 +123,15 @@
 					observer: '_handleSelected'
 				},
 
+				disabled: Boolean,
+
+				ariaDisabled: {
+					type: Boolean,
+					reflectToAttribute: true,
+					readOnly: true,
+					computed: '_getDisabled(disabled)'
+				},
+
 				index: {
 					type: Number,
 					reflectToAttribute: true
@@ -190,6 +199,10 @@
 					this._measureSize();
 					this._updateColor(this.color);
 				});
+			},
+
+			_getDisabled: function(disabled) {
+				return disabled;
 			},
 
 			detached: function() {

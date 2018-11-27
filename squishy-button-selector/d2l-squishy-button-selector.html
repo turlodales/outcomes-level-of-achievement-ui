@@ -73,6 +73,12 @@ Polymer Web-Component for a responsive list of selectable buttons
 					reflectToAttribute: true,
 					observer: '_disabledChanged'
 				},
+				ariaDisabled: {
+					type: Boolean,
+					reflectToAttribute: true,
+					readOnly: true,
+					computed: '_getDisabled(disabled)'
+				},
 				ariaLabel: {
 					type: String,
 					reflectToAttribute: true
@@ -124,6 +130,10 @@ Polymer Web-Component for a responsive list of selectable buttons
 				this.removeEventListener('focus', this._onFocus);
 				this.removeEventListener('blur', this._onBlur);
 				this.removeEventListener('mouseover', this._onHover);
+			},
+
+			_getDisabled: function(disabled) {
+				return disabled;
 			},
 
 			_handleDomChanges: function() {
