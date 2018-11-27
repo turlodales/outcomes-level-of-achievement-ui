@@ -286,6 +286,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 			_disabledChanged: function(disabled) {
 				var buttonList = this;
 
+				this._setButtonProperties();
 				if (disabled && buttonList.getAttribute('tabindex') === '-1'
 					|| !disabled && buttonList.getAttribute('tabindex') === '0'
 				) {
