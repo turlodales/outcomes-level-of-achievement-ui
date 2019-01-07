@@ -181,7 +181,7 @@
 			},
 
 			ready: function() {
-				Polymer.RenderStatus.afterNextRender(this, function() {
+				Polymer.RenderStatus.afterNextRender(this, /* @this */ function() {
 					this.__squishySelector = D2L.Dom.findComposedAncestor(this, function(node) {
 						if (!node || node.nodeType !== 1) {
 							return false;
@@ -273,7 +273,7 @@
 			},
 
 			_handleSelected: function(newVal, oldVal) {
-				if (newVal === false && newVal == oldVal) {
+				if (newVal === false && newVal === oldVal) {
 					return;
 				}
 

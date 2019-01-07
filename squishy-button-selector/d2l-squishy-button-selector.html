@@ -104,7 +104,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 			},
 
 			ready: function() {
-				Polymer.RenderStatus.afterNextRender(this, function() {
+				Polymer.RenderStatus.afterNextRender(this, /* @this */ function() {
 					this._handleDomChanges();
 					this._slotObserver = Polymer.dom(this).observeNodes(this._handleDomChanges);
 					this.addEventListener('focus', this._onFocus, true);
@@ -266,7 +266,7 @@ Polymer Web-Component for a responsive list of selectable buttons
 				this._focused = true;
 			},
 
-			_onBlur: function(event) {
+			_onBlur: function() {
 				this._focused = false;
 				this._popTabIndex('-1');
 			},

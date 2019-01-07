@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "brightspace/polymer-config"
+  ],
+  "rules": {
+    "object-shorthand": [2, "never"]
+  },
+  "globals": {
+    "Promise": false,
+    "Map": false,
+    "fastdom": false,
+    "Symbol": false
+  }
+}
