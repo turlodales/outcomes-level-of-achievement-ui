@@ -6,45 +6,75 @@
 
 	<title>d2l-outcomes-level-of-achievements demo</title>
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script>
-		'use strict';
-		window.d2lfetch = {
-			fetch: function (req, opts) {
-				return window.fetch(req, opts);
-			}
-		};
-	</script>
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script type="module">
+import '@polymer/promise-polyfill/promise-polyfill.js';
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '@polymer/iron-demo-helpers/demo-snippet.js';
+import '../d2l-outcomes-level-of-achievements.js';
+import 'd2l-typography/d2l-typography.js';
+window.d2lfetch = {
+	fetch: function (req, opts) {
+		return window.fetch(req, opts);
+	}
+};
+</script>
 
-	<link rel="import" href="../../promise-polyfill/promise-polyfill.html">
-	<script src="../../fetch/fetch.js"></script>
+	<script type="module" src="../../@polymer/promise-polyfill/promise-polyfill.js"></script>
+	<script src="../../whatwg-fetch/fetch.js"></script>
 
-	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-	<link rel="import" href="../d2l-outcomes-level-of-achievements.html">
-	<link rel="import" href="../../d2l-typography/d2l-typography.html">
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+	<script type="module" src="../d2l-outcomes-level-of-achievements.js"></script>
+	<script type="module" src="../../d2l-typography/d2l-typography.js"></script>
 
-	<custom-style>
+	<!-- FIXME(polymer-modulizer):
+		These imperative modules that innerHTML your HTML are
+		a hacky way to be sure that any mixins in included style
+		modules are ready before any elements that reference them are
+		instantiated, otherwise the CSS @apply mixin polyfill won't be
+		able to expand the underlying CSS custom properties.
+		See: https://github.com/Polymer/polymer-modulizer/issues/154
+		-->
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
 		<style is="custom-style" include="demo-pages-shared-styles"></style>
-	</custom-style>
-	<custom-style include="d2l-typography">
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style include="d2l-typography">
 		<style is="custom-style" include="d2l-typography">
 			html {
 				font-size: 20px;
 			}
 		</style>
-	</custom-style>
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 </head>
 <body unresolved class="d2l-typography">
-	<div class="vertical-section-container centered">
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
 		<h1>d2l-outcomes-level-of-achievements demo</h1>
 		<demo-snippet>
 			<d2l-outcomes-level-of-achievements></d2l-outcomes-level-of-achievements>
 		</demo-snippet>
 
 		<demo-snippet>
-			<d2l-outcomes-level-of-achievements read-only></d2l-outcomes-level-of-achievements>
+			<d2l-outcomes-level-of-achievements read-only=""></d2l-outcomes-level-of-achievements>
 		</demo-snippet>
-	</div>
+	</div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 </body>
 </html>
