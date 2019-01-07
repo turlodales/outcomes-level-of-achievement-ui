@@ -8,16 +8,9 @@
 	<title>d2l-squishy-button-selector demo</title>
 
 	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script type="module">
-import '@polymer/promise-polyfill/promise-polyfill.js';
-import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
-import '@polymer/iron-demo-helpers/demo-snippet.js';
-import '../squishy-button-selector/d2l-squishy-button-selector.js';
-import '../squishy-button-selector/d2l-squishy-button.js';
-import 'd2l-tooltip/d2l-tooltip.js';
-import 'd2l-typography/d2l-typography.js';
+	<script>
 window.d2lfetch = {
-	fetch: function (req, opts) {
+	fetch: function(req, opts) {
 		return window.fetch(req, opts);
 	}
 };

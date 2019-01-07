@@ -14,7 +14,7 @@ import '@polymer/polymer/polymer-legacy.js';
 import 'd2l-polymer-siren-behaviors/store/entity-store.js';
 import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
 import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import 'd2l-hypermedia-constants/d2l-hm-constants-behavior.js';
+import { Actions, Classes } from 'd2l-hypermedia-constants';
 import './squishy-button-selector/d2l-squishy-button-selector.js';
 import './squishy-button-selector/d2l-squishy-button.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -45,7 +45,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 		</d2l-squishy-button-selector>
 
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -67,8 +67,7 @@ Polymer({
 
 	behaviors: [
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		window.D2L.Hypermedia.HMConstantsBehavior
+		D2L.PolymerBehaviors.Siren.SirenActionBehavior
 	],
 
 	ready: function() {
@@ -85,9 +84,9 @@ Polymer({
 			return null;
 		}
 
-		Promise.all(entity.getSubEntitiesByClass(this.HypermediaClasses.outcomes.demonstratableLevel).map(function(e) {
-			var selected = e.hasClass(this.HypermediaClasses.outcomes.selected);
-			var action = e.getActionByName(this.HypermediaActions.outcomes.select) || e.getActionByName('deselect');
+		Promise.all(entity.getSubEntitiesByClass(Classes.outcomes.demonstratableLevel).map(function(e) {
+			var selected = e.hasClass(Classes.outcomes.selected);
+			var action = e.getActionByName(Actions.outcomes.select) || e.getActionByName('deselect');
 			var entityHref = e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href;
 
 			return window.D2L.Siren.EntityStore.fetch(entityHref, this.token, true).then(function(levelRequest) {

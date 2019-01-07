@@ -167,7 +167,7 @@ Polymer({
 			return;
 		}
 
-		for (var i=0; i < this._buttons.length; i++) {
+		for (var i = 0; i < this._buttons.length; i++) {
 			var button = this._buttons[i];
 			button.setAttribute('index', i);
 			if (this.disabled) {
@@ -196,7 +196,7 @@ Polymer({
 			}
 		}
 
-		for (var i=0; i < this._buttons.length; i++) {
+		for (var i = 0; i < this._buttons.length; i++) {
 			if (i === selectedIndex) {
 				this._buttons[i].setAttribute('selected', '');
 				this._buttons[i].setAttribute('aria-checked', 'true');
@@ -229,7 +229,7 @@ Polymer({
 		var toSet = [];
 		var hasShortText = true;
 
-		for(var i=0; i<this._buttons.length; i++) {
+		for (var i = 0; i < this._buttons.length; i++) {
 			var text = this._buttons[i].getAttribute('text');
 			var match = regex.exec(text || '');
 			if (!match) {
@@ -261,11 +261,11 @@ Polymer({
 		} else {
 			this._buttons.forEach(function(button) {
 				button.removeAttribute('short-text');
-			})
+			});
 		}
 	},
 
-	_onFocus: function (event) {
+	_onFocus: function(event) {
 		if (this.disabled || this._focused) {
 			return;
 		}
@@ -273,7 +273,7 @@ Polymer({
 		this._pushTabIndex('-1');
 
 		var focusIndex = (this.selectedIndex > -1 && this.selectedIndex) || 0;
-		if ( (this._buttons || [])[focusIndex] && event.target.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR' ) {
+		if ((this._buttons || [])[focusIndex] && event.target.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR') {
 			this._buttons[focusIndex].focus();
 		}
 		this._focused = true;

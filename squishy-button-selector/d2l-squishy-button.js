@@ -216,7 +216,7 @@ Polymer({
 
 	_handleDomChanges: function() {
 		this.text = this.textContent;
-		this.dispatchEvent(new CustomEvent('squishy-button-text-changed', { bubbles: true } ));
+		this.dispatchEvent(new CustomEvent('squishy-button-text-changed', { bubbles: true }));
 	},
 
 	_keyCodes: {
@@ -251,7 +251,7 @@ Polymer({
 		}
 	},
 
-	_onKeyDown: function (event) {
+	_onKeyDown: function(event) {
 		if (this.disabled) {
 			return;
 		}
@@ -263,7 +263,7 @@ Polymer({
 		}
 	},
 
-	_handleTap: function (event) {
+	_handleTap: function(event) {
 		if (this.disabled) {
 			return;
 		}
@@ -281,7 +281,7 @@ Polymer({
 		this._dispatchItemSelectedEvent(false, newVal);
 	},
 
-	_dispatchItemSelectedEvent: function (triggeredByUserAction, selected) {
+	_dispatchItemSelectedEvent: function(triggeredByUserAction, selected) {
 		var eventName = triggeredByUserAction ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
 		this.dispatchEvent(new CustomEvent(eventName, {
 			detail: {
