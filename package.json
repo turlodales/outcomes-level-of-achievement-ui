@@ -1,38 +1,60 @@
 {
+  "description": "Polymer-based web components for D2L Outcome Level of Achievements",
+  "keywords": [
+    "D2L",
+    "Outcomes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements.git"
+  },
+  "homepage": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements-ui",
   "name": "d2l-outcomes-level-of-achievements",
   "version": "0.0.1",
-  "description": "Polymer-based web components for D2L Outcome Level of Achievements",
-  "private": true,
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "postinstall": "polymer install --variants",
     "serve": "polymer analyze > analysis.json && polymer serve",
     "test": "npm run test:lint && npm run test:wct",
-    "test:lint": "npm run test:lint:wc && npm run test:lint:html",
-    "test:lint:html": "eslint *.html",
+    "test:lint": "npm run test:lint:wc && npm run test:lint:js",
+    "test:lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
     "test:lint:wc": "polymer lint",
     "test:local": "npm run test:lint && npm run test:wct:local",
     "test:wct": "polymer test --skip-plugin local",
     "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements.git"
-  },
-  "keywords": [
-    "D2L",
-    "Outcomes"
-  ],
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@polymer/iron-component-page": "^4.0.0",
+    "@polymer/iron-demo-helpers": "^3.0.0",
+    "@polymer/promise-polyfill": "^3.0.0-pre.18",
+    "@webcomponents/webcomponentsjs": "^2.2.1",
+    "babel-eslint": "^10.0.1",
     "cross-env": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.5",
-    "polymer-cli": "^1.7.7"
+    "polymer-cli": "^1.9.4",
+    "wct-browser-legacy": "^1.0.1",
+    "whatwg-fetch": "^2.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "d2l-hypermedia-constants": "^6",
+    "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
+    "d2l-typography": "BrightspaceUI/typography#semver:^7",
+    "fastdom": "^1.0.8",
+    "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
+    "@polymer/polymer": "^3.0.0",
+    "d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2",
+    "d2l-tooltip": "BrightspaceUI/tooltip#semver:^3"
+  },
+  "resolutions": {
+    "inherits": "2.0.3",
+    "samsam": "1.1.3",
+    "supports-color": "3.1.2",
+    "type-detect": "1.0.0"
+  },
+  "main": "outcomes-level-of-achievement.js"
 }

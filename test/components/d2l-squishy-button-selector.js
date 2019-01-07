@@ -1,7 +1,7 @@
-
 /* global it, fixture, expect, beforeEach, afterEach, describe, sinon */
 
-'use strict';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import '../../squishy-button-selector/d2l-squishy-button-selector.js';
 
 describe('<d2l-squishy-button-selector>', function() {
 
@@ -10,7 +10,7 @@ describe('<d2l-squishy-button-selector>', function() {
 	beforeEach(function(done) {
 		sandbox = sinon.sandbox.create();
 		element = fixture('basic');
-		Polymer.RenderStatus.afterNextRender(element, function() {
+		afterNextRender(element, function() {
 			done();
 		});
 	});
@@ -29,7 +29,7 @@ describe('<d2l-squishy-button-selector>', function() {
 		it('Is an empty array if there are no buttons', function(done) {
 			element = fixture('empty');
 
-			Polymer.RenderStatus.afterNextRender(element, function() {
+			afterNextRender(element, function() {
 				expect(element._buttons.length).to.equal(0);
 				done();
 			});
@@ -53,7 +53,7 @@ describe('<d2l-squishy-button-selector>', function() {
 		it('selects the button which corresponds with the selectedIndex', function(done) {
 			element.setAttribute('selected-index', 1);
 			element._handleDomChanges();
-			Polymer.RenderStatus.afterNextRender(element, function() {
+			afterNextRender(element, function() {
 				verifyButtonsSelected(false, true, false);
 				done();
 			});
@@ -61,7 +61,7 @@ describe('<d2l-squishy-button-selector>', function() {
 
 		it('selects nothing if the selectedIndex is out of range', function(done) {
 			element.selectedIndex = 12;
-			Polymer.RenderStatus.afterNextRender(element, function() {
+			afterNextRender(element, function() {
 				verifyButtonsSelected(false, false, false);
 				done();
 			});
@@ -70,12 +70,12 @@ describe('<d2l-squishy-button-selector>', function() {
 		it('deselects everything if selectedIndex is null', function(done) {
 			element.selectedIndex = 1;
 
-			Polymer.RenderStatus.afterNextRender(element, function() {
+			afterNextRender(element, function() {
 				verifyButtonsSelected(false, true, false);
 
 				element.selectedIndex = null;
 
-				Polymer.RenderStatus.afterNextRender(element, function() {
+				afterNextRender(element, function() {
 					verifyButtonsSelected(false, false, false);
 					done();
 				});
