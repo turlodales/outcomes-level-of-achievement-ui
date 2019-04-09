@@ -31,10 +31,19 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 				max-width: 9rem;
 			}
 
+			.d2l-suggestion-text {
+				@apply --d2l-body-small-text;
+				margin: 0.3rem 0 0.3rem 0;
+			}
+
 			:host {
 				display: block;
 			}
 		</style>
+		
+		<template is="dom-if" if="[[_hasSuggestedLevel(_suggestedLevel)]]">		
+			<p class="d2l-suggestion-text">Suggested: [[_suggestedLevel.text]]</p>
+		</template>
 
 		<d2l-squishy-button-selector tooltip-position="top" disabled="[[_getIsDisabled(readOnly,_hasAction)]]">
 			<template is="dom-repeat" items="[[_demonstrationLevels]]">
@@ -58,7 +67,11 @@ Polymer({
 			value: false
 		},
 		_hasAction: Boolean,
-		_demonstrationLevels: Array
+		_demonstrationLevels: Array,
+		_suggestedLevel: {
+			type: Object,
+			value: null
+		}
 	},
 
 	observers: [
@@ -84,22 +97,35 @@ Polymer({
 			return null;
 		}
 
+		this._suggestedLevel = null;
+
 		Promise.all(entity.getSubEntitiesByClass(Classes.outcomes.demonstratableLevel).map(function(e) {
 			var selected = e.hasClass(Classes.outcomes.selected);
+			var suggested = e.hasClass(Classes.outcomes.suggested);
 			var action = e.getActionByName(Actions.outcomes.select) || e.getActionByName('deselect');
 			var entityHref = e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href;
 
 			return window.D2L.Siren.EntityStore.fetch(entityHref, this.token, true).then(function(levelRequest) {
 				var levelEntity = levelRequest.entity;
+
 				return {
 					action: action,
 					selected: selected,
 					color: levelEntity && levelEntity.properties.color,
-					text: levelEntity && levelEntity.properties.name
+					text: levelEntity && levelEntity.properties.name,
+					isSuggested: suggested
 				};
 			});
 		}.bind(this))).then(function(demonstrationLevels) {
 			this._demonstrationLevels = demonstrationLevels;
+
+			var firstSuggested = demonstrationLevels.find(function(level) { return !!level.isSuggested; });
+			if (typeof firstSuggested !== 'undefined') {
+				this._suggestedLevel = {
+					text: firstSuggested.text
+				};
+			}
+
 			this._hasAction = demonstrationLevels.some(function(level) { return !!level.action; });
 		}.bind(this));
 
@@ -108,6 +134,9 @@ Polymer({
 		return {
 			action: item.action
 		};
+	},
+	_hasSuggestedLevel: function(suggestedLevel) {
+		return !!suggestedLevel;
 	},
 	_onItemSelected: function(event) {
 		var action = event.detail.data.action;
