@@ -104,7 +104,7 @@ Polymer({
 				
 				return {
 					action: action,
-					selected: selected || isSuggested,
+					selected: selected,
 					color: levelEntity && levelEntity.properties.color,
 					text: levelEntity && levelEntity.properties.name,
 					isSuggested: isSuggested
