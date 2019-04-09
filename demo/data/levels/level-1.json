@@ -1,0 +1,17 @@
+{
+    "class": [
+        "level-of-achievment"
+    ],
+    "properties": {
+        "name": "Level 1",
+        "color": "#FF0000"
+    },
+    "links": [
+        {
+            "rel": [
+                "self"
+            ],
+            "href": "data/levels/level-1.json"
+        }
+    ]
+}
