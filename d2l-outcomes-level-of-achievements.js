@@ -35,6 +35,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 				display: block;
 			}
 		</style>
+		
+		<template is="dom-if" if="[[_hasSuggestedLevel(_suggestedLevel)]]">		
+			<span>Suggested level: [[_suggestedLevel.text]]</span>
+		</template>
 
 		<d2l-squishy-button-selector tooltip-position="top" disabled="[[_getIsDisabled(readOnly,_hasAction)]]">
 			<template is="dom-repeat" items="[[_demonstrationLevels]]">
@@ -58,7 +62,8 @@ Polymer({
 			value: false
 		},
 		_hasAction: Boolean,
-		_demonstrationLevels: Array
+		_demonstrationLevels: Array,
+		_suggestedLevel: Object
 	},
 
 	observers: [
@@ -88,18 +93,34 @@ Polymer({
 			var selected = e.hasClass(Classes.outcomes.selected);
 			var action = e.getActionByName(Actions.outcomes.select) || e.getActionByName('deselect');
 			var entityHref = e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href;
-
+			
 			return window.D2L.Siren.EntityStore.fetch(entityHref, this.token, true).then(function(levelRequest) {
 				var levelEntity = levelRequest.entity;
+
+				var isSuggested = false;
+				if (e.hasClass('suggested')) {
+					isSuggested = true;
+				}
+				
 				return {
 					action: action,
-					selected: selected,
+					selected: selected || isSuggested,
 					color: levelEntity && levelEntity.properties.color,
-					text: levelEntity && levelEntity.properties.name
+					text: levelEntity && levelEntity.properties.name,
+					isSuggested: isSuggested
 				};
 			});
 		}.bind(this))).then(function(demonstrationLevels) {
 			this._demonstrationLevels = demonstrationLevels;
+			
+			var firstSuggested = demonstrationLevels.find(function(level) { return !!level.isSuggested; });
+			if (typeof firstSuggested !== 'undefined') {
+				this._suggestedLevel = {
+					color: firstSuggested.color,
+					text: firstSuggested.text
+				};
+			}
+			
 			this._hasAction = demonstrationLevels.some(function(level) { return !!level.action; });
 		}.bind(this));
 
@@ -108,6 +129,12 @@ Polymer({
 		return {
 			action: item.action
 		};
+	},
+	_getSuggestedLevelData: function() {
+		return this._suggestedLevel;
+	},
+	_hasSuggestedLevel: function(suggestedLevel) {
+		return suggestedLevel != null;
 	},
 	_onItemSelected: function(event) {
 		var action = event.detail.data.action;
