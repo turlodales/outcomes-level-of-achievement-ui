@@ -160,6 +160,6 @@ Polymer({
 		return !!readOnly || hasAction === false;
 	},
 	_getSuggestedLevelText: function(level) {
-		return this.localize("suggestedLevel", "level", level);
+		return this.localize('suggestedLevel', 'level', level);
 	}
 });
