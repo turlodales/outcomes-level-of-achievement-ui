@@ -41,6 +41,7 @@
     "whatwg-fetch": "^2.0.0"
   },
   "dependencies": {
+    "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-hypermedia-constants": "^6",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
