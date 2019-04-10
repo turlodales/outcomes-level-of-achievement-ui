@@ -119,7 +119,14 @@ Polymer({
 		}.bind(this))).then(function(demonstrationLevels) {
 			this._demonstrationLevels = demonstrationLevels;
 
-			var firstSuggested = demonstrationLevels.find(function(level) { return !!level.isSuggested; });
+			var firstSuggested = undefined;
+			for (var i = 0; i < demonstrationLevels.length; i++) {
+				const level = demonstrationLevels[i];
+				if (level.isSuggested) {
+					firstSuggested = level;
+					break;
+				}
+			}
 			if (typeof firstSuggested !== 'undefined') {
 				this._suggestedLevel = {
 					text: firstSuggested.text
