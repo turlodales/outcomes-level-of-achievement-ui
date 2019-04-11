@@ -86,10 +86,22 @@ Polymer({
 	ready: function() {
 		this._onItemSelected = this._onItemSelected.bind(this);
 		this.$$('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
+		this._handleRefresh = this._handleRefresh.bind(this);
+	},
+
+	attached: function() {
+		window.addEventListener('refresh-outcome-demonstrations', this._handleRefresh);
 	},
 
 	detached: function() {
 		this.$$('d2l-squishy-button-selector').removeEventListener('d2l-squishy-button-selected', this._onItemSelected);
+		window.removeEventListener('refresh-outcome-demonstrations', this._handleRefresh);
+	},
+
+	_handleRefresh: function() {
+		this.entity = null;
+		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+		this.entity = newEntity;
 	},
 
 	_getDemonstrationLevels: function(entity) {
