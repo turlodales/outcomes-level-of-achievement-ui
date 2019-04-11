@@ -98,7 +98,7 @@ Polymer({
 		window.removeEventListener('refresh-outcome-demonstrations', this._handleRefresh);
 	},
 
-	_handleRefresh: function(e) {
+	_handleRefresh: function() {
 		this.entity = null;
 		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
 		this.entity = newEntity;
