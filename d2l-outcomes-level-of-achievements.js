@@ -86,16 +86,16 @@ Polymer({
 	ready: function() {
 		this._onItemSelected = this._onItemSelected.bind(this);
 		this.$$('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
-		this._boundRefreshHandler = this._handleRefresh.bind(this);
+		this._handleRefresh = this._handleRefresh.bind(this);
 	},
 
 	attached: function() {
-		window.addEventListener('refresh-outcome-demonstrations', this._boundRefreshHandler);
+		window.addEventListener('refresh-outcome-demonstrations', this._handleRefresh);
 	},
 
 	detached: function() {
 		this.$$('d2l-squishy-button-selector').removeEventListener('d2l-squishy-button-selected', this._onItemSelected);
-		window.removeEventListener('refresh-outcome-demonstrations', this._boundRefreshHandler);
+		window.removeEventListener('refresh-outcome-demonstrations', this._handleRefresh);
 	},
 
 	_handleRefresh: function(e) {
