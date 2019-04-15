@@ -5,10 +5,11 @@ window.D2L.PolymerBehaviors.OutcomesLOA = window.D2L.PolymerBehaviors.OutcomesLO
 window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior = window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior || {};
 
 /*
-* Sv lang terms
-* @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangSvBehavior
+* En lang terms
+* @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangEnBehavior
  */
-D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangSvBehavior = {
-	sv: {
+D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangEnBehavior = {
+	en: {
+		'suggestedLevel': 'Suggested: {level}'
 	}
 };

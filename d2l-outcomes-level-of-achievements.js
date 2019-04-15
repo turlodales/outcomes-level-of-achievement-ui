@@ -18,6 +18,7 @@ import { Actions, Classes } from 'd2l-hypermedia-constants';
 import './squishy-button-selector/d2l-squishy-button-selector.js';
 import './squishy-button-selector/d2l-squishy-button.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import './localize-behavior.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achievements">
@@ -42,7 +43,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 		</style>
 		
 		<template is="dom-if" if="[[_hasSuggestedLevel(_suggestedLevel)]]">		
-			<p class="d2l-suggestion-text">Suggested: [[_suggestedLevel.text]]</p>
+			<p class="d2l-suggestion-text">[[_getSuggestedLevelText(_suggestedLevel.text)]]</p>
 		</template>
 
 		<d2l-squishy-button-selector tooltip-position="top" disabled="[[_getIsDisabled(readOnly,_hasAction)]]">
@@ -80,7 +81,8 @@ Polymer({
 
 	behaviors: [
 		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior
+		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
+		D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior
 	],
 
 	ready: function() {
@@ -168,5 +170,8 @@ Polymer({
 	},
 	_getIsDisabled: function(readOnly, hasAction) {
 		return !!readOnly || hasAction === false;
+	},
+	_getSuggestedLevelText: function(level) {
+		return this.localize('suggestedLevel', 'level', level);
 	}
 });
