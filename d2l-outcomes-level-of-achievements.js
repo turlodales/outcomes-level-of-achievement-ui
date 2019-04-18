@@ -42,7 +42,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 			}
 		</style>
 		
-		<template is="dom-if" if="[[_hasSuggestedLevel(_suggestedLevel)]]">		
+		<template is="dom-if" if="[[_shouldShowSuggestion(readOnly,_hasAction,_suggestedLevel)]]">
 			<p class="d2l-suggestion-text">[[_getSuggestedLevelText(_suggestedLevel.text)]]</p>
 		</template>
 
@@ -158,6 +158,9 @@ Polymer({
 	},
 	_hasSuggestedLevel: function(suggestedLevel) {
 		return !!suggestedLevel;
+	},
+	_shouldShowSuggestion: function(readOnly, hasAction, suggestedLevel) {
+		return !this._getIsDisabled(readOnly, hasAction) && this._hasSuggestedLevel(suggestedLevel);
 	},
 	_onItemSelected: function(event) {
 		var action = event.detail.data.action;
