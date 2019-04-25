@@ -10,6 +10,6 @@ window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior = window.D2L.PolymerBeh
  */
 D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangFrBehavior = {
 	fr: {
-		'suggestedLevel': 'Suggested: {level}'
+		'suggestedLevel': 'Suggéré: {level}'
 	}
 };
