@@ -5,11 +5,9 @@ window.D2L.PolymerBehaviors.OutcomesLOA = window.D2L.PolymerBehaviors.OutcomesLO
 window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior = window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior || {};
 
 /*
-* Ko lang terms
-* @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangKoBehavior
+ * Ko lang terms
+ * @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangKoBehavior
  */
 D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangKoBehavior = {
-	ko: {
-		'suggestedLevel': 'Suggested: {level}'
-	}
+	ko: {'suggestedLevel':'Suggested: {level}'}
 };
