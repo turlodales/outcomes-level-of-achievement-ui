@@ -9,5 +9,5 @@ window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior = window.D2L.PolymerBeh
  * @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangArBehavior
  */
 D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangArBehavior = {
-	ar: {'suggestedLevel':'Suggested: {level}'}
+	ar: {'suggestedLevel':'المُقترح: {level}'}
 };
