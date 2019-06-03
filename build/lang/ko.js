@@ -9,5 +9,5 @@ window.D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior = window.D2L.PolymerBeh
  * @polymerBehavior D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangKoBehavior
  */
 D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior.LangKoBehavior = {
-	ko: {'suggestedLevel':'Suggested: {level}'}
+	ko: {"suggestedLevel":"제안됨: {level}"}
 };
