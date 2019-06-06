@@ -108,7 +108,7 @@ config.langNames.forEach(langName => {
 		},
 		{
 			regex: /{{langData}}/g,
-			value: JSON.stringify(langJson,null,4).replace(/"/g,"'")
+			value: JSON.stringify(langJson, null, 4).replace(/"/g, "'")
 		}
 	];
 
