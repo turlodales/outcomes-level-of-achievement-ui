@@ -12,6 +12,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 <template strip-whitespace="">
 		<style>
 			:host {
+				height: 100%;
 				flex: 1;
 				display: block;
 
