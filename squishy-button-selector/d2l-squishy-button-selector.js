@@ -24,7 +24,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button-selector">
 			:host {
 				display: flex;
 				height: 1.6rem;
-				background: white;
 				position: relative;
 				border-radius: 6px;
 			}
