@@ -19,6 +19,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 				cursor: pointer;
 				outline: none;
 
+				background-color: white;
+
 				--d2l-squishy-button-border-width: 1px;
 			}
 
