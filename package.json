@@ -15,8 +15,9 @@
     "test": "test"
   },
   "scripts": {
-    "lang:build": "node langtools/build.js -c langtools/config.json",
-    "lang:copy": "node langtools/copy.js -c langtools/config.json",
+    "lang:build": "lang-build -ec langtools/config.json",
+    "lang:copy": "lang-copy -svc langtools/config.json",
+    "lang:lint": "eslint build/lang",
     "serve": "polymer analyze > analysis.json && polymer serve",
     "test": "npm run test:lint && npm run test:wct",
     "test:lint": "npm run test:lint:wc && npm run test:lint:js",
@@ -35,6 +36,7 @@
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "babel-eslint": "^10.0.1",
     "cross-env": "^5.2.0",
+    "d2l-polymer-langtools": "^1.1.0",
     "eslint": "^4.19.1",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.5",
