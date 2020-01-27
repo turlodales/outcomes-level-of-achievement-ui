@@ -41,7 +41,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 				display: block;
 			}
 		</style>
-		
+
 		<template is="dom-if" if="[[_shouldShowSuggestion(readOnly,_hasAction,_suggestedLevel)]]">
 			<p class="d2l-suggestion-text">[[_getSuggestedLevelText(_suggestedLevel.text)]]</p>
 		</template>
@@ -111,7 +111,7 @@ Polymer({
 			return null;
 		}
 
-		this._suggestedLevel = null;
+		let newSuggestedLevel;
 
 		Promise.all(entity.getSubEntitiesByClass(Classes.outcomes.demonstratableLevel).map(function(e) {
 			var selected = e.hasClass(Classes.outcomes.selected);
@@ -142,12 +142,14 @@ Polymer({
 				}
 			}
 			if (typeof firstSuggested !== 'undefined') {
-				this._suggestedLevel = {
+				newSuggestedLevel = {
 					text: firstSuggested.text
 				};
 			}
 
 			this._hasAction = demonstrationLevels.some(function(level) { return !!level.action; });
+		}.bind(this)).finally(function() {
+			this._suggestedLevel = newSuggestedLevel;
 		}.bind(this));
 
 	},

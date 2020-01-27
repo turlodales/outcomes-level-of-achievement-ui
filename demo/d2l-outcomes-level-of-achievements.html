@@ -8,21 +8,14 @@
 
 	<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 	<script>
-window.d2lfetch = {
-	fetch: function(req, opts) {
-		return window.fetch(req, opts);
-	}
-};
-</script>
-
-	<script type="module" src="../node_modules/@polymer/promise-polyfill/promise-polyfill.js"></script>
+		window.d2lfetch = {
+			fetch: function(req, opts) {
+				return window.fetch(req, opts);
+			}
+		};
+	</script>
 	<script src="../node_modules/whatwg-fetch/fetch.js"></script>
-
-	<script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
-	<script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-snippet.js"></script>
 	<script type="module" src="../d2l-outcomes-level-of-achievements.js"></script>
-	<script type="module" src="../node_modules/d2l-typography/d2l-typography.js"></script>
-
 	<!-- FIXME(polymer-modulizer):
 		These imperative modules that innerHTML your HTML are
 		a hacky way to be sure that any mixins in included style
@@ -32,51 +25,51 @@ window.d2lfetch = {
 		See: https://github.com/Polymer/polymer-modulizer/issues/154
 		-->
 	<script type="module">
-const $_documentContainer = document.createElement('template');
+		const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<custom-style>
-		<style is="custom-style" include="demo-pages-shared-styles"></style>
-	</custom-style>`;
+		$_documentContainer.innerHTML = `<custom-style>
+				<style is="custom-style" include="demo-pages-shared-styles"></style>
+			</custom-style>`;
 
-document.body.appendChild($_documentContainer.content);
-</script>
+		document.body.appendChild($_documentContainer.content);
+	</script>
 	<script type="module">
-const $_documentContainer = document.createElement('template');
+		const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<custom-style include="d2l-typography">
-		<style is="custom-style" include="d2l-typography">
-			html {
-				font-size: 20px;
-			}
-		</style>
-	</custom-style>`;
+		$_documentContainer.innerHTML = `<custom-style include="d2l-typography">
+				<style is="custom-style" include="d2l-typography">
+					html {
+						font-size: 20px;
+					}
+				</style>
+			</custom-style>`;
 
-document.body.appendChild($_documentContainer.content);
-</script>
+		document.body.appendChild($_documentContainer.content);
+	</script>
 </head>
 <body unresolved class="d2l-typography">
 	<script type="module">
-const $_documentContainer = document.createElement('template');
+		const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
-		<h1>d2l-outcomes-level-of-achievements demo</h1>
-		<demo-snippet>
-			<h3>3 Levels</h3>
-			<d2l-outcomes-level-of-achievements href="data/demonstrations/3-levels.json" token="abc123"></d2l-outcomes-level-of-achievements>
-		</demo-snippet>
+		$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
+				<h1>d2l-outcomes-level-of-achievements demo</h1>
+				<demo-snippet>
+					<h3>3 Levels</h3>
+					<d2l-outcomes-level-of-achievements href="data/demonstrations/3-levels.json" token="abc123"></d2l-outcomes-level-of-achievements>
+				</demo-snippet>
 
-		<demo-snippet>
-			<h3>Read Only (Level Selected)</h3>
-			<d2l-outcomes-level-of-achievements href="data/demonstrations/4-levels-selected.json" token="abc123" read-only=""></d2l-outcomes-level-of-achievements>
-		</demo-snippet>
+				<demo-snippet>
+					<h3>Read Only (Level Selected)</h3>
+					<d2l-outcomes-level-of-achievements href="data/demonstrations/4-levels-selected.json" token="abc123" read-only=""></d2l-outcomes-level-of-achievements>
+				</demo-snippet>
 
-		<demo-snippet>
-			<h3>Suggested Level</h3>
-			<d2l-outcomes-level-of-achievements href="data/demonstrations/suggested-level.json" token="abc123"></d2l-outcomes-level-of-achievements>
-		</demo-snippet>
-	</div>`;
+				<demo-snippet>
+					<h3>Suggested Level</h3>
+					<d2l-outcomes-level-of-achievements href="data/demonstrations/suggested-level.json" token="abc123"></d2l-outcomes-level-of-achievements>
+				</demo-snippet>
+			</div>`;
 
-document.body.appendChild($_documentContainer.content);
-</script>
+		document.body.appendChild($_documentContainer.content);
+	</script>
 </body>
 </html>
