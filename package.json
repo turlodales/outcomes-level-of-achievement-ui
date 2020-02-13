@@ -47,7 +47,7 @@
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
-    "d2l-hypermedia-constants": "Brightspace/d2l-hypermedia-constants#semver:^6",
+    "d2l-hypermedia-constants": "^6",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2",
     "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
