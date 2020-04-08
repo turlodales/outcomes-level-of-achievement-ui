@@ -1,7 +1,7 @@
 import '@polymer/polymer/polymer-legacy.js';
+import '@brightspace-ui/core/components/tooltip/tooltip.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-polymer-behaviors/d2l-dom.js';
-import 'd2l-tooltip/d2l-tooltip.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
@@ -99,7 +99,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 			}
 		</style>
 
-		<d2l-tooltip id="tooltip[[index]]" hidden$="[[!_textOverflowing]]" position$="[[tooltipPosition]]" boundary="[[_containerBoundary]]" aria-hidden="">[[text]]</d2l-tooltip>
+		<d2l-tooltip id="tooltip[[index]]" hidden$="[[!_textOverflowing]]" position$="[[tooltipPosition]]" boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}" aria-hidden="">[[text]]</d2l-tooltip>
 
 		<div class="d2l-squishy-button-container">
 			<div id="textwrapper" class="d2l-squishy-button-inner">
@@ -108,7 +108,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 			</div>
 		</div>
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -173,10 +173,6 @@ Polymer({
 			value: 'bottom',
 			reflectToAttribute: true
 		},
-
-		_containerBoundary: {
-			type: Object
-		},
 	},
 
 	listeners: {
@@ -186,14 +182,6 @@ Polymer({
 
 	ready: function() {
 		afterNextRender(this, /* @this */ function() {
-			this.__squishySelector = D2L.Dom.findComposedAncestor(this, function(node) {
-				if (!node || node.nodeType !== 1) {
-					return false;
-				}
-
-				return node.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR';
-			});
-
 			this._measureSize = this._measureSize.bind(this);
 			this._handleDomChanges = this._handleDomChanges.bind(this);
 
@@ -210,7 +198,6 @@ Polymer({
 	},
 
 	detached: function() {
-		this.__squishySelector = null;
 		window.removeEventListener('resize', this._measureSize);
 		if (this._slotObserver) {
 			dom(this).unobserveNodes(this._slotObserver);
@@ -236,11 +223,6 @@ Polymer({
 			var innerHeight = this.$.textarea.offsetHeight;
 			var outerHeight = this.$.textwrapper.offsetHeight;
 			this._textOverflowing = innerHeight > outerHeight;
-
-			this._containerBoundary = {
-				left: 0,
-				right: (this.__squishySelector || this).offsetWidth
-			};
 		}.bind(this));
 	},
 
