@@ -1,0 +1,90 @@
+{
+  "class": [
+    "demonstration"
+  ],
+  "properties": {
+    "newAssessments": false
+  },
+  "entities": [
+    {
+      "class": [
+        "demonstratable-level"
+      ],
+      "rel": [
+        "item"
+      ],
+      "links": [
+        {
+          "rel": [
+            "https://achievements.api.brightspace.com/rels/level"
+          ],
+          "href": "data/levels/level-1.json"
+        }
+      ]
+    },
+    {
+      "class": [
+        "demonstratable-level"
+      ],
+      "rel": [
+        "item"
+      ],
+      "links": [
+        {
+          "rel": [
+            "https://achievements.api.brightspace.com/rels/level"
+          ],
+          "href": "data/levels/level-2.json"
+        }
+      ]
+    },
+    {
+      "class": [
+        "demonstratable-level",
+        "suggested",
+        "selected"
+      ],
+      "rel": [
+        "item"
+      ],
+      "links": [
+        {
+          "rel": [
+            "https://achievements.api.brightspace.com/rels/level"
+          ],
+          "href": "data/levels/level-3.json"
+        }
+      ]
+    },
+    {
+      "class": [
+        "demonstratable-level"
+      ],
+      "rel": [
+        "item"
+      ],
+      "links": [
+        {
+          "rel": [
+            "https://achievements.api.brightspace.com/rels/level"
+          ],
+          "href": "data/levels/level-4.json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "rel": [
+        "self"
+      ],
+      "href": "data/demonstrations/3-levels.json"
+    },
+    {
+      "rel": [
+        "calculation-method"
+      ],
+      "href": "data/calculation-methods/most-common.json"
+    }
+  ]
+}

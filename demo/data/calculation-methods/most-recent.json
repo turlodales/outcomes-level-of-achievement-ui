@@ -1,0 +1,16 @@
+{
+  "class": [
+    "calculation-method"
+  ],
+  "properties": {
+    "name": "Most Recent"
+  },
+  "links": [
+    {
+      "rel": [
+        "self"
+      ],
+      "href": "data/calculation-methods/median.json"
+    }
+  ]
+}

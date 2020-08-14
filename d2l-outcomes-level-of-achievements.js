@@ -1,7 +1,6 @@
 /**
 `d2l-outcomes-level-of-achievements`
 Polymer Web-Component to display levels of achievements
-
 @demo demo/d2l-outcomes-level-of-achievements.html
 */
 /*
@@ -27,25 +26,20 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 			d2l-squishy-button-selector {
 				width: 100%;
 			}
-
 			d2l-squishy-button {
 				max-width: 9rem;
 			}
-
 			.d2l-suggestion-text {
 				@apply --d2l-body-small-text;
 				margin: 0.3rem 0 0.3rem 0;
 			}
-
 			:host {
 				display: block;
 			}
 		</style>
-
-		<template is="dom-if" if="[[_shouldShowSuggestion(readOnly,_hasAction,_suggestedLevel)]]">
+		<template is="dom-if" if="[[_shouldShowSuggestion(readOnly,_hasAction,hasCalculation,_suggestedLevel)]]">
 			<p class="d2l-suggestion-text">[[_getSuggestedLevelText(_suggestedLevel.text)]]</p>
 		</template>
-
 		<d2l-squishy-button-selector tooltip-position="top" disabled="[[_getIsDisabled(readOnly,_hasAction)]]">
 			<template is="dom-repeat" items="[[_demonstrationLevels]]">
 				<d2l-squishy-button color="[[item.color]]" selected="[[item.selected]]" button-data="[[_getButtonData(item)]]" id="item-[[index]]">
@@ -53,9 +47,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 				</d2l-squishy-button>
 			</template>
 		</d2l-squishy-button-selector>
-
 	</template>
-
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -72,6 +64,11 @@ Polymer({
 		_suggestedLevel: {
 			type: Object,
 			value: null
+		},
+		hasCalculation: {
+			type: Boolean,
+			value: false,
+			reflectToAttribute: true
 		}
 	},
 
@@ -89,6 +86,9 @@ Polymer({
 		this._onItemSelected = this._onItemSelected.bind(this);
 		this.$$('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
 		this._handleRefresh = this._handleRefresh.bind(this);
+
+		this.addEventListener('d2l-coa-manual-override-enabled', this._onOverrideEnabled);
+
 	},
 
 	attached: function() {
@@ -134,16 +134,19 @@ Polymer({
 			this._demonstrationLevels = demonstrationLevels;
 
 			var firstSuggested = undefined;
+			var firstSuggestedIndex = null;
 			for (var i = 0; i < demonstrationLevels.length; i++) {
 				const level = demonstrationLevels[i];
 				if (level.isSuggested) {
 					firstSuggested = level;
+					firstSuggestedIndex = i;
 					break;
 				}
 			}
 			if (typeof firstSuggested !== 'undefined') {
 				newSuggestedLevel = {
-					text: firstSuggested.text
+					text: firstSuggested.text,
+					index: firstSuggestedIndex
 				};
 			}
 
@@ -161,22 +164,32 @@ Polymer({
 	_hasSuggestedLevel: function(suggestedLevel) {
 		return !!suggestedLevel;
 	},
-	_shouldShowSuggestion: function(readOnly, hasAction, suggestedLevel) {
-		return !this._getIsDisabled(readOnly, hasAction) && this._hasSuggestedLevel(suggestedLevel);
+	_shouldShowSuggestion: function(readOnly, hasAction, hasCalculation, suggestedLevel) {
+
+		return !this._getIsDisabled(readOnly, hasAction) && this._hasSuggestedLevel(suggestedLevel) && !hasCalculation;
 	},
 	_onItemSelected: function(event) {
 		var action = event.detail.data.action;
 		if (!action) {
 			return;
 		}
-
 		this.performSirenAction(action)
-			.catch(function() {});
+			.catch(function() { });
 	},
 	_getIsDisabled: function(readOnly, hasAction) {
 		return !!readOnly || hasAction === false;
 	},
 	_getSuggestedLevelText: function(level) {
 		return this.localize('suggestedLevel', 'level', level);
+	},
+
+	setFocus: function() {
+		this.$$('d2l-squishy-button-selector').focus();
+	},
+
+	resetToSuggested: function() {
+		var suggestedLevelElement = this.shadowRoot.getElementById('item-' + this._suggestedLevel.index.toString());
+		suggestedLevelElement.click();
 	}
+
 });

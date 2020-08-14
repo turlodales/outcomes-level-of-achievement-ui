@@ -1,0 +1,159 @@
+{
+    "class": [
+        "demonstration"
+    ],
+    "entities": [
+        {
+            "class": [
+                "demonstratable-level"
+            ],
+            "rel": [
+                "item"
+            ],
+            "actions": [
+                {
+                    "type": "application/json",
+                    "href": "#",
+                    "name": "select",
+                    "method": "POST",
+                    "fields": [
+                        {
+                            "type": "hidden",
+                            "name": "levelId",
+                            "value": "1"
+                        },
+                        {
+                            "type": "hidden",
+                            "name": "select",
+                            "value": true
+                        }
+                    ]
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://achievements.api.brightspace.com/rels/level"
+                    ],
+                    "href": "data/levels/level-1.json"
+                }
+            ]
+        },
+        {
+            "class": [
+                "demonstratable-level"
+            ],
+            "rel": [
+                "item"
+            ],
+            "actions": [
+                {
+                    "type": "application/json",
+                    "href": "#",
+                    "name": "select",
+                    "method": "POST",
+                    "fields": [
+                        {
+                            "type": "hidden",
+                            "name": "levelId",
+                            "value": "2"
+                        },
+                        {
+                            "type": "hidden",
+                            "name": "select",
+                            "value": true
+                        }
+                    ]
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://achievements.api.brightspace.com/rels/level"
+                    ],
+                    "href": "data/levels/level-2.json"
+                }
+            ]
+        },
+        {
+            "class": [
+                "demonstratable-level"
+            ],
+            "rel": [
+                "item"
+            ],
+            "actions": [
+                {
+                    "type": "application/json",
+                    "href": "#",
+                    "name": "deselect",
+                    "method": "POST",
+                    "fields": [
+                        {
+                            "type": "hidden",
+                            "name": "levelId",
+                            "value": "3"
+                        },
+                        {
+                            "type": "hidden",
+                            "name": "select",
+                            "value": false
+                        }
+                    ]
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://achievements.api.brightspace.com/rels/level"
+                    ],
+                    "href": "data/levels/level-3.json"
+                }
+            ]
+        },
+        {
+            "class": [
+                "demonstratable-level"
+            ],
+            "rel": [
+                "item"
+            ],
+            "actions": [
+                {
+                    "type": "application/json",
+                    "href": "#",
+                    "name": "select",
+                    "method": "POST",
+                    "fields": [
+                        {
+                            "type": "hidden",
+                            "name": "levelId",
+                            "value": "4"
+                        },
+                        {
+                            "type": "hidden",
+                            "name": "select",
+                            "value": true
+                        }
+                    ]
+                }
+            ],
+            "links": [
+                {
+                    "rel": [
+                        "https://achievements.api.brightspace.com/rels/level"
+                    ],
+                    "href": "data/levels/level-4.json"
+                }
+            ]
+        }
+    ],
+    "links": [
+        {
+            "rel": [
+                "self"
+            ],
+            "href": "data/demonstrations/3-levels.json"
+        }
+    ]
+}

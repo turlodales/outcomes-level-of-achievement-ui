@@ -1,0 +1,42 @@
+{
+  "class": [
+    "calculation-method"
+  ],
+  "properties": {
+    "name": "Highest"
+  },
+  "entities": [
+    {
+      "class": [
+        "calculation-setting"
+      ],
+      "rel": [
+        "calcSetting"
+      ],
+      "properties": {
+        "name": "Method",
+        "content": "Highest"
+      }
+    },
+    {
+      "class": [
+        "calculation-setting"
+      ],
+      "rel": [
+        "calcSetting"
+      ],
+      "properties": {
+        "name": "Activities used in the calculations",
+        "content": "All activities"
+      }
+    }
+  ],
+  "links": [
+    {
+      "rel": [
+        "self"
+      ],
+      "href": "data/calculation-methods/highest.json"
+    }
+  ]
+}

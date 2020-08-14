@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '/node_modules/@brightspace-ui/core/components/demo/demo-page.js';
+		import '../d2l-outcomes-coa-eval-override.js';
+	</script>
+</head>
+<body>
+	<d2l-demo-page page-title="d2l-coa-eval-controls demo">
+		<h3>Decaying average</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/decaying-average.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>Most common</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/most-common.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>Highest</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/highest.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>Other</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/most-recent.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>Override active + new assessments</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/decaying-average-new-assessments.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>No override permissions</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/calculated/most-common-no-actions.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+		<hr>
+
+		<h3>No calculation</h3>
+		<d2l-demo-snippet>
+			<d2l-outcomes-coa-eval-override href="data/demonstrations/4-levels-none-selected.json" token="abc123"></d2l-outcomes-coa-eval-override>
+		</d2l-demo-snippet>
+	</d2l-demo-page>
+</body>
+</html>
