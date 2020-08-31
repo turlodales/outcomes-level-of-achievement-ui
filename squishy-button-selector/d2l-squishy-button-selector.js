@@ -1,40 +1,64 @@
 /**
 `d2l-squishy-button-selector`
-Polymer Web-Component for a responsive list of selectable buttons
+LitElement component for a responsive list of selectable buttons
 
 @demo demo/d2l-squishy-button-selector.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
 import 'd2l-colors/d2l-colors.js';
-import 'd2l-polymer-behaviors/d2l-focusable-arrowkeys-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-const $_documentContainer = document.createElement('template');
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button-selector">
-	<template strip-whitespace="">
-		<style>
+export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
+
+	static get properties() {
+		return {
+			selectedIndex: {
+				type: Number,
+				attribute: 'selected-index',
+				reflect: true
+			},
+			_focused: Boolean,
+			disabled: {
+				type: Boolean,
+				attribute: 'disabled',
+				reflect: true
+			},
+			tooltipPosition: {
+				type: String,
+				attribute: 'tooltip-position'
+			},
+			_buttons: { attribute: false }
+		};
+	}
+
+	static get styles() {
+		return css`
 			:host {
 				display: flex;
 				height: 1.6rem;
 				position: relative;
+			}
+			.arrow-keys-container {
+				display: flex;
+				height: 1.6rem;
+				position: relative;
 				border-radius: 6px;
+				width: 100%;
 			}
 
+			::slotted(d2l-squishy-button) {
+				display: inline-block;
+				height: 100%;
+				object-fit: fill;
+				flex: 1;
+			}
 			::slotted(d2l-squishy-button:last-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 			}
 
-			:host(:dir(rtl)) ::slotted(d2l-squishy-button:last-of-type),
-			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:last-of-type) {
+			:host([dir="rtl"]) ::slotted(d2l-squishy-button:last-of-type) {
 				border-top-left-radius: 6px;
 				border-bottom-left-radius: 6px;
 				border-top-right-radius: 0;
@@ -46,12 +70,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button-selector">
 				border-bottom-left-radius: 6px;
 			}
 
-			:host(:dir(rtl)) ::slotted(d2l-squishy-button:first-of-type),
-			:host-context([dir="rtl"]) ::slotted(d2l-squishy-button:first-of-type) {
+			:host([dir="rtl"]) ::slotted(d2l-squishy-button:first-of-type) {
 				border-top-right-radius: 6px;
 				border-bottom-right-radius: 6px;
 				border-top-left-radius: 0;
 				border-bottom-left-radius: 0;
+				margin-left: -1px;
 			}
 
 			:host([disabled]) {
@@ -62,114 +86,66 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button-selector">
 			[hidden] {
 				display: none !important;
 			}
-		</style>
+		`;
+	}
 
-		<slot></slot>
-	</template>
-	
-</dom-module>`;
+	constructor() {
+		super();
+		this.addEventListener('d2l-squishy-button-selection-changed', this._onItemSelected);
+		this.addEventListener('squishy-button-text-changed', this._setShortTextIfAppropriate);
+		this.addEventListener('squishy-button-focus-changed', this._setShortTextIfAppropriate);
+		this._getListOfAllButtons = this._getListOfAllButtons.bind(this);
+		this.shadowRoot.addEventListener('slotchange', this._getListOfAllButtons, true);
+		this.arrowKeysDirection = 'leftright';
+		this.arrowKeysNoWrap = true;
+		this._focused = false;
+		this._pushTabIndex('0');
+		this._buttons = [];
+	}
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'd2l-squishy-button-selector',
+	render() {
+		return this.arrowKeysContainer(html`<slot></slot>`);
+	}
 
-	properties: {
-		selectedIndex: {
-			type: Number,
-			notify: true,
-			observer: '_updateButtonSelectedAttribute'
-		},
-		disabled: {
-			type: Boolean,
-			value: false,
-			reflectToAttribute: true,
-			observer: '_disabledChanged'
-		},
-		ariaDisabled: {
-			type: Boolean,
-			reflectToAttribute: true,
-			readOnly: true,
-			computed: '_getDisabled(disabled)'
-		},
-		ariaLabel: {
-			type: String,
-			reflectToAttribute: true
-		},
-		tooltipPosition: {
-			type: String,
-			reflectToAttribute: true
-		}
-	},
+	async arrowKeysFocusablesProvider() {
+		return this._buttons;
+	}
 
-	hostAttributes: {
-		tabindex: '0',
-		role: 'radiogroup'
-	},
+	firstUpdated() {
+		this.addEventListener('focus', this._onFocus, true);
+		this.addEventListener('blur', this._onBlur, true);
+		this.addEventListener('mouseover', this._onHover, true);
+	}
 
-	behaviors: [
-		D2L.PolymerBehaviors.FocusableArrowKeysBehavior
-	],
+	updated() {
+		this._handleDomChanges();
+		this._setShortTextIfAppropriate();
+	}
 
-	listeners: {
-		'd2l-squishy-button-selection-changed': '_onItemSelected',
-		'squishy-button-text-changed': '_setShortTextIfAppropriate'
-	},
-
-	ready: function() {
-		afterNextRender(this, /* @this */ function() {
-			this._handleDomChanges();
-			this._slotObserver = dom(this).observeNodes(this._handleDomChanges);
-			this.addEventListener('focus', this._onFocus, true);
-			this.addEventListener('blur', this._onBlur, true);
-			this.addEventListener('mouseover', this._onHover, true);
-
-			this.arrowKeyFocusablesContainer = this;
-			this.arrowKeyFocusablesProvider = function() {
-				return Promise.resolve(this._buttons);
-			}.bind(this);
-
-			this._updateButtonSelectedAttribute(this.selectedIndex);
-			this._setShortTextIfAppropriate();
-		});
-
-		this._disabledChanged(this.disabled);
-	},
-
-	detached: function() {
-		if (this._slotObserver) {
-			dom(this).unobserveNodes(this._slotObserver);
-		}
-		this.removeEventListener('focus', this._onFocus);
-		this.removeEventListener('blur', this._onBlur);
-		this.removeEventListener('mouseover', this._onHover);
-	},
-
-	_getDisabled: function(disabled) {
-		return disabled;
-	},
-
-	_handleDomChanges: function() {
-		this._getListOfAllButtons();
+	_handleDomChanges() {
 		this._setButtonProperties();
 		this._updateButtonSelectedAttribute();
-	},
+	}
 
-	_getListOfAllButtons: function() {
-		var childrenArray = this.getEffectiveChildren();
-		this._buttons = childrenArray.filter(function(tag) {
-			return tag.nodeName === 'D2L-SQUISHY-BUTTON';
-		}) || [];
-	},
+	_getListOfAllButtons() {
+		const childElements = this.children;
+		this._buttons = [];
+		for (var i = 0; i < childElements.length; i++) {
+			const element = childElements[i];
+			if (element.tagName === 'D2L-SQUISHY-BUTTON') {
+				this._buttons.push(element);
+			}
+		}
+	}
 
-	_setButtonProperties: function() {
+	_setButtonProperties() {
 		if (!this._buttons) {
 			return;
 		}
-
 		for (var i = 0; i < this._buttons.length; i++) {
 			var button = this._buttons[i];
 			button.setAttribute('index', i);
-			if (this.disabled) {
+			if (this.hasAttribute('disabled')) {
 				button.setAttribute('disabled', '');
 			} else {
 				button.removeAttribute('disabled');
@@ -178,14 +154,14 @@ Polymer({
 				button.setAttribute('tooltip-position', this.tooltipPosition);
 			}
 		}
-	},
+	}
 
-	_updateButtonSelectedAttribute: function(selectedIndex) {
+	_updateButtonSelectedAttribute() {
 		if (!this._buttons) {
 			return;
 		}
 
-		if (selectedIndex === undefined) {
+		if (this.selectedIndex === undefined) {
 			var selected = this._buttons.filter(function(button) {
 				return button.hasAttribute('selected');
 			});
@@ -196,7 +172,7 @@ Polymer({
 		}
 
 		for (var i = 0; i < this._buttons.length; i++) {
-			if (i === selectedIndex) {
+			if (i === this.selectedIndex) {
 				this._buttons[i].setAttribute('selected', '');
 				this._buttons[i].setAttribute('aria-checked', 'true');
 			} else {
@@ -204,18 +180,18 @@ Polymer({
 				this._buttons[i].setAttribute('aria-checked', 'false');
 			}
 		}
-	},
+	}
 
-	_onItemSelected: function(event) {
+	_onItemSelected(event) {
 		if (event.detail.selected) {
 			this.selectedIndex = event.detail.index;
 		} else if (this.selectedIndex === event.detail.index) {
 			this.selectedIndex = undefined;
 		}
 		event.preventDefault();
-	},
+	}
 
-	_setShortTextIfAppropriate: function() {
+	_setShortTextIfAppropriate() {
 		if (!this._buttons || this._buttons.length === 0) {
 			return;
 		}
@@ -262,13 +238,13 @@ Polymer({
 				button.removeAttribute('short-text');
 			});
 		}
-	},
+	}
 
-	_onFocus: function(event) {
+	_onFocus(event) {
 		if (this.disabled || this._focused) {
 			return;
 		}
-
+		this._handleDomChanges();
 		this._pushTabIndex('-1');
 
 		var focusIndex = (this.selectedIndex > -1 && this.selectedIndex) || 0;
@@ -276,26 +252,26 @@ Polymer({
 			this._buttons[focusIndex].focus();
 		}
 		this._focused = true;
-	},
+	}
 
-	_onBlur: function() {
+	_onBlur() {
 		this._focused = false;
 		this._popTabIndex('-1');
-	},
+	}
 
-	_pushTabIndex: function(tabindex) {
+	_pushTabIndex(tabindex) {
 		if (this._prevTabIndex === null || this._prevTabIndex === undefined) {
-			this._prevTabIndex = this.hasAttribute('tabindex') ?  this.getAttribute('tabindex') : null;
+			this._prevTabIndex = this.hasAttribute('tabindex') ? this.getAttribute('tabindex') : null;
 		}
 		this.setAttribute('tabindex', tabindex);
-	},
+	}
 
-	_popTabIndex: function() {
+	_popTabIndex() {
 		this.setAttribute('tabindex', this._prevTabIndex);
 		this._prevTabIndex = null;
-	},
+	}
 
-	_disabledChanged: function(disabled) {
+	set disabled(disabled) {
 		var buttonList = this;
 
 		this._setButtonProperties();
@@ -312,5 +288,15 @@ Polymer({
 		} else {
 			buttonList.setAttribute('tabindex', '0');
 		}
+
+		if (disabled) {
+			this.setAttribute('aria-disabled', '');
+		}
+		else {
+			this.removeAttribute('aria-disabled');
+		}
 	}
-});
+
+}
+
+customElements.define('d2l-squishy-button-selector', D2lSquishyButtonSelector);

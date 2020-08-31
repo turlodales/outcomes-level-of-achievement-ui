@@ -18,7 +18,7 @@ suite('<d2l-outcomes-level-of-achievements>', function() {
 	suite('smoke test', function() {
 
 		test('can be instantiated', function() {
-			expect(element.is).to.equal('d2l-outcomes-level-of-achievements');
+			expect(element.tagName).to.equal('D2L-OUTCOMES-LEVEL-OF-ACHIEVEMENTS');
 		});
 
 	});

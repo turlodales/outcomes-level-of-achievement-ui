@@ -17,15 +17,15 @@ describe('<d2l-outcomes-coa-eval-override>', function() {
 	suite('smoke test', function() {
 
 		test('can be instantiated', function() {
-			expect(element.is).to.equal('d2l-outcomes-coa-eval-override');
+			expect(element.tagName).to.equal('D2L-OUTCOMES-COA-EVAL-OVERRIDE');
 		});
 
 	});
 
 	describe('Accessibility Tests', () => {
 
-		it('should pass all axe tests', async() => {
-			await expect(element).to.be.accessible();
+		it('should pass all axe tests', () => {
+			expect(element).to.be.accessible();
 		});
 
 	});

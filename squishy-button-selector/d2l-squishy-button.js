@@ -3,14 +3,76 @@ import '@brightspace-ui/core/components/tooltip/tooltip.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-polymer-behaviors/d2l-dom.js';
 import 'd2l-typography/d2l-typography-shared-styles.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-const $_documentContainer = document.createElement('template');
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { KEYCODES } from '../keycodes.js';
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
-<template strip-whitespace="">
-		<style>
+export class D2lSquishyButton extends LitElement {
+
+	static get properties() {
+		return {
+			selected: {
+				type: Boolean,
+				attribute: 'selected',
+				reflect: true,
+			},
+
+			disabled: {
+				type: Boolean,
+				attribute: 'disabled',
+				reflect: true
+			},
+
+			ariaDisabled: {
+				type: Boolean,
+				reflect: true,
+				readOnly: true,
+				computed: '_getDisabled(disabled)'
+			},
+
+			index: {
+				type: Number,
+				attribute: 'index',
+				reflect: true
+			},
+
+			buttonData: {
+				type: Object,
+				attribute: 'button-data',
+				reflect: true
+			},
+
+			color: {
+				type: String
+			},
+
+			text: {
+				type: String,
+				reflect: true,
+				observer: '_measureSize'
+			},
+
+			shortText: {
+				type: String,
+				reflect: true
+			},
+
+			_textOverflowing: {
+				type: Boolean,
+				value: false,
+				reflect: true
+			},
+
+			tooltipPosition: {
+				type: String,
+				value: 'bottom',
+				reflect: true
+			},
+		};
+	}
+
+	static get styles() {
+		return css`
+
 			:host {
 				height: 100%;
 				flex: 1;
@@ -20,8 +82,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 				outline: none;
 
 				background-color: white;
-
 				--d2l-squishy-button-border-width: 1px;
+
 			}
 
 			:host {
@@ -29,11 +91,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 				border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-tungsten);
 				margin-left: calc(-1 * var(--d2l-squishy-button-border-width));
 			}
+
 			:host(:dir(rtl)),
 			:host-context([dir="rtl"]) {
 				margin-left: 0;
 				margin-right: calc(-1 * var(--d2l-squishy-button-border-width));
 			}
+
 			:host(:first-of-type) {
 				margin: 0;
 			}
@@ -84,6 +148,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 				height: 100%;
 				z-index: 1;
 			}
+
 			.d2l-squishy-button-container::before {
 				content: "";
 				position: absolute;
@@ -95,6 +160,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 				opacity: 0.1;
 				z-index: -1;
 			}
+
 			:host([selected]) .d2l-squishy-button-container::before,
 			:host(:focus) .d2l-squishy-button-container::before,
 			:host(:hover) .d2l-squishy-button-container::before {
@@ -104,176 +170,112 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-squishy-button">
 			::slotted(*) {
 				pointer-events: none;
 			}
-		</style>
+		`;
+	}
 
-		<d2l-tooltip id="tooltip[[index]]" hidden$="[[!_textOverflowing]]" position$="[[tooltipPosition]]" boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}" aria-hidden="">[[text]]</d2l-tooltip>
+	constructor() {
+		super();
+		this.selected = false;
+		this.disabled = false;
+		this.buttonData = function() { return {}; };
+		this.role = 'radio';
+		this.addEventListener('keydown', this._onKeyDown);
+		this.addEventListener('click', this._handleTap);
+		this._handleDomChanges = this._handleDomChanges.bind(this);
+		this.shadowRoot.addEventListener('slotchange', this._handleDomChanges, true);
+		this.addEventListener('slotchange', this._handleDomChanges, true);
+	}
 
-		<div class="d2l-squishy-button-container">
-			<div id="textwrapper" class="d2l-squishy-button-inner">
-				<div aria-hidden="" hidden$="[[!_showShortText(shortText, _textOverflowing)]]">[[shortText]]</div>
-				<div id="textarea"><slot></slot></div>
+	render() {
+		return html`
+			<d2l-tooltip id="tooltip${this.index}" hidden="${!this._textOverflowing}" position="${this.tooltipPosition}" boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}" aria-hidden="">${this.text}</d2l-tooltip>
+
+			<div class="d2l-squishy-button-container">
+				<div id="textwrapper" class="d2l-squishy-button-inner">
+					<div aria-hidden="" hidden="${!this._showShortText(this.shortText, this._textOverflowing)}">${this.shortText}</div>
+					<div id="textarea"><slot></slot></div>
+				</div>
 			</div>
-		</div>
-	</template>
+		`;
+	}
 
-</dom-module>`;
+	updated() {
+		this._measureSize = this._measureSize.bind(this);
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'd2l-squishy-button',
+		window.addEventListener('resize', this._measureSize);
+		this._measureSize();
+		this.tabIndex = this.disabled ? '-1' : '0';
+	}
 
-	hostAttributes: {
-		tabindex: '-1',
-		role: 'radio'
-	},
-
-	properties: {
-		selected: {
-			type: Boolean,
-			reflectToAttribute: true,
-			observer: '_handleSelected'
-		},
-
-		disabled: Boolean,
-
-		ariaDisabled: {
-			type: Boolean,
-			reflectToAttribute: true,
-			readOnly: true,
-			computed: '_getDisabled(disabled)'
-		},
-
-		index: {
-			type: Number,
-			reflectToAttribute: true
-		},
-
-		buttonData: {
-			type: Object,
-			value: function() { return {}; }
-		},
-
-		color: {
-			type: String,
-			observer: '_updateColor'
-		},
-
-		text: {
-			type: String,
-			reflectToAttribute: true,
-			observer: '_measureSize'
-		},
-
-		shortText: {
-			type: String,
-			reflectToAttribute: true
-		},
-
-		_textOverflowing: {
-			type: Boolean,
-			value: false,
-			reflectToAttribute: true
-		},
-
-		tooltipPosition: {
-			type: String,
-			value: 'bottom',
-			reflectToAttribute: true
-		},
-	},
-
-	listeners: {
-		'keydown': '_onKeyDown',
-		'tap': '_handleTap'
-	},
-
-	ready: function() {
-		afterNextRender(this, /* @this */ function() {
-			this._measureSize = this._measureSize.bind(this);
-			this._handleDomChanges = this._handleDomChanges.bind(this);
-
-			window.addEventListener('resize', this._measureSize);
-			this._slotObserver = dom(this).observeNodes(this._handleDomChanges);
-
-			this._measureSize();
-			this._updateColor(this.color);
-		});
-	},
-
-	_getDisabled: function(disabled) {
+	_getDisabled(disabled) {
 		return disabled;
-	},
+	}
 
-	detached: function() {
+	detached() {
 		window.removeEventListener('resize', this._measureSize);
-		if (this._slotObserver) {
-			dom(this).unobserveNodes(this._slotObserver);
-		}
-	},
+		this.shadowRoot.removeEventListener('slotchange', this._handleDomChanges);
+	}
 
-	_handleDomChanges: function() {
+	_handleDomChanges() {
 		this.text = this.textContent;
 		this.dispatchEvent(new CustomEvent('squishy-button-text-changed', { bubbles: true }));
-	},
+	}
 
-	_keyCodes: {
-		ENTER: 13,
-		SPACE: 32
-	},
-
-	_showShortText: function(shortText, textOverflowing) {
+	_showShortText(shortText, textOverflowing) {
 		return shortText && textOverflowing;
-	},
+	}
 
-	_measureSize: function() {
-		fastdom.measure(function() {
-			var innerHeight = this.$.textarea.offsetHeight;
-			var outerHeight = this.$.textwrapper.offsetHeight;
-			this._textOverflowing = innerHeight > outerHeight;
-		}.bind(this));
-	},
+	_measureSize() {
+		var innerHeight = this.shadowRoot.getElementById('textarea').innerHTML.offsetHeight;
+		var outerHeight = this.shadowRoot.getElementById('textwrapper').innerHTML.offsetHeight;
+		this._textOverflowing = innerHeight > outerHeight;
+	}
 
-	_getTextClass: function(shortText, textOverflowing) {
+	_getTextClass(shortText, textOverflowing) {
 		return this._showShortText(shortText, textOverflowing) ? 'squishy-button-hide' : '';
-	},
+	}
 
-	_updateColor: function(color) {
-		if (color) {
-			this.updateStyles({'--d2l-squishy-button-selected-color': color });
+	set color(value) {
+		if (value) {
+			this.style.setProperty('--d2l-squishy-button-selected-color', value);
 		}
-	},
+	}
 
-	_onKeyDown: function(event) {
+	_onKeyDown(event) {
 		if (this.disabled) {
 			return;
 		}
 
-		if (event.keyCode === this._keyCodes.ENTER || event.keyCode === this._keyCodes.SPACE) {
+		if (event.keyCode === KEYCODES.ENTER || event.keyCode === KEYCODES.SPACE) {
 			this.selected = true;
 			event.preventDefault();
 			this._dispatchItemSelectedEvent(true, true);
 		}
-	},
+	}
 
-	_handleTap: function(event) {
+	_handleTap(event) {
 		if (this.disabled) {
 			return;
 		}
-
-		this._dispatchItemSelectedEvent(true, true);
 		this.selected = true;
 		event.preventDefault();
-	},
+		this._dispatchItemSelectedEvent(true, true);
+	}
 
-	_handleSelected: function(newVal, oldVal) {
-		if (newVal === false && newVal === oldVal) {
-			return;
-		}
-
+	set selected(newVal) {
 		this._dispatchItemSelectedEvent(false, newVal);
-	},
+	}
 
-	_dispatchItemSelectedEvent: function(triggeredByUserAction, selected) {
+	set disabled(val) {
+		if (val) {
+			this.setAttribute('aria-disabled', '');
+		}
+		else {
+			this.removeAttribute('aria-disabled');
+		}
+	}
+
+	_dispatchItemSelectedEvent(triggeredByUserAction, selected) {
 		var eventName = triggeredByUserAction ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
 		this.dispatchEvent(new CustomEvent(eventName, {
 			detail: {
@@ -284,4 +286,6 @@ Polymer({
 			bubbles: true
 		}));
 	}
-});
+}
+
+customElements.define('d2l-squishy-button', D2lSquishyButton);

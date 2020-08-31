@@ -4,8 +4,9 @@
     ],
     "properties": {
         "name": "Level 1",
-        "color": "#FF0000"
-    },
+        "color": "#FF0000",
+        "sortOrder": 100
+        },
     "links": [
         {
             "rel": [

@@ -52,8 +52,8 @@
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2",
     "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
-    "d2l-typography": "BrightspaceUI/typography#semver:^7",
-    "fastdom": "^1.0.8"
+    "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1",
+    "d2l-typography": "BrightspaceUI/typography#semver:^7"
   },
   "resolutions": {
     "inherits": "2.0.3",

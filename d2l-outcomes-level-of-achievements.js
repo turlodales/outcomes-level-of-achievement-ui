@@ -1,28 +1,37 @@
 /**
 `d2l-outcomes-level-of-achievements`
-Polymer Web-Component to display levels of achievements
+LitElement component to display levels of achievements
 @demo demo/d2l-outcomes-level-of-achievements.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import 'd2l-polymer-siren-behaviors/store/entity-store.js';
-import 'd2l-polymer-siren-behaviors/store/entity-behavior.js';
-import 'd2l-polymer-siren-behaviors/store/siren-action-behavior.js';
-import { Actions, Classes } from 'd2l-hypermedia-constants';
-import './squishy-button-selector/d2l-squishy-button-selector.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
+
 import './squishy-button-selector/d2l-squishy-button.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import './localize-behavior.js';
-const $_documentContainer = document.createElement('template');
+import './squishy-button-selector/d2l-squishy-button-selector.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { DemonstrationEntity } from './entities/DemonstrationEntity';
+import { LocalizeMixin } from './localize-mixin.js';
+export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin(LitElement)) {
 
-$_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achievements">
-	<template strip-whitespace="">
-		<style>
+	static get properties() {
+		return {
+			readOnly: {
+				type: Boolean,
+				attribute: 'read-only'
+			},
+			_hasAction: { attribute: false },
+			_demonstrationLevels: { attribute: false },
+			_suggestedLevel: { attribute: false },
+			disableSuggestion: {
+				type: Boolean,
+				attribute: 'disable-suggestion'
+			}
+		};
+	}
+
+	static get styles() {
+		return css`
 			d2l-squishy-button-selector {
 				width: 100%;
 			}
@@ -36,160 +45,132 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-outcomes-level-of-achieveme
 			:host {
 				display: block;
 			}
-		</style>
-		<template is="dom-if" if="[[_shouldShowSuggestion(readOnly,_hasAction,hasCalculation,_suggestedLevel)]]">
-			<p class="d2l-suggestion-text">[[_getSuggestedLevelText(_suggestedLevel.text)]]</p>
-		</template>
-		<d2l-squishy-button-selector tooltip-position="top" disabled="[[_getIsDisabled(readOnly,_hasAction)]]">
-			<template is="dom-repeat" items="[[_demonstrationLevels]]">
-				<d2l-squishy-button color="[[item.color]]" selected="[[item.selected]]" button-data="[[_getButtonData(item)]]" id="item-[[index]]">
-					[[item.text]]
-				</d2l-squishy-button>
-			</template>
-		</d2l-squishy-button-selector>
-	</template>
-</dom-module>`;
+		`;
+	}
 
-document.head.appendChild($_documentContainer.content);
-Polymer({
-	is: 'd2l-outcomes-level-of-achievements',
-
-	properties: {
-		readOnly: {
-			type: Boolean,
-			value: false
-		},
-		_hasAction: Boolean,
-		_demonstrationLevels: Array,
-		_suggestedLevel: {
-			type: Object,
-			value: null
-		},
-		hasCalculation: {
-			type: Boolean,
-			value: false,
-			reflectToAttribute: true
+	_renderSuggestedLevel() {
+		if (this._shouldShowSuggestion()) {
+			return html`
+			<div id="suggestion-label">
+				<p class="d2l-suggestion-text">${this.localize('suggestedLevel', 'level', this._suggestedLevel.text)}</p>
+			</div>`;
 		}
-	},
+		return null;
+	}
 
-	observers: [
-		'_getDemonstrationLevels(entity)'
-	],
+	_renderDemonstrationLevel(item, index) {
+		return html`
+		<d2l-squishy-button color="${item.color}" ?selected="${item.selected}" button-data="${{ action: item.action }}" index="${index}" id="item-${index}">
+			${item.text}
+		</d2l-squishy-button>`;
+	}
 
-	behaviors: [
-		D2L.PolymerBehaviors.Siren.EntityBehavior,
-		D2L.PolymerBehaviors.Siren.SirenActionBehavior,
-		D2L.PolymerBehaviors.OutcomesLOA.LocalizeBehavior
-	],
+	render() {
+		return html`
+			${this._renderSuggestedLevel()}
+			<d2l-squishy-button-selector tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction}>
+				${this._demonstrationLevels.map((item, i) => this._renderDemonstrationLevel(item, i))}
+			</d2l-squishy-button-selector>`;
+	}
 
-	ready: function() {
+	constructor() {
+		super();
+
+		this._setEntityType(DemonstrationEntity);
+
+		this.readOnly = false;
+		this.disableSuggestion = false;
+		this.hasAction = false;
+		this._demonstrationLevels = [];
+		this._suggestedLevel = null;
+	}
+
+	firstUpdated() {
 		this._onItemSelected = this._onItemSelected.bind(this);
-		this.$$('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
-		this._handleRefresh = this._handleRefresh.bind(this);
+		this.shadowRoot.querySelector('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
+	}
 
-		this.addEventListener('d2l-coa-manual-override-enabled', this._onOverrideEnabled);
-
-	},
-
-	attached: function() {
-		window.addEventListener('refresh-outcome-demonstrations', this._handleRefresh);
-	},
-
-	detached: function() {
-		this.$$('d2l-squishy-button-selector').removeEventListener('d2l-squishy-button-selected', this._onItemSelected);
-		window.removeEventListener('refresh-outcome-demonstrations', this._handleRefresh);
-	},
-
-	_handleRefresh: function() {
-		this.entity = null;
-		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
-		this.entity = newEntity;
-	},
-
-	_getDemonstrationLevels: function(entity) {
-		if (!entity) {
-			return null;
+	set _entity(entity) {
+		if (this._entityHasChanged(entity)) {
+			this._onEntityChanged(entity);
+			super._entity = entity;
 		}
-
-		let newSuggestedLevel;
-
-		Promise.all(entity.getSubEntitiesByClass(Classes.outcomes.demonstratableLevel).map(function(e) {
-			var selected = e.hasClass(Classes.outcomes.selected);
-			var suggested = e.hasClass(Classes.outcomes.suggested);
-			var action = e.getActionByName(Actions.outcomes.select) || e.getActionByName('deselect');
-			var entityHref = e.getLinkByRel('https://achievements.api.brightspace.com/rels/level').href;
-
-			return window.D2L.Siren.EntityStore.fetch(entityHref, this.token, true).then(function(levelRequest) {
-				var levelEntity = levelRequest.entity;
-
-				return {
-					action: action,
-					selected: selected,
-					color: levelEntity && levelEntity.properties.color,
-					text: levelEntity && levelEntity.properties.name,
-					isSuggested: suggested
+	}
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+		const demonstratableLevelEntities = entity.getAllDemonstratableLevels();
+		const demonstratableLevels = [];
+		for (var i = 0; i < demonstratableLevelEntities.length; i++) {
+			const level = demonstratableLevelEntities[i];
+			level.onLevelChanged(achievementLevel => {
+				var levelObj = {
+					action: level.getAction(),
+					selected: level.isSelected(),
+					color: achievementLevel.getColor(),
+					text: achievementLevel.getName(),
+					isSuggested: level.isSuggested(),
+					sortOrder: achievementLevel.getSortOrder()
 				};
+				demonstratableLevels.push(levelObj);
 			});
-		}.bind(this))).then(function(demonstrationLevels) {
-			this._demonstrationLevels = demonstrationLevels;
-
+		}
+		entity.subEntitiesLoaded().then(() => {
+			demonstratableLevels.sort((left, right) => {
+				return left.sortOrder - right.sortOrder;
+			});
+			this._demonstrationLevels = demonstratableLevels;
 			var firstSuggested = undefined;
 			var firstSuggestedIndex = null;
-			for (var i = 0; i < demonstrationLevels.length; i++) {
-				const level = demonstrationLevels[i];
+			for (var i = 0; i < this._demonstrationLevels.length; i++) {
+				const level = this._demonstrationLevels[i];
 				if (level.isSuggested) {
 					firstSuggested = level;
 					firstSuggestedIndex = i;
 					break;
 				}
+
 			}
 			if (typeof firstSuggested !== 'undefined') {
-				newSuggestedLevel = {
+				const newSuggestedLevel = {
 					text: firstSuggested.text,
 					index: firstSuggestedIndex
 				};
+				this._suggestedLevel = newSuggestedLevel;
 			}
+			this._hasAction = this._demonstrationLevels.some(level => !!level.action);
+		});
+	}
 
-			this._hasAction = demonstrationLevels.some(function(level) { return !!level.action; });
-		}.bind(this)).finally(function() {
-			this._suggestedLevel = newSuggestedLevel;
-		}.bind(this));
+	_shouldShowSuggestion() {
+		return (!this.readOnly && this._hasAction && !this.disableSuggestion && !!this._suggestedLevel);
+	}
 
-	},
-	_getButtonData: function(item) {
-		return {
-			action: item.action
-		};
-	},
-	_hasSuggestedLevel: function(suggestedLevel) {
-		return !!suggestedLevel;
-	},
-	_shouldShowSuggestion: function(readOnly, hasAction, hasCalculation, suggestedLevel) {
-
-		return !this._getIsDisabled(readOnly, hasAction) && this._hasSuggestedLevel(suggestedLevel) && !hasCalculation;
-	},
-	_onItemSelected: function(event) {
+	_onItemSelected(event) {
 		var action = event.detail.data.action;
 		if (!action) {
 			return;
 		}
-		this.performSirenAction(action)
+		performSirenAction(action)
 			.catch(function() { });
-	},
-	_getIsDisabled: function(readOnly, hasAction) {
-		return !!readOnly || hasAction === false;
-	},
-	_getSuggestedLevelText: function(level) {
+	}
+
+	_getSuggestedLevelText(level) {
 		return this.localize('suggestedLevel', 'level', level);
-	},
+	}
 
-	setFocus: function() {
-		this.$$('d2l-squishy-button-selector').focus();
-	},
+	enableAndFocus() {
+		this.readOnly = false;
+		const selector = this.shadowRoot.querySelector('d2l-squishy-button-selector');
+		selector.removeAttribute('disabled');
+		selector.focus();
+	}
 
-	resetToSuggested: function() {
+	resetToSuggested() {
 		var suggestedLevelElement = this.shadowRoot.getElementById('item-' + this._suggestedLevel.index.toString());
 		suggestedLevelElement.click();
 	}
+}
 
-});
+customElements.define('d2l-outcomes-level-of-achievements', D2lOutcomesLevelOfAchievements);

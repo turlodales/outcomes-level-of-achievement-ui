@@ -1,18 +1,14 @@
 /* global it, fixture, expect, beforeEach, afterEach, describe, sinon */
 
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import '../../squishy-button-selector/d2l-squishy-button-selector.js';
 
 describe('<d2l-squishy-button-selector>', function() {
 
 	var element, sandbox;
 
-	beforeEach(function(done) {
+	beforeEach(async() => {
 		sandbox = sinon.sandbox.create();
-		element = fixture('basic');
-		afterNextRender(element, function() {
-			done();
-		});
+		element = await fixture('basic');
 	});
 
 	afterEach(function() {
@@ -21,19 +17,11 @@ describe('<d2l-squishy-button-selector>', function() {
 
 	describe('smoke test', function() {
 		it('can be instantiated', function() {
-			expect(element.is).to.equal('d2l-squishy-button-selector');
+			expect(element.tagName).to.equal('D2L-SQUISHY-BUTTON-SELECTOR');
 		});
 	});
 
 	describe('_buttons', function() {
-		it('Is an empty array if there are no buttons', function(done) {
-			element = fixture('empty');
-
-			afterNextRender(element, function() {
-				expect(element._buttons.length).to.equal(0);
-				done();
-			});
-		});
 
 		it('Is a list of all the buttons', function() {
 			expect(element._buttons.length).to.equal(3);
@@ -41,6 +29,7 @@ describe('<d2l-squishy-button-selector>', function() {
 			expect(element._buttons[1].getAttribute('text').trim()).to.equal('BUTTON 2');
 			expect(element._buttons[2].getAttribute('text').trim()).to.equal('BUTTON 3');
 		});
+
 	});
 
 	describe('_updateButtonSelectedAttribute', function() {
@@ -50,37 +39,27 @@ describe('<d2l-squishy-button-selector>', function() {
 			expect(element._buttons[2].hasAttribute('selected')).to.equal(b3);
 		}
 
-		it('selects the button which corresponds with the selectedIndex', function(done) {
+		it('selects the button which corresponds with the selectedIndex', async() => {
 			element.setAttribute('selected-index', 1);
 			element._handleDomChanges();
-			afterNextRender(element, function() {
-				verifyButtonsSelected(false, true, false);
-				done();
-			});
+			await element.updateComplete;
+			verifyButtonsSelected(false, true, false);
 		});
 
-		it('selects nothing if the selectedIndex is out of range', function(done) {
+		it('selects nothing if the selectedIndex is out of range', async() => {
 			element.selectedIndex = 12;
-			afterNextRender(element, function() {
-				verifyButtonsSelected(false, false, false);
-				done();
-			});
+			await element.updateComplete;
+			verifyButtonsSelected(false, false, false);
 		});
 
-		it('deselects everything if selectedIndex is null', function(done) {
+		it('deselects everything if selectedIndex is null', async() => {
 			element.selectedIndex = 1;
+			await element.updateComplete;
+			verifyButtonsSelected(false, true, false);
 
-			afterNextRender(element, function() {
-				verifyButtonsSelected(false, true, false);
-
-				element.selectedIndex = null;
-
-				afterNextRender(element, function() {
-					verifyButtonsSelected(false, false, false);
-					done();
-				});
-
-			});
+			element.selectedIndex = null;
+			await element.updateComplete;
+			verifyButtonsSelected(false, false, false);
 		});
 	});
 
@@ -134,12 +113,13 @@ describe('<d2l-squishy-button-selector>', function() {
 			expect(element._buttons[1].focus.called).to.equal(true);
 		});
 
-		it('focuses nothing if disabled is true', function() {
-			element.setAttribute('disabled', true);
+		it('focuses nothing if disabled is true', async() => {
+			element.disabled = true;
+			await element.updateComplete;
 			element.selectedIndex = 1;
-			element._buttons[1].focus = sinon.spy();
+			element._buttons[0].focus = sinon.spy();
 			element._onFocus({ target: element });
-			expect(element._buttons[1].focus.called).to.equal(false);
+			expect(element._buttons[0].focus.called).to.equal(false);
 		});
 
 		it('focuses nothing if a button is selected rather than the list', function() {
