@@ -236,7 +236,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			?read-only="${!this._canEditLevel()}"
 			disable-suggestion=""
 			token="${this.getAttribute('token')}"
-			href="${this.getAttribute('href')}">
+			href="${this.getAttribute('href')}"
+			@d2l-outcomes-level-of-achievements-item-selected=${this._dispatchChangeEvent}>
 		</d2l-outcomes-level-of-achievements>`;
 	}
 
@@ -362,6 +363,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 	}
 
 	_onOverrideButtonClicked() {
+		this._dispatchChangeEvent();
 		if (!this._isOverrideActive) {
 			this._isOverrideActive = true;
 			this._levelSelector.enableAndFocus();
@@ -378,6 +380,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 	_onCalcButtonClicked() {
 		if (this._updateLevelCalculation()) {
 			//Calculation successfully updated
+			this._dispatchChangeEvent();
 			this._levelSelector.resetToSuggested();
 			this._isOverrideActive = false;
 		}
@@ -397,6 +400,13 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		//Calculation request will be sent here. This will retrieve a calculated value and any corresponding data
 		this._newAssessmentsAdded = false;
 		return true;
+	}
+
+	_dispatchChangeEvent() {
+		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-change', {
+			bubbles: true,
+			composed: true
+		}));
 	}
 }
 
