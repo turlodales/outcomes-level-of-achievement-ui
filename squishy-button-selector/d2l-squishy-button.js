@@ -37,7 +37,7 @@ export class D2lSquishyButton extends LitElement {
 
 			buttonData: {
 				type: Object,
-				attribute: 'button-data',
+				attribute: false,
 				reflect: true
 			},
 

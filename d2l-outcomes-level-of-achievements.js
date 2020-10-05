@@ -60,7 +60,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 
 	_renderDemonstrationLevel(item, index) {
 		return html`
-		<d2l-squishy-button color="${item.color}" ?selected="${item.selected}" button-data="${{ action: item.action }}" index="${index}" id="item-${index}">
+		<d2l-squishy-button color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}">
 			${item.text}
 		</d2l-squishy-button>`;
 	}
@@ -153,10 +153,10 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			composed: true
 		}));
 		var action = event.detail.data.action;
-		if (!action) {
+		if (!this.token || !action) {
 			return;
 		}
-		performSirenAction(action)
+		performSirenAction(this.token, action)
 			.catch(function() { });
 	}
 
