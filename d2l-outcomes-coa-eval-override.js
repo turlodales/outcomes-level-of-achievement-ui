@@ -235,7 +235,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			tooltip-position="top"
 			?read-only="${!this._canEditLevel()}"
 			disable-suggestion=""
-			token="${this.getAttribute('token')}"
+			.token="${this.token}"
 			href="${this.getAttribute('href')}"
 			@d2l-outcomes-level-of-achievements-item-selected=${this._dispatchChangeEvent}>
 		</d2l-outcomes-level-of-achievements>`;
