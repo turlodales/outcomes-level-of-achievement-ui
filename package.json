@@ -45,7 +45,7 @@
     "whatwg-fetch": "^2.0.0"
   },
   "dependencies": {
-    "@brightspace-ui/core": "^1.86.0",
+    "@brightspace-ui/core": "^1",
     "@polymer/polymer": "^3.0.0",
     "d2l-hypermedia-constants": "^6",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
