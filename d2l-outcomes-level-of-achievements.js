@@ -93,6 +93,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		this.hasAction = false;
 		this._demonstrationLevels = [];
 		this._suggestedLevel = null;
+		this._refresh = this._refresh.bind(this);
 	}
 
 	firstUpdated() {
