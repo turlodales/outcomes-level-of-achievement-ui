@@ -55,12 +55,10 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	connectedCallback() {
 		super.connectedCallback();
 		window.addEventListener('refresh-outcome-demonstrations', this._refresh);
-		window.addEventListener('d2l-save-evaluation', this._refresh);
 	}
 
 	disconnectedCallback() {
 		window.removeEventListener('refresh-outcome-demonstrations', this._refresh);
-		window.removeEventListener('d2l-save-evaluation', this._refresh);
 		super.disconnectedCallback();
 	}
 
