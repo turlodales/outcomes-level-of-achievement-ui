@@ -26,6 +26,10 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			disableSuggestion: {
 				type: Boolean,
 				attribute: 'disable-suggestion'
+			},
+			disableAutoSave: {
+				type: Boolean,
+				attribute: 'disable-auto-save'
 			}
 		};
 	}
@@ -91,6 +95,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		this.readOnly = false;
 		this.disableSuggestion = false;
 		this.hasAction = false;
+		this.disableAutoSave = false;
 		this._demonstrationLevels = [];
 		this._suggestedLevel = null;
 		this._refresh = this._refresh.bind(this);
@@ -161,14 +166,19 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	_onItemSelected(event) {
 		this.dispatchEvent(new CustomEvent('d2l-outcomes-level-of-achievements-item-selected', {
 			bubbles: true,
-			composed: true
+			composed: true,
+			detail: {
+				action: event.detail.data.action
+			}
 		}));
-		var action = event.detail.data.action;
-		if (!this.token || !action) {
-			return;
+		if (!this.disableAutoSave) {
+			var action = event.detail.data.action;
+			if (!this.token || !action) {
+				return;
+			}
+			performSirenAction(this.token, action)
+				.catch(function() { });
 		}
-		performSirenAction(this.token, action)
-			.catch(function() { });
 	}
 
 	_getSuggestedLevelText(level) {
