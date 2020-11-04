@@ -177,7 +177,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 				return;
 			}
 			performSirenAction(this.token, action)
-				.catch(function () { });
+				.catch(function() { });
 		}
 	}
 
