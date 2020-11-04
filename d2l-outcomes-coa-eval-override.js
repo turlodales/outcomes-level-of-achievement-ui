@@ -235,9 +235,10 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			tooltip-position="top"
 			?read-only="${!this._canEditLevel()}"
 			disable-suggestion=""
+			disable-auto-save=""
 			token="${this.getAttribute('token')}"
 			href="${this.getAttribute('href')}"
-			@d2l-outcomes-level-of-achievements-item-selected=${this._dispatchChangeEvent}>
+			@d2l-outcomes-level-of-achievements-item-selected=${this._onItemSelected}>
 		</d2l-outcomes-level-of-achievements>`;
 	}
 
@@ -300,6 +301,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			return;
 		}
 
+		console.log("changed");
+
 		let calcMethod;
 		let helpMenuEntities = [];
 		const calcAchievementValue = entity.getCalculatedValue();
@@ -360,6 +363,17 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			this.shadowRoot.activeElement.click();
 			event.preventDefault();
 		}
+	}
+
+	_onItemSelected(event) {
+		this._dispatchChangeEvent();
+		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-item-selected', {
+			bubbles: true,
+			composed: true,
+			detail: {
+				action: event.detail.action
+			}
+		}));
 	}
 
 	_onOverrideButtonClicked() {
