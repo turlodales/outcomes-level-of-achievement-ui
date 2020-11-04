@@ -301,8 +301,6 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			return;
 		}
 
-		console.log("changed");
-
 		let calcMethod;
 		let helpMenuEntities = [];
 		const calcAchievementValue = entity.getCalculatedValue();
