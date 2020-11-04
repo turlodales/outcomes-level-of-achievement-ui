@@ -48,6 +48,16 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		`;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('refresh-outcome-demonstrations', this._refresh);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('refresh-outcome-demonstrations', this._refresh);
+		super.disconnectedCallback();
+	}
+
 	_renderSuggestedLevel() {
 		if (this._shouldShowSuggestion()) {
 			return html`
@@ -174,6 +184,12 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	resetToSuggested() {
 		var suggestedLevelElement = this.shadowRoot.getElementById('item-' + this._suggestedLevel.index.toString());
 		suggestedLevelElement.click();
+	}
+
+	_refresh() {
+		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+		this.entity = null;
+		this.entity = newEntity;
 	}
 }
 
