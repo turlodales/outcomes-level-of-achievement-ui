@@ -5,7 +5,6 @@ LitElement component for a responsive list of selectable buttons
 @demo demo/d2l-squishy-button-selector.html
 */
 
-import 'd2l-colors/d2l-colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrow-keys-mixin.js';
 

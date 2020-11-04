@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements-ui",
   "name": "d2l-outcomes-level-of-achievements",
-  "version": "3.0.2",
+  "version": "3.0.6",
   "directories": {
     "test": "test"
   },
@@ -45,15 +45,13 @@
     "whatwg-fetch": "^2.0.0"
   },
   "dependencies": {
-    "@brightspace-ui/core": "^1.41.0",
+    "@brightspace-ui/core": "^1",
     "@polymer/polymer": "^3.0.0",
-    "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-hypermedia-constants": "^6",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-polymer-behaviors": "Brightspace/d2l-polymer-behaviors-ui#semver:^2",
     "d2l-polymer-siren-behaviors": "Brightspace/polymer-siren-behaviors#semver:^1",
-    "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1",
-    "d2l-typography": "BrightspaceUI/typography#semver:^7"
+    "siren-sdk": "BrightspaceHypermediaComponents/siren-sdk#semver:^1"
   },
   "resolutions": {
     "inherits": "2.0.3",

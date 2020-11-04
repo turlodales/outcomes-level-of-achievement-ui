@@ -52,6 +52,18 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		`;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('refresh-outcome-demonstrations', this._refresh);
+		window.addEventListener('d2l-save-evaluation', this._refresh);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('refresh-outcome-demonstrations', this._refresh);
+		window.removeEventListener('d2l-save-evaluation', this._refresh);
+		super.disconnectedCallback();
+	}
+
 	_renderSuggestedLevel() {
 		if (this._shouldShowSuggestion()) {
 			return html`
@@ -88,22 +100,12 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		this.disableAutoSave = false;
 		this._demonstrationLevels = [];
 		this._suggestedLevel = null;
-		this._refreshEntity = this._refreshEntity.bind(this);
+		this._refresh = this._refresh.bind(this);
 	}
 
 	firstUpdated() {
 		this._onItemSelected = this._onItemSelected.bind(this);
 		this.shadowRoot.querySelector('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('d2l-save-evaluation', this._refreshEntity);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		window.removeEventListener('d2l-save-evaluation', this._refreshEntity);
 	}
 
 	set _entity(entity) {
@@ -159,10 +161,6 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		});
 	}
 
-	_refreshEntity() {
-		window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
-	}
-
 	_shouldShowSuggestion() {
 		return (!this.readOnly && this._hasAction && !this.disableSuggestion && !!this._suggestedLevel);
 	}
@@ -199,6 +197,12 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	resetToSuggested() {
 		var suggestedLevelElement = this.shadowRoot.getElementById('item-' + this._suggestedLevel.index.toString());
 		suggestedLevelElement.click();
+	}
+
+	_refresh() {
+		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
+		this.entity = null;
+		this.entity = newEntity;
 	}
 }
 

@@ -1,9 +1,9 @@
 import '@polymer/polymer/polymer-legacy.js';
 import '@brightspace-ui/core/components/tooltip/tooltip.js';
-import 'd2l-colors/d2l-colors.js';
 import 'd2l-polymer-behaviors/d2l-dom.js';
-import 'd2l-typography/d2l-typography-shared-styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
+import '@brightspace-ui/core/components/colors/colors';
 import { KEYCODES } from '../keycodes.js';
 
 export class D2lSquishyButton extends LitElement {
@@ -71,106 +71,105 @@ export class D2lSquishyButton extends LitElement {
 	}
 
 	static get styles() {
-		return css`
+		return [
+			bodySmallStyles,
+			css`
+				:host {
+					height: 100%;
+					flex: 1;
+					display: block;
 
-			:host {
-				height: 100%;
-				flex: 1;
-				display: block;
+					cursor: pointer;
+					outline: none;
 
-				cursor: pointer;
-				outline: none;
+					background-color: white;
+					--d2l-squishy-button-border-width: 1px;
+				}
 
-				background-color: white;
-				--d2l-squishy-button-border-width: 1px;
+				:host {
+					box-sizing: border-box;
+					border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-tungsten);
+					margin-left: calc(-1 * var(--d2l-squishy-button-border-width));
+				}
 
-			}
+				:host(:dir(rtl)),
+				:host-context([dir="rtl"]) {
+					margin-left: 0;
+					margin-right: calc(-1 * var(--d2l-squishy-button-border-width));
+				}
 
-			:host {
-				box-sizing: border-box;
-				border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-tungsten);
-				margin-left: calc(-1 * var(--d2l-squishy-button-border-width));
-			}
+				:host(:first-of-type) {
+					margin: 0;
+				}
 
-			:host(:dir(rtl)),
-			:host-context([dir="rtl"]) {
-				margin-left: 0;
-				margin-right: calc(-1 * var(--d2l-squishy-button-border-width));
-			}
+				:host([disabled]) {
+					border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-mica);
+					z-index: 0;
+				}
 
-			:host(:first-of-type) {
-				margin: 0;
-			}
+				:host([selected]) {
+					border: var(--d2l-squishy-button-border-width) solid var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+					z-index: 1;
+				}
 
-			:host([disabled]) {
-				border: var(--d2l-squishy-button-border-width) solid var(--d2l-color-mica);
-				z-index: 0;
-			}
+				[hidden] {
+					display: none !important;
+				}
 
-			:host([selected]) {
-				border: var(--d2l-squishy-button-border-width) solid var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
-				z-index: 1;
-			}
+				.d2l-squishy-button-container {
+					display: flex;
+					justify-content: center;
+					align-items: center;
 
-			[hidden] {
-				display: none !important;
-			}
+					margin: 0;
+					color: var(--d2l-color-tungsten);
+				}
 
-			.d2l-squishy-button-container {
-				@apply --d2l-body-small-text;
+				:host([selected]) .d2l-squishy-button-container {
+					color: var(--d2l-color-ferrite);
+					font-weight: 700;
+				}
 
-				display: flex;
-				justify-content: center;
-				align-items: center;
+				.d2l-squishy-button-inner {
+					max-height: 100%;
+					border: 5px solid transparent; /* padding, but outside the content box */
+					box-sizing: border-box;
 
-				margin: 0;
-				color: var(--d2l-color-tungsten);
-			}
+					overflow: hidden;
+					word-break: break-all;
+					text-align: center;
+				}
 
-			:host([selected]) .d2l-squishy-button-container {
-				color: var(--d2l-color-ferrite);
-				font-weight: 700;
-			}
+				.d2l-squishy-button-container {
+					position: relative;
+					width: 100%;
+					height: 100%;
+					z-index: 1;
+				}
 
-			.d2l-squishy-button-inner {
-				max-height: 100%;
-				border: 5px solid transparent; /* padding, but outside the content box */
-				box-sizing: border-box;
+				.d2l-squishy-button-container::before {
+					content: "";
+					position: absolute;
+					top: 0;
+					right: 0;
+					bottom: 0;
+					left: 0;
 
-				overflow: hidden;
-				word-break: break-all;
-				text-align: center;
-			}
+					opacity: 0.1;
+					z-index: -1;
+				}
 
-			.d2l-squishy-button-container {
-				position: relative;
-				width: 100%;
-				height: 100%;
-				z-index: 1;
-			}
+				:host([selected]) .d2l-squishy-button-container::before,
+				:host(:focus) .d2l-squishy-button-container::before,
+				:host(:hover) .d2l-squishy-button-container::before {
+					background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
+				}
 
-			.d2l-squishy-button-container::before {
-				content: "";
-				position: absolute;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-
-				opacity: 0.1;
-				z-index: -1;
-			}
-
-			:host([selected]) .d2l-squishy-button-container::before,
-			:host(:focus) .d2l-squishy-button-container::before,
-			:host(:hover) .d2l-squishy-button-container::before {
-				background-color: var(--d2l-squishy-button-selected-color, var(--d2l-color-galena));
-			}
-
-			::slotted(*) {
-				pointer-events: none;
-			}
-		`;
+				::slotted(*) {
+					pointer-events: none;
+				}
+			`
+		];
 	}
 
 	constructor() {
@@ -188,9 +187,16 @@ export class D2lSquishyButton extends LitElement {
 
 	render() {
 		return html`
-			<d2l-tooltip id="tooltip${this.index}" hidden="${!this._textOverflowing}" position="${this.tooltipPosition}" boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}" aria-hidden="">${this.text}</d2l-tooltip>
+			<d2l-tooltip 
+				id="tooltip${this.index}"
+				hidden="${!this._textOverflowing}"
+				position="${this.tooltipPosition}"
+				boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}"
+				aria-hidden="">
+				${this.text}
+			</d2l-tooltip>
 
-			<div class="d2l-squishy-button-container">
+			<div class="d2l-squishy-button-container d2l-body-small">
 				<div id="textwrapper" class="d2l-squishy-button-inner">
 					<div aria-hidden="" hidden="${!this._showShortText(this.shortText, this._textOverflowing)}">${this.shortText}</div>
 					<div id="textarea"><slot></slot></div>
