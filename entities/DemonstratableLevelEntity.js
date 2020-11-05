@@ -25,7 +25,10 @@ export class DemonstratableLevelEntity extends SelflessEntity {
 		return this._entity.hasClass(DemonstratableLevelEntity.classes.suggested);
 	}
 
-	getAction() {
+	getAction(deferred = false) {
+		if (deferred) {
+			return this._entity && (this._entity.getAction('select-deferred') || this._entity.getActionByName('deselect-deferred'));
+		}
 		return this._entity && (this._entity.getActionByName('select') || this._entity.getActionByName('deselect'));
 	}
 
