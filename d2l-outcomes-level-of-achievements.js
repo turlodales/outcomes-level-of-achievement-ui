@@ -122,7 +122,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			const level = demonstratableLevelEntities[i];
 			level.onLevelChanged(achievementLevel => {
 				var levelObj = {
-					action: level.getAction(),
+					action: level.getAction(this.disableAutoSave),
 					selected: level.isSelected(),
 					color: achievementLevel.getColor(),
 					text: achievementLevel.getName(),
@@ -166,19 +166,14 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	_onItemSelected(event) {
 		this.dispatchEvent(new CustomEvent('d2l-outcomes-level-of-achievements-item-selected', {
 			bubbles: true,
-			composed: true,
-			detail: {
-				action: event.detail.data.action
-			}
+			composed: true
 		}));
-		if (!this.disableAutoSave) {
-			var action = event.detail.data.action;
-			if (!this.token || !action) {
-				return;
-			}
-			performSirenAction(this.token, action)
-				.catch(function() { });
+		var action = event.detail.data.action;
+		if (!this.token || !action) {
+			return;
 		}
+		performSirenAction(this.token, action)
+			.catch(function() { });
 	}
 
 	_getSuggestedLevelText(level) {

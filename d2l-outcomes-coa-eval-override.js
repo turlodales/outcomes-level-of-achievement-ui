@@ -363,15 +363,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		}
 	}
 
-	_onItemSelected(event) {
+	_onItemSelected() {
 		this._dispatchChangeEvent();
-		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-item-selected', {
-			bubbles: true,
-			composed: true,
-			detail: {
-				action: event.detail.action
-			}
-		}));
 	}
 
 	_onOverrideButtonClicked() {
