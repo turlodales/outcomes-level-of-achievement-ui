@@ -238,6 +238,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			disable-auto-save=""
 			.token="${this.token}"
 			href="${this.getAttribute('href')}"
+			@d2l-outcomes-level-of-achievements-item-selected=${this._onItemSelected}>
 		</d2l-outcomes-level-of-achievements>`;
 	}
 
@@ -360,6 +361,10 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			this.shadowRoot.activeElement.click();
 			event.preventDefault();
 		}
+	}
+
+	_onItemSelected() {
+		this._dispatchChangeEvent();
 	}
 
 	_onOverrideButtonClicked() {

@@ -164,6 +164,10 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	}
 
 	_onItemSelected(event) {
+		this.dispatchEvent(new CustomEvent('d2l-outcomes-level-of-achievements-item-selected', {
+			bubbles: true,
+			composed: true
+		}));
 		var action = event.detail.data.action;
 		if (!this.token || !action) {
 			return;
