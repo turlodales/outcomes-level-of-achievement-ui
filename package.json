@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements-ui",
   "name": "d2l-outcomes-level-of-achievements",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "directories": {
     "test": "test"
   },

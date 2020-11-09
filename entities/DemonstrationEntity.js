@@ -6,7 +6,7 @@ export class DemonstrationEntity extends Entity {
 	static get class() { return 'demonstration'; }
 
 	getCalculatedValue() {
-		return this._entity && this._entity.properties && this._entity.properties.getCalculatedValue;
+		return this._entity && this._entity.properties && this._entity.properties.calculatedValue;
 	}
 	//This might be changed later to compare assessment date with the most recent assessment (waiting on backend work)
 	hasNewAssessments() {

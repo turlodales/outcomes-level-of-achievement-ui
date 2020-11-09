@@ -3,6 +3,7 @@
     "calculation-method"
   ],
   "properties": {
+    "key": "MostRecent",
     "name": "Most Recent"
   },
   "links": [

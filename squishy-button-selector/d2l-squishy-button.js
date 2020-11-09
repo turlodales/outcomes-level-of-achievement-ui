@@ -4,7 +4,7 @@ import 'd2l-polymer-behaviors/d2l-dom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import '@brightspace-ui/core/components/colors/colors';
-import { KEYCODES } from '../keycodes.js';
+import { keyCodes } from '../consts.js';
 
 export class D2lSquishyButton extends LitElement {
 
@@ -252,7 +252,7 @@ export class D2lSquishyButton extends LitElement {
 			return;
 		}
 
-		if (event.keyCode === KEYCODES.ENTER || event.keyCode === KEYCODES.SPACE) {
+		if (event.keyCode === keyCodes.enter || event.keyCode === keyCodes.space) {
 			this.selected = true;
 			event.preventDefault();
 			this._dispatchItemSelectedEvent(true, true);

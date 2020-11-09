@@ -3,6 +3,7 @@
     "calculation-method"
   ],
   "properties": {
+    "key": "MostCommon",
     "name": "Most Common"
   },
   "entities": [
