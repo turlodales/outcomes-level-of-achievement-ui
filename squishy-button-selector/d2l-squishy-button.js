@@ -217,6 +217,12 @@ export class D2lSquishyButton extends LitElement {
 		return disabled;
 	}
 
+	select() {
+		if (!this.hasAttribute('selected')) {
+			this.click();
+		}
+	}
+
 	detached() {
 		window.removeEventListener('resize', this._measureSize);
 		this.shadowRoot.removeEventListener('slotchange', this._handleDomChanges);

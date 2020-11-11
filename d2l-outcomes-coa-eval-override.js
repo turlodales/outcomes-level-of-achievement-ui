@@ -24,6 +24,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 	static get properties() {
 		return {
+			_initialStateLoaded: { attribute: false },
+
 			_isOverrideActive: { attribute: false },
 
 			_isOverrideAllowed: { attribute: false },
@@ -244,6 +246,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 		this._setEntityType(DemonstrationEntity);
 
+		this._initialStateLoaded = false;
 		this._isOverrideActive = false;
 		this._isOverrideAllowed = false;
 		this._newAssessmentsAdded = false;
@@ -277,12 +280,14 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			return;
 		}
 
+		if (!this._initialStateLoaded) {
+			this._loadInitialState(entity);
+		}
+	}
+
+	_loadInitialState(entity) {
 		let calcMethod, calcMethodKey;
 		let helpMenuEntities = [];
-		const calcAchievementValue = entity.getCalculatedValue();
-		const newAssessments = entity.hasNewAssessments();
-
-		const levels = entity.getAllDemonstratableLevels();
 		entity.onCalcMethodChanged(method => {
 			if (!method) {
 				return;
@@ -294,34 +299,51 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 		entity.subEntitiesLoaded().then(() => {
 
-			this._calculationMethod = calcMethod;
-			this._calculationMethodKey = calcMethodKey;
-			this._calculatedAchievementValue = calcAchievementValue;
-			this._newAssessmentsAdded = newAssessments;
+			const calcAchievementValue = entity.getCalculatedValue();
+			const newAssessments = entity.hasNewAssessments();
+			const levels = entity.getAllDemonstratableLevels();
 
-			this._helpPopupItems = [];
+			const helpPopupItems = [];
 			helpMenuEntities.forEach((item) => {
 				var helpItemObj = {
 					label: item.getName(),
 					content: item.getContent()
 				};
-				this._helpPopupItems.push(helpItemObj);
+				helpPopupItems.push(helpItemObj);
 			});
 
-			this._isOverrideAllowed = false;
-			this._isOverrideActive = false;
+			let suggestedLevel, selectedLevel;
+			let isOverrideActive = false;
+			let isOverrideAllowed = false;
 			for (var i = 0; i < levels.length; i++) {
 				const level = levels[i];
 				const suggested = level.isSuggested();
+				const selected = level.isSelected();
 				const selectAction = level.getSelectAction();
 
-				if (selectAction) {
-					this._isOverrideAllowed = true;
+				if (selected) {
+					selectedLevel = level.getLevelId();
 				}
-				if (suggested && selectAction) {
-					this._isOverrideActive = true;
+				if (suggested) {
+					suggestedLevel = level.getLevelId();
+				}
+				if (selectAction) {
+					isOverrideAllowed = true;
 				}
 			}
+			if (calcMethod && (selectedLevel !== suggestedLevel)) {
+				isOverrideActive = true;
+			}
+
+			this._isOverrideAllowed = isOverrideAllowed;
+			this._isOverrideActive = isOverrideActive;
+			this._calculationMethod = calcMethod;
+			this._calculationMethodKey = calcMethodKey;
+			this._calculatedAchievementValue = calcAchievementValue;
+			this._newAssessmentsAdded = newAssessments;
+			this._helpPopupItems = helpPopupItems;
+
+			this._initialStateLoaded = true;
 		});
 	}
 

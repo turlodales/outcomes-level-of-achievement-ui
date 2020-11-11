@@ -32,6 +32,10 @@ export class DemonstratableLevelEntity extends SelflessEntity {
 		return this._entity && (this._entity.getActionByName('select') || this._entity.getActionByName('deselect'));
 	}
 
+	getLevelId() {
+		return this._entity && this._entity.properties && this._entity.properties.levelId;
+	}
+
 	getSelectAction() {
 		return this._entity && this._entity.getActionByName('select');
 	}

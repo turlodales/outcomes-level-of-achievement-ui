@@ -13,6 +13,9 @@
       "rel": [
         "item"
       ],
+      "properties": {
+        "levelId": "levelone"
+      },
       "links": [
         {
           "rel": [
@@ -29,6 +32,9 @@
       "rel": [
         "item"
       ],
+      "properties": {
+        "levelId": "leveltwo"
+      },
       "links": [
         {
           "rel": [
@@ -47,6 +53,9 @@
       "rel": [
         "item"
       ],
+      "properties": {
+        "levelId": "levelthree"
+      },
       "links": [
         {
           "rel": [
@@ -63,6 +72,9 @@
       "rel": [
         "item"
       ],
+      "properties": {
+        "levelId": "levelfour"
+      },
       "links": [
         {
           "rel": [

@@ -117,10 +117,11 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			return;
 		}
 		const demonstratableLevelEntities = entity.getAllDemonstratableLevels();
-		const demonstratableLevels = [];
+		const demonstratableLevelsDict = {};
 		for (var i = 0; i < demonstratableLevelEntities.length; i++) {
 			const level = demonstratableLevelEntities[i];
 			level.onLevelChanged(achievementLevel => {
+				const levelId = level.getLevelId();
 				var levelObj = {
 					action: level.getAction(this.disableAutoSave),
 					selected: level.isSelected(),
@@ -129,14 +130,13 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 					isSuggested: level.isSuggested(),
 					sortOrder: achievementLevel.getSortOrder()
 				};
-				demonstratableLevels.push(levelObj);
+				demonstratableLevelsDict[levelId] = levelObj;
 			});
 		}
 		entity.subEntitiesLoaded().then(() => {
-			demonstratableLevels.sort((left, right) => {
+			this._demonstrationLevels = Object.values(demonstratableLevelsDict).sort((left, right) => {
 				return left.sortOrder - right.sortOrder;
 			});
-			this._demonstrationLevels = demonstratableLevels;
 			var firstSuggested = undefined;
 			var firstSuggestedIndex = null;
 			for (var i = 0; i < this._demonstrationLevels.length; i++) {
@@ -188,8 +188,19 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	}
 
 	resetToSuggested() {
-		var suggestedLevelElement = this.shadowRoot.getElementById('item-' + this._suggestedLevel.index.toString());
-		suggestedLevelElement.click();
+		this._demonstrationLevels.map((level, i) => {
+			const currentElement = this.shadowRoot.getElementById('item-' + i.toString());
+			if (!currentElement) {
+				return;
+			}
+
+			if (this._suggestedLevel && i === this._suggestedLevel.index) {
+				currentElement.select();
+			}
+			else {
+				currentElement.removeAttribute('selected');
+			}
+		});
 	}
 
 	_refresh() {

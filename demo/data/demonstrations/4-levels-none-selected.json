@@ -10,6 +10,9 @@
             "rel": [
                 "item"
             ],
+            "properties": {
+                "levelId": "levelone"
+            },
             "actions": [
                 {
                     "type": "application/json",
@@ -46,6 +49,9 @@
             "rel": [
                 "item"
             ],
+            "properties": {
+                "levelId": "leveltwo"
+            },
             "actions": [
                 {
                     "type": "application/json",
@@ -82,6 +88,9 @@
             "rel": [
                 "item"
             ],
+            "properties": {
+                "levelId": "levelthree"
+            },
             "actions": [
                 {
                     "type": "application/json",
@@ -118,6 +127,9 @@
             "rel": [
                 "item"
             ],
+            "properties": {
+                "levelId": "levelfour"
+            },
             "actions": [
                 {
                     "type": "application/json",
