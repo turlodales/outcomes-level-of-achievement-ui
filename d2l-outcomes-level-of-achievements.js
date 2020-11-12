@@ -74,7 +74,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 
 	_renderDemonstrationLevel(item, index) {
 		return html`
-		<d2l-squishy-button color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}">
+		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}">
 			${item.text}
 		</d2l-squishy-button>`;
 	}
@@ -82,7 +82,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	render() {
 		return html`
 			${this._renderSuggestedLevel()}
-			<d2l-squishy-button-selector tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction}>
+			<d2l-squishy-button-selector role="radiogroup" tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction}>
 				${this._demonstrationLevels.map((item, i) => this._renderDemonstrationLevel(item, i))}
 			</d2l-squishy-button-selector>`;
 	}
