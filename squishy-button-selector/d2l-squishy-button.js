@@ -65,7 +65,8 @@ export class D2lSquishyButton extends LitElement {
 			tooltipPosition: {
 				type: String,
 				value: 'bottom',
-				reflect: true
+				reflect: true,
+				attribute: 'tooltip-position'
 			},
 		};
 	}
@@ -189,11 +190,11 @@ export class D2lSquishyButton extends LitElement {
 		return html`
 			<d2l-tooltip 
 				id="tooltip${this.index}"
-				hidden="${!this._textOverflowing}"
+				?hidden=${!this._textOverflowing}
 				position="${this.tooltipPosition}"
 				boundary="{&quot;left&quot;: 0, &quot;right&quot;:0}"
 				aria-hidden="">
-				${this.text}
+				<span aria-hidden="true">${this.text}</span>
 			</d2l-tooltip>
 
 			<div class="d2l-squishy-button-container d2l-body-small">
@@ -238,8 +239,8 @@ export class D2lSquishyButton extends LitElement {
 	}
 
 	_measureSize() {
-		var innerHeight = this.shadowRoot.getElementById('textarea').innerHTML.offsetHeight;
-		var outerHeight = this.shadowRoot.getElementById('textwrapper').innerHTML.offsetHeight;
+		var innerHeight = this.shadowRoot.getElementById('textarea').offsetHeight;
+		var outerHeight = this.shadowRoot.getElementById('textwrapper').offsetHeight;
 		this._textOverflowing = innerHeight > outerHeight;
 	}
 
