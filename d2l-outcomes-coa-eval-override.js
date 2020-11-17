@@ -259,7 +259,6 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		this._onOverrideButtonClicked = this._onOverrideButtonClicked.bind(this);
 		this._onHelpButtonClicked = this._onHelpButtonClicked.bind(this);
 
-		this.addEventListener('d2l-squishy-button-selected', this._onItemSelected);
 		this.addEventListener('d2l-coa-manual-override-enabled', this._onOverrideEnabled);
 		this.addEventListener('keydown', this._onKeyDown);
 	}

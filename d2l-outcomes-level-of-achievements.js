@@ -197,8 +197,8 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			if (this._suggestedLevel && i === this._suggestedLevel.index) {
 				currentElement.select();
 			}
-			else {
-				currentElement.removeAttribute('selected');
+			else if (currentElement.hasAttribute('selected')) {
+				currentElement.click();
 			}
 		});
 	}
