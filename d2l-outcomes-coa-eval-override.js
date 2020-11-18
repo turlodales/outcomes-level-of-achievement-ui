@@ -328,21 +328,12 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 				helpPopupItems.push(helpItemObj);
 			});
 
-			let suggestedLevel, selectedLevel;
 			let isOverrideActive = false;
 			let isOverrideAllowed = false;
 			for (var i = 0; i < levels.length; i++) {
 				const level = levels[i];
-				const suggested = level.isSuggested();
-				const selected = level.isSelected();
 				const selectAction = level.getSelectAction();
 
-				if (selected) {
-					selectedLevel = level.getLevelId();
-				}
-				if (suggested) {
-					suggestedLevel = level.getLevelId();
-				}
 				if (selectAction) {
 					isOverrideAllowed = true;
 				}

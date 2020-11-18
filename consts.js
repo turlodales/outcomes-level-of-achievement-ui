@@ -20,4 +20,4 @@ export const evalTypes = {
 	automatic: 'automatic',	// No manual override and no feedback (unlocked)
 	snapshot: 'snapshot',	// No manual override but has feedback (locked)
 	override: 'override'	// Manual override (locked)
-}
+};

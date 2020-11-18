@@ -9,13 +9,13 @@ export class DemonstrationEntity extends Entity {
 		return {
 			masteryOverride: 'mastery-override',
 			masterySnapshot: 'mastery-snapshot'
-		}
+		};
 	}
 
 	static get actions() {
 		return {
 			publish: 'publish'
-		}
+		};
 	}
 
 	getCalculatedValue() {
