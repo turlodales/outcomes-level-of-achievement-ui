@@ -18,7 +18,8 @@ import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles';
 import { LocalizeMixin } from './localize-mixin.js';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
-import { keyCodes, calcMethods } from './consts.js';
+import { keyCodes, calcMethods, evalTypes } from './consts.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
 export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(LitElement)) {
 
@@ -40,7 +41,9 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 			_levelSelector: { attribute: false },
 
-			_helpPopupItems: { attribute: false }
+			_helpPopupItems: { attribute: false },
+
+			_publishAction: { attribute: false }
 		};
 	}
 
@@ -241,6 +244,16 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		`;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('d2l-save-evaluation', this._publishDemonstration);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('d2l-save-evaluation', this._publishDemonstration);
+		super.disconnectedCallback();
+	}
+
 	constructor() {
 		super();
 
@@ -254,10 +267,12 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		this._calculationMethodKey = null;
 		this._entity = null;
 		this._helpPopupItems = [];
+		this._getPublishAction = null;
 
 		this._onCalcButtonClicked = this._onCalcButtonClicked.bind(this);
 		this._onOverrideButtonClicked = this._onOverrideButtonClicked.bind(this);
 		this._onHelpButtonClicked = this._onHelpButtonClicked.bind(this);
+		this._publishDemonstration = this._publishDemonstration.bind(this);
 
 		this.addEventListener('d2l-coa-manual-override-enabled', this._onOverrideEnabled);
 		this.addEventListener('keydown', this._onKeyDown);
@@ -282,6 +297,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		if (!this._initialStateLoaded) {
 			this._loadInitialState(entity);
 		}
+
+		this._publishAction = entity.getPublishAction();
 	}
 
 	_loadInitialState(entity) {
@@ -330,7 +347,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 					isOverrideAllowed = true;
 				}
 			}
-			if (calcMethod && (selectedLevel !== suggestedLevel)) {
+			if (calcMethod && (entity.isManualOverride())) {
 				isOverrideActive = true;
 			}
 
@@ -403,6 +420,40 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		//Calculation request will be sent here. This will retrieve a calculated value and any corresponding data
 		this._newAssessmentsAdded = false;
 		return true;
+	}
+
+	async _publishDemonstration(e) {
+		const action = this._publishAction;
+
+		if (!action || !this.token) {
+			return;
+		}
+
+		const fields = [];
+		const evalTypeField = action.getFieldByName('evalType');
+		const evaluationEntity = e.detail.evaluationEntity;
+		const feedbackEntity = evaluationEntity && evaluationEntity.getSubEntityByRel('feedback');
+
+		if (evalTypeField && feedbackEntity) {
+			const feedbackHtml = feedbackEntity.properties && feedbackEntity.properties.html;
+
+			if (this._isOverrideActive) {
+				evalTypeField.value = evalTypes.override;
+			} else if (feedbackHtml) {
+				evalTypeField.value = evalTypes.snapshot;
+			} else {
+				evalTypeField.value = evalTypes.automatic;
+			}
+
+			fields.push(evalTypeField);
+		}
+
+		await performSirenAction(this.token, action, fields);
+
+		window.dispatchEvent(new CustomEvent('d2l-refresh-outcome-activities', {
+			composed: true,
+			bubbles: true
+		}));
 	}
 
 	_dispatchChangeEvent() {
