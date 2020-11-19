@@ -188,6 +188,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	}
 
 	resetToSuggested() {
+		let suggestedElement;
 		this._demonstrationLevels.map((level, i) => {
 			const currentElement = this.shadowRoot.getElementById('item-' + i.toString());
 			if (!currentElement) {
@@ -195,12 +196,16 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			}
 
 			if (this._suggestedLevel && i === this._suggestedLevel.index) {
-				currentElement.select();
+				suggestedElement = currentElement;
 			}
 			else if (currentElement.hasAttribute('selected')) {
 				currentElement.click();
 			}
 		});
+
+		if (suggestedElement) {
+			suggestedElement.select();
+		}
 	}
 
 	_refresh() {

@@ -355,7 +355,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 	}
 
 	_isCalculationUpdateNeeded() {
-		return !!this._calculationMethod && this._newAssessmentsAdded && this._isOverrideActive;
+		return !!this._calculationMethod && this._newAssessmentsAdded;
 	}
 
 	_canEditLevel() {
