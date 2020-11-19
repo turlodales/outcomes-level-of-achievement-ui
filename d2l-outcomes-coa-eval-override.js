@@ -430,7 +430,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 			if (this._isOverrideActive) {
 				evalTypeField.value = evalTypes.override;
-			} else if (feedbackHtml) {
+			} else if (feedbackHtml || this._isCalculationUpdateNeeded()) {
 				evalTypeField.value = evalTypes.snapshot;
 			} else {
 				evalTypeField.value = evalTypes.automatic;
