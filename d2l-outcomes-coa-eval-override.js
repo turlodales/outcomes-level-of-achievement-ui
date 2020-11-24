@@ -452,7 +452,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			bubbles: true,
 			composed: true,
 			detail: {
-				sirenActionPromise
+				sirenActionPromise: sirenActionPromise
 			}
 		}));
 	}

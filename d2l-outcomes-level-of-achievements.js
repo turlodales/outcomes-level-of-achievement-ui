@@ -170,12 +170,12 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		}
 
 		const sirenActionPromise = performSirenAction(this.token, action)
-									.catch(function() { });
+			.catch(function() { });
 		this.dispatchEvent(new CustomEvent('d2l-outcomes-level-of-achievements-item-selected', {
 			bubbles: true,
 			composed: true,
 			detail: {
-				sirenActionPromise
+				sirenActionPromise: sirenActionPromise
 			}
 		}));
 	}
