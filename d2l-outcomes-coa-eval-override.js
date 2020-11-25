@@ -369,8 +369,8 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		}
 	}
 
-	_onItemSelected() {
-		this._dispatchChangeEvent();
+	_onItemSelected(e) {
+		this._dispatchChangeEvent(e.detail && e.detail.sirenActionPromise);
 	}
 
 	_onOverrideButtonClicked() {
@@ -447,10 +447,13 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		}));
 	}
 
-	_dispatchChangeEvent() {
+	_dispatchChangeEvent(sirenActionPromise = undefined) {
 		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-change', {
 			bubbles: true,
-			composed: true
+			composed: true,
+			detail: {
+				sirenActionPromise: sirenActionPromise
+			}
 		}));
 	}
 }
