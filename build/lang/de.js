@@ -1,15 +1,15 @@
 export const val = {
-	'calcHelpTitle': 'Calculation Method Details',
+	'calcHelpTitle': 'Details zur Berechnungsmethode',
 	'calculatedValue': '{calcMethod}: {value}',
-	'calculationMethod': 'Calculation method: {calcMethod}',
-	'calculationMethodDetails': 'Calculation Method Details',
-	'clearManualOverride': 'Clear Manual Override',
-	'decayingAverage': 'Decaying Average',
-	'highest': 'Highest',
-	'manuallyOverride': 'Manually Override',
-	'mostCommon': 'Most Common',
-	'mostRecent': 'Most Recent',
-	'recalculateOverallAchievement': 'Recalculate Overall Achievement',
-	'selectOverallAchievement': 'Select Overall Achievement',
-	'suggestedLevel': 'Suggested: {level}'
+	'calculationMethod': 'Berechnungsmethode: {calcMethod}',
+	'calculationMethodDetails': 'Details zur Berechnungsmethode',
+	'clearManualOverride': 'Manuelles Überschreiben löschen',
+	'decayingAverage': 'Abklingender Durchschnitt',
+	'highest': 'Beste',
+	'manuallyOverride': 'Manuelles Überschreiben',
+	'mostCommon': 'Am Häufigsten',
+	'mostRecent': 'Zuletzt',
+	'recalculateOverallAchievement': 'Gesamtleistung neu berechnen',
+	'selectOverallAchievement': 'Gesamtleistung auswählen',
+	'suggestedLevel': 'Empfohlen: {level}'
 };
