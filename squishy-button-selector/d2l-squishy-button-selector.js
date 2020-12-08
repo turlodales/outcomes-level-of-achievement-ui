@@ -280,10 +280,10 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 
 		this._setButtonProperties();
 		if (!this.focusWhenDisabled) {
-			if (disabled && buttonList.getAttribute('tabindex') === '-1'	
-				|| !disabled && buttonList.getAttribute('tabindex') === '0'	
+			if (disabled && buttonList.getAttribute('tabindex') === '-1'
+				|| !disabled && buttonList.getAttribute('tabindex') === '0'
 			) {
-				return;	
+				return;
 			}
 
 			if (disabled) {
@@ -294,7 +294,7 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 				buttonList.setAttribute('tabindex', '0');
 			}
 		}
-		
+
 		if (disabled) {
 			this.setAttribute('aria-disabled', 'true');
 		}
