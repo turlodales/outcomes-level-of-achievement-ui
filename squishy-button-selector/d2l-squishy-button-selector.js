@@ -27,6 +27,10 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 				type: String,
 				attribute: 'tooltip-position'
 			},
+			focusWhenDisabled: {
+				type: Boolean,
+				attribute: 'focus-when-disabled'
+			},
 			_buttons: { attribute: false }
 		};
 	}
@@ -98,6 +102,7 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		this.arrowKeysDirection = 'leftright';
 		this.arrowKeysNoWrap = true;
 		this._focused = false;
+		this.focusWhenDisabled = false;
 		this._pushTabIndex('0');
 		this._buttons = [];
 	}
@@ -271,8 +276,25 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 	}
 
 	set disabled(disabled) {
-		this._setButtonProperties();
+		var buttonList = this;
 
+		this._setButtonProperties();
+		if (!this.focusWhenDisabled) {
+			if (disabled && buttonList.getAttribute('tabindex') === '-1'	
+				|| !disabled && buttonList.getAttribute('tabindex') === '0'	
+			) {
+				return;	
+			}
+
+			if (disabled) {
+				this._pushTabIndex('-1');
+			} else if (this._prevTabIndex !== null && this._prevTabIndex !== '-1') {
+				this._popTabIndex();
+			} else {
+				buttonList.setAttribute('tabindex', '0');
+			}
+		}
+		
 		if (disabled) {
 			this.setAttribute('aria-disabled', 'true');
 		}
