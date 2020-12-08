@@ -74,7 +74,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 
 	_renderDemonstrationLevel(item, index) {
 		return html`
-		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}">
+		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}" tabindex=-1>
 			${item.text}
 		</d2l-squishy-button>`;
 	}

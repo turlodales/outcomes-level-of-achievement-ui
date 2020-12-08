@@ -179,6 +179,8 @@ export class D2lSquishyButton extends LitElement {
 		this.disabled = false;
 		this.buttonData = function() { return {}; };
 		this.role = 'radio';
+		this._onKeyDown = this._onKeyDown.bind(this);
+		this._handleTap = this._handleTap.bind(this);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('click', this._handleTap);
 		this._handleDomChanges = this._handleDomChanges.bind(this);
@@ -211,7 +213,6 @@ export class D2lSquishyButton extends LitElement {
 
 		window.addEventListener('resize', this._measureSize);
 		this._measureSize();
-		this.tabIndex = this.disabled ? '-1' : '0';
 	}
 
 	_getDisabled(disabled) {
@@ -255,7 +256,7 @@ export class D2lSquishyButton extends LitElement {
 	}
 
 	_onKeyDown(event) {
-		if (this.disabled) {
+		if (this.hasAttribute('disabled')) {
 			return;
 		}
 
@@ -267,7 +268,7 @@ export class D2lSquishyButton extends LitElement {
 	}
 
 	_handleTap(event) {
-		if (this.disabled) {
+		if (this.hasAttribute('disabled')) {
 			return;
 		}
 		this.selected = true;
@@ -281,7 +282,7 @@ export class D2lSquishyButton extends LitElement {
 
 	set disabled(val) {
 		if (val) {
-			this.setAttribute('aria-disabled', '');
+			this.setAttribute('aria-disabled', 'true');
 		}
 		else {
 			this.removeAttribute('aria-disabled');

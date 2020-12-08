@@ -240,7 +240,7 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 	}
 
 	_onFocus(event) {
-		if (this.disabled || this._focused) {
+		if (this._focused) {
 			return;
 		}
 		this._handleDomChanges();
@@ -271,25 +271,10 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 	}
 
 	set disabled(disabled) {
-		var buttonList = this;
-
 		this._setButtonProperties();
-		if (disabled && buttonList.getAttribute('tabindex') === '-1'
-			|| !disabled && buttonList.getAttribute('tabindex') === '0'
-		) {
-			return;
-		}
 
 		if (disabled) {
-			this._pushTabIndex('-1');
-		} else if (this._prevTabIndex !== null && this._prevTabIndex !== '-1') {
-			this._popTabIndex();
-		} else {
-			buttonList.setAttribute('tabindex', '0');
-		}
-
-		if (disabled) {
-			this.setAttribute('aria-disabled', '');
+			this.setAttribute('aria-disabled', 'true');
 		}
 		else {
 			this.removeAttribute('aria-disabled');
