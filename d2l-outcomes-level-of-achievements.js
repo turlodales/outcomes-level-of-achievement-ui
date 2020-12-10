@@ -30,6 +30,10 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			disableAutoSave: {
 				type: Boolean,
 				attribute: 'disable-auto-save'
+			},
+			focusWhenDisabled: {
+				type: Boolean,
+				attribute: 'focus-when-disabled'
 			}
 		};
 	}
@@ -74,7 +78,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 
 	_renderDemonstrationLevel(item, index) {
 		return html`
-		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}">
+		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}" tabindex=-1>
 			${item.text}
 		</d2l-squishy-button>`;
 	}
@@ -82,7 +86,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	render() {
 		return html`
 			${this._renderSuggestedLevel()}
-			<d2l-squishy-button-selector role="radiogroup" tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction}>
+			<d2l-squishy-button-selector role="radiogroup" tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction} ?focus-when-disabled=${this.focusWhenDisabled}>
 				${this._demonstrationLevels.map((item, i) => this._renderDemonstrationLevel(item, i))}
 			</d2l-squishy-button-selector>`;
 	}
@@ -96,6 +100,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		this.disableSuggestion = false;
 		this.hasAction = false;
 		this.disableAutoSave = false;
+		this.focusWhenDisabled = false;
 		this._demonstrationLevels = [];
 		this._suggestedLevel = null;
 		this._refresh = this._refresh.bind(this);

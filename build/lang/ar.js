@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'المتوسط استنادًا إلى الترجيح الإضافي على العلامة الأخيرة',
 	'highest': 'الأعلى',
 	'manuallyOverride': 'التجاوز يدويًا',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'الأكثر شيوعًا',
 	'mostRecent': 'الأحدث',
 	'recalculateOverallAchievement': 'إعادة احتساب التحصيل الإجمالي',

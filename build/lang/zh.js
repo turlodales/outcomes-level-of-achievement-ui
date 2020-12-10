@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': '下降平均值',
 	'highest': '最高',
 	'manuallyOverride': '手动改写',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': '最常见',
 	'mostRecent': '最近',
 	'recalculateOverallAchievement': '重新计算总成绩',

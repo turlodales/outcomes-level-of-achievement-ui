@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'Promedio de deterioro',
 	'highest': 'Más alta',
 	'manuallyOverride': 'Anular manualmente',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'Más común',
 	'mostRecent': 'Más reciente',
 	'recalculateOverallAchievement': 'Volver a calcular el logro general',

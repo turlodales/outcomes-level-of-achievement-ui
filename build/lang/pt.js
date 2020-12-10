@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'Média de declínio',
 	'highest': 'Mais alto',
 	'manuallyOverride': 'Substituir manualmente',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'Mais comum',
 	'mostRecent': 'Mais recente',
 	'recalculateOverallAchievement': 'Recalcular conquista geral',

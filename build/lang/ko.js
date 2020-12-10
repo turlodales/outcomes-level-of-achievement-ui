@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': '평균 감쇠',
 	'highest': '최고',
 	'manuallyOverride': '수동 오버라이드',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': '가장 일반적',
 	'mostRecent': '가장 최근',
 	'recalculateOverallAchievement': '전체 달성 기록 재 계산',

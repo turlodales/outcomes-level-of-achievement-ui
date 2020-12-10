@@ -16,6 +16,7 @@ import './d2l-outcomes-level-of-achievements.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles';
+import { announce } from '@brightspace-ui/core/helpers/announce.js';
 import { LocalizeMixin } from './localize-mixin.js';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
 import { keyCodes, calcMethods, evalTypes } from './consts.js';
@@ -216,6 +217,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			?read-only="${!this._canEditLevel()}"
 			disable-suggestion=""
 			disable-auto-save=""
+			focus-when-disabled=""
 			.token="${this.token}"
 			href="${this.getAttribute('href')}"
 			@d2l-outcomes-level-of-achievements-item-selected=${this._onItemSelected}>
@@ -385,6 +387,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			}
 			this._levelSelector.resetToSuggested();
 			this._isOverrideActive = false;
+			announce(this.localize('manualOverrideCleared'));
 		}
 	}
 

@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'Eksilme Ortalaması',
 	'highest': 'En Yüksek',
 	'manuallyOverride': 'Manuel Olarak Geçersiz Kıl',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'En Yaygın',
 	'mostRecent': 'En Son',
 	'recalculateOverallAchievement': 'Genel Başarıyı Yeniden Hesapla',

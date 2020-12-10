@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'Abklingender Durchschnitt',
 	'highest': 'Beste',
 	'manuallyOverride': 'Manuelles Überschreiben',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'Am Häufigsten',
 	'mostRecent': 'Zuletzt',
 	'recalculateOverallAchievement': 'Gesamtleistung neu berechnen',

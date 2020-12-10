@@ -7,6 +7,7 @@ export const val = {
 	'decayingAverage': 'Gemiddeld verval',
 	'highest': 'Hoogste',
 	'manuallyOverride': 'Handmatig opheffen',
+	'manualOverrideCleared': 'Manual Override is Cleared',
 	'mostCommon': 'Meest voorkomend',
 	'mostRecent': 'Meest recent',
 	'recalculateOverallAchievement': 'Herbereken algehele prestatie',
