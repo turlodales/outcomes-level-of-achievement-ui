@@ -26,7 +26,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 	static get properties() {
 		return {
-			_initialStateLoaded: { attribute: false },
+			_loadedHref: { attribute: false },
 
 			_isOverrideActive: { attribute: false },
 
@@ -261,7 +261,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 		this._setEntityType(DemonstrationEntity);
 
-		this._initialStateLoaded = false;
+		this._loadedHref = null;
 		this._isOverrideActive = false;
 		this._isOverrideAllowed = false;
 		this._newAssessmentsAdded = false;
@@ -296,14 +296,13 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			return;
 		}
 
-		if (!this._initialStateLoaded) {
-			this._loadInitialState(entity);
+		if (this.href !== this._loadedHref) {
+			this._loadEntityData(entity);
 		}
-
 		this._publishAction = entity.getPublishAction();
 	}
 
-	_loadInitialState(entity) {
+	_loadEntityData(entity) {
 		let calcMethod, calcMethodKey;
 		let helpMenuEntities = [];
 		entity.onCalcMethodChanged(method => {
@@ -352,7 +351,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			this._newAssessmentsAdded = newAssessments;
 			this._helpPopupItems = helpPopupItems;
 
-			this._initialStateLoaded = true;
+			this._loadedHref = this.href;
 		});
 	}
 
