@@ -6,6 +6,7 @@
    "clearManualOverride" : "Ryd manuel tilsidesættelse",
    "decayingAverage" : "Gennemsnit for henfald",
    "highest" : "Højeste",
+   "manualOverrideCleared" : "Manuel tilsidesættelse er ryddet",
    "manuallyOverride" : "Manuel tilsidesættelse",
    "mostCommon" : "Mest almindelige",
    "mostRecent" : "Seneste",
