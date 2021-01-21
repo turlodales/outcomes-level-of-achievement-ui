@@ -6,6 +6,7 @@
    "clearManualOverride" : "Borrar anulaciones manuales",
    "decayingAverage" : "Promedio de decaimiento",
    "highest" : "Más alto",
+   "manualOverrideCleared" : "La opción de anulación manual está desactivada",
    "manuallyOverride" : "Anular manualmente",
    "mostCommon" : "Más frecuente",
    "mostRecent" : "Más reciente",

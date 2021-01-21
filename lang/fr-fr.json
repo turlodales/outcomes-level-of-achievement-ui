@@ -6,6 +6,7 @@
    "clearManualOverride" : "Annuler le remplacement manuel",
    "decayingAverage" : "Moyenne de régression",
    "highest" : "La plus élevée",
+   "manualOverrideCleared" : "Remplacement manuel annulé",
    "manuallyOverride" : "Remplacer manuellement",
    "mostCommon" : "La plus courante",
    "mostRecent" : "La plus récente",
