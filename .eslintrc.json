@@ -6,7 +6,10 @@
     "node": true
   },
   "rules": {
-    "object-shorthand": [2, "never"]
+    "object-shorthand": [
+      2,
+      "never"
+    ]
   },
   "globals": {
     "Promise": false,
