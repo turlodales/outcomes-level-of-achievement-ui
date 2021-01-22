@@ -17,14 +17,13 @@
   "scripts": {
     "lang:build": "lang-build -eds \"\t\" -c langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
-    "serve": "polymer analyze > analysis.json && polymer serve",
-    "test": "npm run lint && npm run test:wct",
     "lint": "npm run lint:eslint && npm run lint:polymer",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:polymer": "polymer lint",
-    "test:local": "npm run lint && npm run test:wct:local",
+    "test": "npm run lint && npm run test:wct:local",
     "test:wct": "polymer test --skip-plugin local",
-    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce"
+    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
+    "serve": "polymer analyze > analysis.json && polymer serve"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
