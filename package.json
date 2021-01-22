@@ -15,15 +15,14 @@
     "test": "test"
   },
   "scripts": {
-    "lang:build": "lang-build -ec langtools/config.json",
+    "lang:build": "lang-build -eds \"\t\" -c langtools/config.json",
     "lang:copy": "lang-copy -svc langtools/config.json",
-    "lang:lint": "eslint build/lang",
     "serve": "polymer analyze > analysis.json && polymer serve",
-    "test": "npm run test:lint && npm run test:wct",
-    "test:lint": "npm run test:lint:wc && npm run test:lint:js",
-    "test:lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
-    "test:lint:wc": "polymer lint",
-    "test:local": "npm run test:lint && npm run test:wct:local",
+    "test": "npm run lint && npm run test:wct",
+    "lint": "npm run lint:eslint && npm run lint:polymer",
+    "lint:eslint": "eslint . --ext .js,.html",
+    "lint:polymer": "polymer lint",
+    "test:local": "npm run lint && npm run test:wct:local",
     "test:wct": "polymer test --skip-plugin local",
     "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce"
   },

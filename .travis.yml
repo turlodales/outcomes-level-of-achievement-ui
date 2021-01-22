@@ -4,7 +4,7 @@ node_js:
 addons:
   chrome: stable
 script:
-- npm run test:lint
+- npm run lint
 - |
   if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
     echo "Pull request with secure environment variables, running Sauce tests...";

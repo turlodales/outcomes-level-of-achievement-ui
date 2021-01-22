@@ -1,1 +1,1 @@
-export const val = {{langData}};
+export default {{langData}};
