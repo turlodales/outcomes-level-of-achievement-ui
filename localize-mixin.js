@@ -8,55 +8,55 @@ export const LocalizeMixin = (superclass) => class extends CoreLocalizeMixin(sup
 		for await (const lang of langs) {
 			switch (lang) {
 				case 'ar':
-					translations = await import('./build/lang/ar.js');
+					translations = await import('./lang/ar.js');
 					break;
 				case 'cy':
-					translations = await import('./build/lang/cy.js');
+					translations = await import('./lang/cy.js');
 					break;
 				case 'da':
-					translations = await import('./build/lang/da.js');
+					translations = await import('./lang/da.js');
 					break;
 				case 'de':
-					translations = await import('./build/lang/de.js');
+					translations = await import('./lang/de.js');
 					break;
 				case 'en':
-					translations = await import('./build/lang/en.js');
+					translations = await import('./lang/en.js');
 					break;
 				case 'es-es':
-					translations = await import('./build/lang/es-es.js');
+					translations = await import('./lang/es-es.js');
 					break;
 				case 'es':
-					translations = await import('./build/lang/es.js');
+					translations = await import('./lang/es.js');
 					break;
 				case 'fr-fr':
-					translations = await import('./build/lang/fr-fr.js');
+					translations = await import('./lang/fr-fr.js');
 					break;
 				case 'fr':
-					translations = await import('./build/lang/fr.js');
+					translations = await import('./lang/fr.js');
 					break;
 				case 'ja':
-					translations = await import('./build/lang/ja.js');
+					translations = await import('./lang/ja.js');
 					break;
 				case 'ko':
-					translations = await import('./build/lang/ko.js');
+					translations = await import('./lang/ko.js');
 					break;
 				case 'nl':
-					translations = await import('./build/lang/nl.js');
+					translations = await import('./lang/nl.js');
 					break;
 				case 'pt':
-					translations = await import('./build/lang/pt.js');
+					translations = await import('./lang/pt.js');
 					break;
 				case 'sv':
-					translations = await import('./build/lang/sv.js');
+					translations = await import('./lang/sv.js');
 					break;
 				case 'tr':
-					translations = await import('./build/lang/tr.js');
+					translations = await import('./lang/tr.js');
 					break;
 				case 'zh-tw':
-					translations = await import('./build/lang/zh-tw.js');
+					translations = await import('./lang/zh-tw.js');
 					break;
 				case 'zh':
-					translations = await import('./build/lang/zh.js');
+					translations = await import('./lang/zh.js');
 					break;
 			}
 
@@ -68,7 +68,7 @@ export const LocalizeMixin = (superclass) => class extends CoreLocalizeMixin(sup
 			}
 		}
 
-		translations = await import('./build/lang/en.js');
+		translations = await import('./lang/en.js');
 
 		return {
 			language: 'en',
