@@ -3,8 +3,7 @@
     "demonstration"
   ],
   "properties": {
-    "calculatedValue": "2.91",
-    "newAssessments": false
+    "calculatedValue": "2.91"
   },
   "entities": [
     {
@@ -178,6 +177,12 @@
         "calculation-method"
       ],
       "href": "data/calculation-methods/decaying-average.json"
+    },
+    {
+      "rel": [
+        "outdated-status"
+      ],
+      "href": "data/demonstrations/calculated/status/notOutdated.json"
     }
   ]
 }

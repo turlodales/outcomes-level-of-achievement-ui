@@ -2,9 +2,7 @@
   "class": [
     "demonstration"
   ],
-  "properties": {
-    "newAssessments": false
-  },
+  "properties": {},
   "entities": [
     {
       "class": [
@@ -177,6 +175,12 @@
         "calculation-method"
       ],
       "href": "data/calculation-methods/highest.json"
+    },
+    {
+      "rel": [
+        "outdated-status"
+      ],
+      "href": "data/demonstrations/calculated/status/notOutdated.json"
     }
   ]
 }

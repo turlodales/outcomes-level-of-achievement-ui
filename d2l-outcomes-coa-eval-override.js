@@ -303,8 +303,16 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 	}
 
 	_loadEntityData(entity) {
-		let calcMethod, calcMethodKey;
+		let calcMethod, calcMethodKey, newAssessments;
 		let helpMenuEntities = [];
+
+		entity.onOutdatedStatusChanged(status => {
+			if (!status) {
+				return;
+			}
+			newAssessments = status.getOutdatedStatus();
+		});
+
 		entity.onCalcMethodChanged(method => {
 			if (!method) {
 				return;
@@ -317,7 +325,6 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		entity.subEntitiesLoaded().then(() => {
 
 			const calcAchievementValue = entity.getCalculatedValue();
-			const newAssessments = entity.hasNewAssessments();
 			const levels = entity.getAllDemonstratableLevels();
 
 			const helpPopupItems = [];
