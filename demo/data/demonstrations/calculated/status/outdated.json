@@ -1,0 +1,22 @@
+{
+    "class": [
+        "demonstration-outdated-status"
+    ],
+    "properties": {
+        "IsOutdated": true
+    },
+    "links": [
+        {
+            "rel": [
+                "self"
+            ],
+            "href": "data/demonstrations/calculated/status/outdated.json"
+        },
+        {
+            "rel": [
+                "demonstration"
+            ],
+            "href": "about:blank"
+        }
+    ]
+}

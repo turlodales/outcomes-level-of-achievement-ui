@@ -1,6 +1,7 @@
 import { Entity } from 'siren-sdk/src/es6/Entity';
-import { DemonstratableLevelEntity } from './DemonstratableLevelEntity';
 import { CalculationMethodEntity } from './CalculationMethodEntity';
+import { DemonstratableLevelEntity } from './DemonstratableLevelEntity';
+import { DemonstrationOutdatedStatusEntity } from './DemonstrationOutdatedStatusEntity';
 
 export class DemonstrationEntity extends Entity {
 	static get class() { return 'demonstration'; }
@@ -18,12 +19,15 @@ export class DemonstrationEntity extends Entity {
 		};
 	}
 
+	static get links() {
+		return {
+			calculationMethod: 'calculation-method',
+			outdatedStatus: 'outdated-status'
+		};
+	}
+
 	getCalculatedValue() {
 		return this._entity && this._entity.properties && this._entity.properties.calculatedValue;
-	}
-	//This might be changed later to compare assessment date with the most recent assessment (waiting on backend work)
-	hasNewAssessments() {
-		return this._entity && this._entity.properties && this._entity.properties.newAssessments;
 	}
 
 	getDemonstratedLevel() {
@@ -56,11 +60,24 @@ export class DemonstrationEntity extends Entity {
 		href && this._subEntity(CalculationMethodEntity, href, onChange);
 	}
 
+	onOutdatedStatusChanged(onChange) {
+		const href = this._outdatedStatusHref();
+		href && this._subEntity(DemonstrationOutdatedStatusEntity, href, onChange);
+	}
+
 	_calcMethodHref() {
-		if (!this._entity || !this._entity.hasLinkByRel('calculation-method')) {
+		if (!this._entity || !this._entity.hasLinkByRel(DemonstrationEntity.links.calculationMethod)) {
 			return;
 		}
 
-		return this._entity.getLinkByRel('calculation-method').href;
+		return this._entity.getLinkByRel(DemonstrationEntity.links.calculationMethod).href;
+	}
+
+	_outdatedStatusHref() {
+		if (!this._entity || !this._entity.hasLinkByRel(DemonstrationEntity.links.outdatedStatus)) {
+			return;
+		}
+
+		return this._entity.getLinkByRel(DemonstrationEntity.links.outdatedStatus).href;
 	}
 }
