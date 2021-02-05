@@ -18,6 +18,8 @@
     "lint": "npm run lint:eslint && npm run lint:polymer",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:polymer": "polymer lint",
+    "format": "npm run -s format:eslint",
+    "format:eslint": "npm run lint:eslint -- --fix",
     "test": "npm run lint && npm run test:wct:local",
     "test:wct": "polymer test --skip-plugin local",
     "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
