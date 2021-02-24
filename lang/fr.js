@@ -10,7 +10,7 @@ export default {
 	manualOverrideCleared: "Remplacement manuel effacé",
 	mostCommon: "La plus courante",
 	mostRecent: "La plus récente",
-	recalculateOverallAchievement: "Recalculer l’accomplissement global",
-	selectOverallAchievement: "Sélectionner l’accomplissement global",
+	recalculateOverallAchievement: "Recalculer l'accomplissement global",
+	selectOverallAchievement: "Sélectionner l'accomplissement global",
 	suggestedLevel: "Suggéré : {level}"
 };
