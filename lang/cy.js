@@ -10,7 +10,7 @@ export default {
 	manualOverrideCleared: "Mae Diystyru Pwrpasol wedi'i Glirio",
 	mostCommon: "Mwyaf Cyffredin",
 	mostRecent: "Mwyaf Diweddar",
-	recalculateOverallAchievement: "Ailgyfrifo Cyflawniad Cyffredinol",
+	recalculateOverallAchievement: "Ail-gyfrifo Cyflawniad Cyffredinol",
 	selectOverallAchievement: "Dewiswch Gyflawniad Cyffredinol",
 	suggestedLevel: "Awgrymwyd: {level}"
 };

@@ -10,7 +10,7 @@ export default {
 	manualOverrideCleared: "A substituição manual está desmarcada",
 	mostCommon: "Mais comum",
 	mostRecent: "Mais recente",
-	recalculateOverallAchievement: "Recalcular conquista geral",
-	selectOverallAchievement: "Selecionar conquista geral",
+	recalculateOverallAchievement: "Recalcular desempenho geral",
+	selectOverallAchievement: "Selecionar desempenho geral",
 	suggestedLevel: "Sugestão: {level}"
 };

@@ -6,11 +6,11 @@ export default {
 	clearManualOverride: "Handmatig overschrijven wissen",
 	decayingAverage: "Gemiddeld verval",
 	highest: "Hoogste",
-	manuallyOverride: "Handmatig opheffen",
-	manualOverrideCleared: "Handmatig opheffen is gewist",
+	manuallyOverride: "Handmatig overschrijven",
+	manualOverrideCleared: "Handmatig overschrijven is gewist",
 	mostCommon: "Meest voorkomend",
 	mostRecent: "Meest recent",
-	recalculateOverallAchievement: "Herbereken algehele prestatie",
-	selectOverallAchievement: "Selecteer algehele prestatie",
+	recalculateOverallAchievement: "Algehele prestaties herberekenen",
+	selectOverallAchievement: "Algehele prestatie selecteren",
 	suggestedLevel: "Voorgesteld: {level}"
 };
