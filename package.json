@@ -24,7 +24,7 @@
     "test:wct": "polymer test --skip-plugin local",
     "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
     "serve": "polymer analyze > analysis.json && polymer serve",
-    "start": "es-dev-server --app-index demo/index.html --node-resolve --dedupe --watch --open"
+    "start": "es-dev-server --app-index demo/index.html --node-resolve --dedupe --watch --open --preserve-symlinks"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
