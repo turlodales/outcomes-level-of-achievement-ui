@@ -24,12 +24,12 @@ export class CalculationMethodEntity extends Entity {
 export class CalculationSettingEntity extends SelflessEntity {
 	static get class() { return 'calculation-setting'; }
 
-	getName() {
-		return this._entity && this._entity.properties && this._entity.properties.name;
-	}
-
 	getContent() {
 		return this._entity && this._entity.properties && this._entity.properties.content;
+	}
+
+	getName() {
+		return this._entity && this._entity.properties && this._entity.properties.name;
 	}
 
 }

@@ -11,16 +11,16 @@
 <body>
 	<script>
 		/* global WCT */
-		'use strict';
+
 		// Load and run all tests (.html, .js):
 
-		var baseTests = [
+		const baseTests = [
 			'./components/d2l-outcomes-level-of-achievements.html',
 			'./components/d2l-squishy-button-selector.html'
 		];
 
-		var shadyTests = baseTests.map(function(x) { return x + '?wc-shadydom=true'; });
-		var shadowTests = baseTests.map(function(x) { return x + '?dom=shadow'; });
+		const shadyTests = baseTests.map((x) => { return `${x}?wc-shadydom=true`; });
+		const shadowTests = baseTests.map((x) => { return `${x}?dom=shadow`; });
 
 		WCT.loadSuites(Array.prototype.concat(baseTests, shadyTests, shadowTests));
 	</script>

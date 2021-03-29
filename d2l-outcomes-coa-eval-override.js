@@ -10,16 +10,14 @@ import '@brightspace-ui/core/components/button/button.js';
 import '@brightspace-ui/core/components/button/button-icon.js';
 import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/dialog/dialog.js';
-
 import './d2l-outcomes-level-of-achievements.js';
-
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles';
 import { announce } from '@brightspace-ui/core/helpers/announce.js';
 import { LocalizeMixin } from './localize-mixin.js';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
-import { keyCodes, calcMethods, evalTypes } from './consts.js';
+import { calcMethods, evalTypes, keyCodes } from './consts.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
 export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(LitElement)) {
@@ -36,7 +34,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 			_calculationMethod: { attribute: false },
 
-			_calculationMethodKey: {attribute: false},
+			_calculationMethodKey: { attribute: false },
 
 			_calculatedAchievementValue: { attribute: false },
 
@@ -142,120 +140,6 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		];
 	}
 
-	_renderElementHeading() {
-		return html`
-			<div class="flex-box">
-				<h2 class="page-heading d2l-heading-3">${this.localize('selectOverallAchievement')}</h2>
-				${this._renderCalcButton()}
-			</div>
-		<div style="clear: both;"></div>`;
-	}
-
-	_renderCalcButton() {
-		if (this._isCalculationUpdateNeeded()) {
-			return html`
-			<span class="calculate-button-container">
-				<d2l-button-icon id="calculate-button"
-					@click=${this._onCalcButtonClicked}
-					text="${this.localize('recalculateOverallAchievement')}"
-					icon="tier1:calculate">
-				</d2l-button-icon>
-			</span>`;
-		}
-		return null;
-	}
-
-	_renderCalculationMethod(calcMethod) {
-		if (calcMethod) {
-			return html`
-			<div class="calculation-info">
-				<span class="calculation-label d2l-body-small">
-					${this.localize('calculationMethod', 'calcMethod', calcMethod)}
-				</span>
-				${this._renderCalculationHelp()}
-			</div>
-			
-			<div style="clear: both;"></div>`;
-		}
-		return null;
-	}
-
-	_renderCalculationHelp() {
-		if (this._helpPopupItems.length > 0) {
-			return html`
-			<d2l-button-icon id="help-button"
-				@click=${this._onHelpButtonClicked}
-				text="${this.localize('calculationMethodDetails')}"
-				icon="tier1:help">
-			</d2l-button-icon>
-			<d2l-dialog id="help-dialog" title-text="${this.localize('calculationMethodDetails')}">
-				${this._helpPopupItems.map((item) => html`
-					<div class="help-item-label d2l-label"><b>${item.label}:</b></div>
-					<div class="help-item-content d2l-body-standard">${item.content}</div>
-				`)}
-				<d2l-button slot="footer" primary data-dialog-action="done">OK</d2l-button>
-			</d2l-dialog>`;
-		}
-		return null;
-	}
-
-	_renderCalculatedValue(calcMethod, methodKey, value) {
-		if (methodKey === calcMethods.decayingAverage) {
-			return html`
-			<div class="decaying-average-info d2l-body-small">
-				${this.localize('calculatedValue', 'calcMethod', calcMethod, 'value', value)}
-			</div>`;
-		}
-		return null;
-	}
-
-	_renderAchievementSelector() {
-		return html`
-		<d2l-outcomes-level-of-achievements
-			id="level-selector"
-			tooltip-position="top"
-			?read-only="${!this._canEditLevel()}"
-			disable-suggestion=""
-			disable-auto-save=""
-			focus-when-disabled=""
-			.token="${this.token}"
-			href="${this.getAttribute('href')}"
-			@d2l-outcomes-level-of-achievements-item-selected=${this._onItemSelected}>
-		</d2l-outcomes-level-of-achievements>`;
-	}
-
-	_renderOverrideButton() {
-		if (this._isOverrideAllowed && !!this._calculationMethod) {
-			return html`
-	        <d2l-button-subtle id="override-button"
-			    @click=${this._onOverrideButtonClicked}
-					text="${this.localize(this._isOverrideActive ? 'clearManualOverride' : 'manuallyOverride')}"
-                    icon="${this._isOverrideActive ? 'tier1:close-default' : 'tier1:edit'}"
-			/>`;
-		}
-		return null;
-	}
-
-	render() {
-		return html`
-		${this._renderElementHeading()}
-		${this._renderCalculationMethod(this._calculationMethod)}
-		${this._renderCalculatedValue(this._calculationMethod, this._calculationMethodKey, this._calculatedAchievementValue)}
-		${this._renderAchievementSelector()}
-		${this._renderOverrideButton()}
-		`;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('d2l-save-evaluation', this._publishDemonstration);
-	}
-
-	disconnectedCallback() {
-		window.removeEventListener('d2l-save-evaluation', this._publishDemonstration);
-		super.disconnectedCallback();
-	}
-
 	constructor() {
 		super();
 
@@ -280,8 +164,28 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		this.addEventListener('keydown', this._onKeyDown);
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('d2l-save-evaluation', this._publishDemonstration);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('d2l-save-evaluation', this._publishDemonstration);
+		super.disconnectedCallback();
+	}
+
 	firstUpdated() {
 		this._levelSelector = this.shadowRoot.getElementById('level-selector');
+	}
+
+	render() {
+		return html`
+		${this._renderElementHeading()}
+		${this._renderCalculationMethod(this._calculationMethod)}
+		${this._renderCalculatedValue(this._calculationMethod, this._calculationMethodKey, this._calculatedAchievementValue)}
+		${this._renderAchievementSelector()}
+		${this._renderOverrideButton()}
+		`;
 	}
 
 	set _entity(entity) {
@@ -291,15 +195,22 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		}
 	}
 
-	_onEntityChanged(entity) {
-		if (!entity) {
-			return;
-		}
+	_canEditLevel() {
+		return (this._isOverrideActive || !this._calculationMethod);
+	}
 
-		if (this.href !== this._loadedHref) {
-			this._loadEntityData(entity);
-		}
-		this._publishAction = entity.getPublishAction();
+	_dispatchChangeEvent(sirenActionPromise = undefined) {
+		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-change', {
+			bubbles: true,
+			composed: true,
+			detail: {
+				sirenActionPromise: sirenActionPromise
+			}
+		}));
+	}
+
+	_isCalculationUpdateNeeded() {
+		return !!this._calculationMethod && this._newAssessmentsAdded;
 	}
 
 	_loadEntityData(entity) {
@@ -329,7 +240,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 			const helpPopupItems = [];
 			helpMenuEntities.forEach((item) => {
-				var helpItemObj = {
+				const helpItemObj = {
 					label: item.getName(),
 					content: item.getContent()
 				};
@@ -338,7 +249,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 
 			let isOverrideActive = false;
 			let isOverrideAllowed = false;
-			for (var i = 0; i < levels.length; i++) {
+			for (let i = 0; i < levels.length; i++) {
 				const level = levels[i];
 				const selectAction = level.getSelectAction();
 
@@ -361,24 +272,46 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			this._loadedHref = this.href;
 		});
 	}
-
-	_isCalculationUpdateNeeded() {
-		return !!this._calculationMethod && this._newAssessmentsAdded;
+	_onCalcButtonClicked() {
+		if (this._updateLevelCalculation()) {
+			//Calculation successfully updated
+			this._dispatchChangeEvent();
+			this._levelSelector.resetToSuggested();
+			this._isOverrideActive = false;
+		}
 	}
 
-	_canEditLevel() {
-		return (this._isOverrideActive || !this._calculationMethod);
+	_onEntityChanged(entity) {
+		if (!entity) {
+			return;
+		}
+
+		if (this.href !== this._loadedHref) {
+			this._loadEntityData(entity);
+		}
+		this._publishAction = entity.getPublishAction();
 	}
+
+	_onHelpButtonClicked() {
+		const helpDialog = this.shadowRoot.getElementById('help-dialog');
+		if (!helpDialog) {
+			return;
+		}
+		if (!helpDialog.opened) {
+			helpDialog.opened = true;
+		}
+	}
+
+	_onItemSelected(e) {
+		this._dispatchChangeEvent(e.detail && e.detail.sirenActionPromise);
+	}
+
 	//For keyboard accessibility
 	_onKeyDown(event) {
 		if (event.keyCode === keyCodes.enter || event.keyCode === keyCodes.space) {
 			this.shadowRoot.activeElement.click();
 			event.preventDefault();
 		}
-	}
-
-	_onItemSelected(e) {
-		this._dispatchChangeEvent(e.detail && e.detail.sirenActionPromise);
 	}
 
 	_onOverrideButtonClicked() {
@@ -395,31 +328,6 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			this._isOverrideActive = false;
 			announce(this.localize('manualOverrideCleared'));
 		}
-	}
-
-	_onCalcButtonClicked() {
-		if (this._updateLevelCalculation()) {
-			//Calculation successfully updated
-			this._dispatchChangeEvent();
-			this._levelSelector.resetToSuggested();
-			this._isOverrideActive = false;
-		}
-	}
-
-	_onHelpButtonClicked() {
-		var helpDialog = this.shadowRoot.getElementById('help-dialog');
-		if (!helpDialog) {
-			return;
-		}
-		if (!helpDialog.opened) {
-			helpDialog.opened = true;
-		}
-	}
-
-	_updateLevelCalculation() {
-		//Calculation request will be sent here. This will retrieve a calculated value and any corresponding data
-		this._newAssessmentsAdded = false;
-		return true;
 	}
 
 	async _publishDemonstration(e) {
@@ -456,15 +364,106 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 		}));
 	}
 
-	_dispatchChangeEvent(sirenActionPromise = undefined) {
-		this.dispatchEvent(new CustomEvent('d2l-outcomes-coa-eval-override-change', {
-			bubbles: true,
-			composed: true,
-			detail: {
-				sirenActionPromise: sirenActionPromise
-			}
-		}));
+	_renderAchievementSelector() {
+		return html`
+		<d2l-outcomes-level-of-achievements
+			id="level-selector"
+			tooltip-position="top"
+			?read-only="${!this._canEditLevel()}"
+			disable-suggestion=""
+			disable-auto-save=""
+			focus-when-disabled=""
+			.token="${this.token}"
+			href="${this.getAttribute('href')}"
+			@d2l-outcomes-level-of-achievements-item-selected=${this._onItemSelected}>
+		</d2l-outcomes-level-of-achievements>`;
 	}
+
+	_renderCalcButton() {
+		if (this._isCalculationUpdateNeeded()) {
+			return html`
+			<span class="calculate-button-container">
+				<d2l-button-icon id="calculate-button"
+					@click=${this._onCalcButtonClicked}
+					text="${this.localize('recalculateOverallAchievement')}"
+					icon="tier1:calculate">
+				</d2l-button-icon>
+			</span>`;
+		}
+		return null;
+	}
+
+	_renderCalculatedValue(calcMethod, methodKey, value) {
+		if (methodKey === calcMethods.decayingAverage) {
+			return html`
+			<div class="decaying-average-info d2l-body-small">
+				${this.localize('calculatedValue', 'calcMethod', calcMethod, 'value', value)}
+			</div>`;
+		}
+		return null;
+	}
+
+	_renderCalculationHelp() {
+		if (this._helpPopupItems.length > 0) {
+			return html`
+			<d2l-button-icon id="help-button"
+				@click=${this._onHelpButtonClicked}
+				text="${this.localize('calculationMethodDetails')}"
+				icon="tier1:help">
+			</d2l-button-icon>
+			<d2l-dialog id="help-dialog" title-text="${this.localize('calculationMethodDetails')}">
+				${this._helpPopupItems.map((item) => html`
+					<div class="help-item-label d2l-label"><b>${item.label}:</b></div>
+					<div class="help-item-content d2l-body-standard">${item.content}</div>
+				`)}
+				<d2l-button slot="footer" primary data-dialog-action="done">OK</d2l-button>
+			</d2l-dialog>`;
+		}
+		return null;
+	}
+
+	_renderCalculationMethod(calcMethod) {
+		if (calcMethod) {
+			return html`
+			<div class="calculation-info">
+				<span class="calculation-label d2l-body-small">
+					${this.localize('calculationMethod', 'calcMethod', calcMethod)}
+				</span>
+				${this._renderCalculationHelp()}
+			</div>
+
+			<div style="clear: both;"></div>`;
+		}
+		return null;
+	}
+
+	_renderElementHeading() {
+		return html`
+			<div class="flex-box">
+				<h2 class="page-heading d2l-heading-3">${this.localize('selectOverallAchievement')}</h2>
+				${this._renderCalcButton()}
+			</div>
+		<div style="clear: both;"></div>`;
+	}
+
+	_renderOverrideButton() {
+		if (this._isOverrideAllowed && !!this._calculationMethod) {
+			return html`
+	        <d2l-button-subtle id="override-button"
+			    @click=${this._onOverrideButtonClicked}
+					text="${this.localize(this._isOverrideActive ? 'clearManualOverride' : 'manuallyOverride')}"
+                    icon="${this._isOverrideActive ? 'tier1:close-default' : 'tier1:edit'}"
+			/>`;
+		}
+		return null;
+	}
+
+	_updateLevelCalculation() {
+		//Calculation request will be sent here. This will retrieve a calculated value and any corresponding data
+		this._newAssessmentsAdded = false;
+		return true;
+	}
+
 }
 
 customElements.define('d2l-outcomes-coa-eval-override', D2lOutcomesCOAEvalOverride);
