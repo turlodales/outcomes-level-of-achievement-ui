@@ -4,15 +4,15 @@ LitElement component to display levels of achievements
 @demo demo/d2l-outcomes-level-of-achievements.html
 */
 
-import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
-import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
-
 import './squishy-button-selector/d2l-squishy-button.js';
 import './squishy-button-selector/d2l-squishy-button-selector.js';
-import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { LocalizeMixin } from './localize-mixin.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
+
 export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin(LitElement)) {
 
 	static get properties() {

@@ -11,13 +11,13 @@ import '@brightspace-ui/core/components/button/button-icon.js';
 import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/dialog/dialog.js';
 import './d2l-outcomes-level-of-achievements.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles';
-import { announce } from '@brightspace-ui/core/helpers/announce.js';
-import { LocalizeMixin } from './localize-mixin.js';
-import { DemonstrationEntity } from './entities/DemonstrationEntity';
 import { calcMethods, evalTypes, keyCodes } from './consts.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '@brightspace-ui/core/helpers/announce.js';
+import { DemonstrationEntity } from './entities/DemonstrationEntity';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
+import { LocalizeMixin } from './localize-mixin.js';
 import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
 
 export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(LitElement)) {

@@ -1,7 +1,7 @@
-import { Entity } from 'siren-sdk/src/es6/Entity';
 import { CalculationMethodEntity } from './CalculationMethodEntity';
 import { DemonstratableLevelEntity } from './DemonstratableLevelEntity';
 import { DemonstrationOutdatedStatusEntity } from './DemonstrationOutdatedStatusEntity';
+import { Entity } from 'siren-sdk/src/es6/Entity';
 
 export class DemonstrationEntity extends Entity {
 

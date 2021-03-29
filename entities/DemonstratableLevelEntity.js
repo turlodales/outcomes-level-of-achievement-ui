@@ -1,5 +1,5 @@
-import { SelflessEntity } from 'siren-sdk/src/es6/SelflessEntity';
 import { AchievementLevelEntity } from './AchievementLevelEntity';
+import { SelflessEntity } from 'siren-sdk/src/es6/SelflessEntity';
 
 export class DemonstratableLevelEntity extends SelflessEntity {
 	static get class() { return 'demonstratable-level'; }

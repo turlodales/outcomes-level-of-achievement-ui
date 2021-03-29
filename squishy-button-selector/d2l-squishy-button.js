@@ -1,9 +1,9 @@
-import '@polymer/polymer/polymer-legacy.js';
+import '@brightspace-ui/core/components/colors/colors';
 import '@brightspace-ui/core/components/tooltip/tooltip.js';
+import '@polymer/polymer/polymer-legacy.js';
 import 'd2l-polymer-behaviors/d2l-dom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
-import '@brightspace-ui/core/components/colors/colors';
 import { keyCodes } from '../consts.js';
 
 export class D2lSquishyButton extends LitElement {
