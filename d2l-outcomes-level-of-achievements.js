@@ -9,6 +9,7 @@ import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 
 import './squishy-button-selector/d2l-squishy-button.js';
 import './squishy-button-selector/d2l-squishy-button-selector.js';
+import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
 import { LocalizeMixin } from './localize-mixin.js';
@@ -39,21 +40,23 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 	}
 
 	static get styles() {
-		return css`
-			d2l-squishy-button-selector {
-				width: 100%;
-			}
-			d2l-squishy-button {
-				max-width: 9rem;
-			}
-			.d2l-suggestion-text {
-				@apply --d2l-body-small-text;
-				margin: 0.3rem 0 0.3rem 0;
-			}
-			:host {
-				display: block;
-			}
-		`;
+		return [
+			bodySmallStyles, 
+			css`
+				d2l-squishy-button-selector {
+					width: 100%;
+				}
+				d2l-squishy-button {
+					max-width: 9rem;
+				}
+				.d2l-body-small {
+					margin: 0.3rem 0 0.3rem 0;
+				}
+				:host {
+					display: block;
+				}
+			`
+		];
 	}
 
 	connectedCallback() {
@@ -70,7 +73,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		if (this._shouldShowSuggestion()) {
 			return html`
 			<div id="suggestion-label">
-				<p class="d2l-suggestion-text">${this.localize('suggestedLevel', 'level', this._suggestedLevel.text)}</p>
+				<p class="d2l-body-small">${this.localize('suggestedLevel', 'level', this._suggestedLevel.text)}</p>
 			</div>`;
 		}
 		return null;
