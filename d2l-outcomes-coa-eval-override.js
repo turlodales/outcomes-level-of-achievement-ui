@@ -453,7 +453,7 @@ export class D2lOutcomesCOAEvalOverride extends EntityMixinLit(LocalizeMixin(Lit
 			    @click=${this._onOverrideButtonClicked}
 					text="${this.localize(this._isOverrideActive ? 'clearManualOverride' : 'manuallyOverride')}"
                     icon="${this._isOverrideActive ? 'tier1:close-default' : 'tier1:edit'}"
-			/>`;
+			></d2l-button-subtle>`;
 		}
 		return null;
 	}
