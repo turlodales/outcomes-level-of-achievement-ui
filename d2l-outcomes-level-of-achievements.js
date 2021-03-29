@@ -41,7 +41,7 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 
 	static get styles() {
 		return [
-			bodySmallStyles, 
+			bodySmallStyles,
 			css`
 				d2l-squishy-button-selector {
 					width: 100%;
