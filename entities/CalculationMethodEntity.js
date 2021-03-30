@@ -1,7 +1,22 @@
 import { Entity } from 'siren-sdk/src/es6/Entity';
 import { SelflessEntity } from 'siren-sdk/src/es6/SelflessEntity';
 
+export class CalculationSettingEntity extends SelflessEntity {
+
+	static get class() { return 'calculation-setting'; }
+
+	getContent() {
+		return this._entity && this._entity.properties && this._entity.properties.content;
+	}
+
+	getName() {
+		return this._entity && this._entity.properties && this._entity.properties.name;
+	}
+
+}
+
 export class CalculationMethodEntity extends Entity {
+
 	static get class() { return 'calculation-method'; }
 
 	getKey() {
@@ -18,18 +33,6 @@ export class CalculationMethodEntity extends Entity {
 		}
 		const settings = this._entity.getSubEntitiesByClass(CalculationSettingEntity.class);
 		return settings.map(setting => new CalculationSettingEntity(this, setting));
-	}
-}
-
-export class CalculationSettingEntity extends SelflessEntity {
-	static get class() { return 'calculation-setting'; }
-
-	getName() {
-		return this._entity && this._entity.properties && this._entity.properties.name;
-	}
-
-	getContent() {
-		return this._entity && this._entity.properties && this._entity.properties.content;
 	}
 
 }

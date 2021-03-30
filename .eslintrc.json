@@ -1,20 +1,3 @@
 {
-  "extends": [
-    "brightspace/polymer-3-config"
-  ],
-  "env": {
-    "node": true
-  },
-  "rules": {
-    "object-shorthand": [
-      2,
-      "never"
-    ]
-  },
-  "globals": {
-    "Promise": false,
-    "Map": false,
-    "fastdom": false,
-    "Symbol": false
-  }
+  "extends": "brightspace/lit-config"
 }

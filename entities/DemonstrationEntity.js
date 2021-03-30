@@ -1,9 +1,16 @@
-import { Entity } from 'siren-sdk/src/es6/Entity';
 import { CalculationMethodEntity } from './CalculationMethodEntity';
 import { DemonstratableLevelEntity } from './DemonstratableLevelEntity';
 import { DemonstrationOutdatedStatusEntity } from './DemonstrationOutdatedStatusEntity';
+import { Entity } from 'siren-sdk/src/es6/Entity';
 
 export class DemonstrationEntity extends Entity {
+
+	static get actions() {
+		return {
+			publish: 'publish'
+		};
+	}
+
 	static get class() { return 'demonstration'; }
 
 	static get classes() {
@@ -13,17 +20,19 @@ export class DemonstrationEntity extends Entity {
 		};
 	}
 
-	static get actions() {
-		return {
-			publish: 'publish'
-		};
-	}
-
 	static get links() {
 		return {
 			calculationMethod: 'calculation-method',
 			outdatedStatus: 'outdated-status'
 		};
+	}
+
+	getAllDemonstratableLevels() {
+		if (!this._entity) {
+			return;
+		}
+		const levels = this._entity.getSubEntitiesByClass(DemonstratableLevelEntity.class);
+		return levels.map(level => new DemonstratableLevelEntity(this, level));
 	}
 
 	getCalculatedValue() {
@@ -37,14 +46,6 @@ export class DemonstrationEntity extends Entity {
 
 		const levelEntity = this._entity.getSubEntityByClasses([DemonstratableLevelEntity.class, DemonstratableLevelEntity.classes.selected]);
 		return new DemonstratableLevelEntity(this, levelEntity);
-	}
-
-	getAllDemonstratableLevels() {
-		if (!this._entity) {
-			return;
-		}
-		const levels = this._entity.getSubEntitiesByClass(DemonstratableLevelEntity.class);
-		return levels.map(level => new DemonstratableLevelEntity(this, level));
 	}
 
 	getPublishAction() {
@@ -80,4 +81,5 @@ export class DemonstrationEntity extends Entity {
 
 		return this._entity.getLinkByRel(DemonstrationEntity.links.outdatedStatus).href;
 	}
+
 }

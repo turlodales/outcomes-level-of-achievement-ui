@@ -1,23 +1,21 @@
 /* global suite, test, fixture, expect, suiteSetup, suiteTeardown, sinon */
 
-'use strict';
+suite('<d2l-outcomes-level-of-achievements>', () => {
 
-suite('<d2l-outcomes-level-of-achievements>', function() {
+	let element, sandbox;
 
-	var element, sandbox;
-
-	suiteSetup(function() {
+	suiteSetup(() => {
 		sandbox = sinon.sandbox.create();
 		element = fixture('basic');
 	});
 
-	suiteTeardown(function() {
+	suiteTeardown(() => {
 		sandbox.restore();
 	});
 
-	suite('smoke test', function() {
+	suite('smoke test', () => {
 
-		test('can be instantiated', function() {
+		test('can be instantiated', () => {
 			expect(element.tagName).to.equal('D2L-OUTCOMES-LEVEL-OF-ACHIEVEMENTS');
 		});
 

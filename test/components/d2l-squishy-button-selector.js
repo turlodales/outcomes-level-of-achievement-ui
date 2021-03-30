@@ -2,28 +2,28 @@
 
 import '../../squishy-button-selector/d2l-squishy-button-selector.js';
 
-describe('<d2l-squishy-button-selector>', function() {
+describe('<d2l-squishy-button-selector>', () => {
 
-	var element, sandbox;
+	let element, sandbox;
 
 	beforeEach(async() => {
 		sandbox = sinon.sandbox.create();
 		element = await fixture('basic');
 	});
 
-	afterEach(function() {
+	afterEach(() => {
 		sandbox.restore();
 	});
 
-	describe('smoke test', function() {
-		it('can be instantiated', function() {
+	describe('smoke test', () => {
+		it('can be instantiated', () => {
 			expect(element.tagName).to.equal('D2L-SQUISHY-BUTTON-SELECTOR');
 		});
 	});
 
-	describe('_buttons', function() {
+	describe('_buttons', () => {
 
-		it('Is a list of all the buttons', function() {
+		it('Is a list of all the buttons', () => {
 			expect(element._buttons.length).to.equal(3);
 			expect(element._buttons[0].getAttribute('text').trim()).to.equal('BUTTON 1');
 			expect(element._buttons[1].getAttribute('text').trim()).to.equal('BUTTON 2');
@@ -32,7 +32,7 @@ describe('<d2l-squishy-button-selector>', function() {
 
 	});
 
-	describe('_updateButtonSelectedAttribute', function() {
+	describe('_updateButtonSelectedAttribute', () => {
 		function verifyButtonsSelected(b1, b2, b3) {
 			expect(element._buttons[0].hasAttribute('selected')).to.equal(b1);
 			expect(element._buttons[1].hasAttribute('selected')).to.equal(b2);
@@ -63,34 +63,34 @@ describe('<d2l-squishy-button-selector>', function() {
 		});
 	});
 
-	describe('d2l-squishy-button-selected event', function() {
-		it('should set selectedIndex to the selected button', function() {
-			[0, 1, 2].forEach(function(num) {
+	describe('d2l-squishy-button-selected event', () => {
+		it('should set selectedIndex to the selected button', () => {
+			[0, 1, 2].forEach((num) => {
 				element._buttons[num]._dispatchItemSelectedEvent(false, true);
 				expect(element.selectedIndex).to.equal(num);
 			});
 		});
 	});
 
-	describe('_disabledChanged', function() {
+	describe('_disabledChanged', () => {
 		function verifyTabindex(num) {
 			expect(element.getAttribute('tabindex')).to.equal(num.toString());
 		}
 
-		it('sets the tabindex to -1 when readonly', function() {
+		it('sets the tabindex to -1 when readonly', () => {
 			verifyTabindex(0);
 			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
 		});
 
-		it('sets the tabindex to 0 when changing back from readonly', function() {
+		it('sets the tabindex to 0 when changing back from readonly', () => {
 			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
 			element.removeAttribute('disabled');
 			verifyTabindex(0);
 		});
 
-		it('If possible, sets the tabindex to its previous value when changing back from readonly', function() {
+		it('If possible, sets the tabindex to its previous value when changing back from readonly', () => {
 			element.setAttribute('tabindex', '3');
 			element.setAttribute('disabled', true);
 			verifyTabindex(-1);
@@ -99,14 +99,14 @@ describe('<d2l-squishy-button-selector>', function() {
 		});
 	});
 
-	describe('_onFocus', function() {
-		it('focuses the first element if nothing is selected', function() {
+	describe('_onFocus', () => {
+		it('focuses the first element if nothing is selected', () => {
 			element._buttons[0].focus = sinon.spy();
 			element._onFocus({ target: element });
 			expect(element._buttons[0].focus.called).to.equal(true);
 		});
 
-		it('focuses the selected element', function() {
+		it('focuses the selected element', () => {
 			element.selectedIndex = 1;
 			element._buttons[1].focus = sinon.spy();
 			element._onFocus({ target: element });
@@ -122,7 +122,7 @@ describe('<d2l-squishy-button-selector>', function() {
 			expect(element._buttons[0].focus.called).to.equal(false);
 		});
 
-		it('focuses nothing if a button is selected rather than the list', function() {
+		it('focuses nothing if a button is selected rather than the list', () => {
 			element.selectedIndex = 1;
 			element._buttons[1].focus = sinon.spy();
 			element._onFocus({ target: element._buttons[0] });

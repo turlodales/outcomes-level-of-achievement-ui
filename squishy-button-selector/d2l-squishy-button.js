@@ -1,9 +1,9 @@
-import '@polymer/polymer/polymer-legacy.js';
+import '@brightspace-ui/core/components/colors/colors';
 import '@brightspace-ui/core/components/tooltip/tooltip.js';
+import '@polymer/polymer/polymer-legacy.js';
 import 'd2l-polymer-behaviors/d2l-dom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
-import '@brightspace-ui/core/components/colors/colors';
 import { keyCodes } from '../consts.js';
 
 export class D2lSquishyButton extends LitElement {
@@ -188,9 +188,28 @@ export class D2lSquishyButton extends LitElement {
 		this.addEventListener('slotchange', this._handleDomChanges, true);
 	}
 
+	set color(value) {
+		if (value) {
+			this.style.setProperty('--d2l-squishy-button-selected-color', value);
+		}
+	}
+
+	set disabled(val) {
+		if (val) {
+			this.setAttribute('aria-disabled', 'true');
+		}
+		else {
+			this.removeAttribute('aria-disabled');
+		}
+	}
+
+	set selected(newVal) {
+		this._dispatchItemSelectedEvent(false, newVal);
+	}
+
 	render() {
 		return html`
-			<d2l-tooltip 
+			<d2l-tooltip
 				id="tooltip${this.index}"
 				?hidden=${!this._textOverflowing}
 				position="${this.tooltipPosition}"
@@ -215,8 +234,9 @@ export class D2lSquishyButton extends LitElement {
 		this._measureSize();
 	}
 
-	_getDisabled(disabled) {
-		return disabled;
+	detached() {
+		window.removeEventListener('resize', this._measureSize);
+		this.shadowRoot.removeEventListener('slotchange', this._handleDomChanges);
 	}
 
 	select() {
@@ -225,9 +245,24 @@ export class D2lSquishyButton extends LitElement {
 		}
 	}
 
-	detached() {
-		window.removeEventListener('resize', this._measureSize);
-		this.shadowRoot.removeEventListener('slotchange', this._handleDomChanges);
+	_dispatchItemSelectedEvent(triggeredByUserAction, selected) {
+		const eventName = triggeredByUserAction ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
+		this.dispatchEvent(new CustomEvent(eventName, {
+			detail: {
+				index: this.index,
+				data: this.buttonData,
+				selected: selected
+			},
+			bubbles: true
+		}));
+	}
+
+	_getDisabled(disabled) {
+		return disabled;
+	}
+
+	_getTextClass(shortText, textOverflowing) {
+		return this._showShortText(shortText, textOverflowing) ? 'squishy-button-hide' : '';
 	}
 
 	_handleDomChanges() {
@@ -235,24 +270,19 @@ export class D2lSquishyButton extends LitElement {
 		this.dispatchEvent(new CustomEvent('squishy-button-text-changed', { bubbles: true }));
 	}
 
-	_showShortText(shortText, textOverflowing) {
-		return shortText && textOverflowing;
+	_handleTap(event) {
+		if (this.hasAttribute('disabled')) {
+			return;
+		}
+		this.selected = true;
+		event.preventDefault();
+		this._dispatchItemSelectedEvent(true, true);
 	}
 
 	_measureSize() {
-		var innerHeight = this.shadowRoot.getElementById('textarea').offsetHeight;
-		var outerHeight = this.shadowRoot.getElementById('textwrapper').offsetHeight;
+		const innerHeight = this.shadowRoot.getElementById('textarea').offsetHeight;
+		const outerHeight = this.shadowRoot.getElementById('textwrapper').offsetHeight;
 		this._textOverflowing = innerHeight > outerHeight;
-	}
-
-	_getTextClass(shortText, textOverflowing) {
-		return this._showShortText(shortText, textOverflowing) ? 'squishy-button-hide' : '';
-	}
-
-	set color(value) {
-		if (value) {
-			this.style.setProperty('--d2l-squishy-button-selected-color', value);
-		}
 	}
 
 	_onKeyDown(event) {
@@ -267,39 +297,10 @@ export class D2lSquishyButton extends LitElement {
 		}
 	}
 
-	_handleTap(event) {
-		if (this.hasAttribute('disabled')) {
-			return;
-		}
-		this.selected = true;
-		event.preventDefault();
-		this._dispatchItemSelectedEvent(true, true);
+	_showShortText(shortText, textOverflowing) {
+		return shortText && textOverflowing;
 	}
 
-	set selected(newVal) {
-		this._dispatchItemSelectedEvent(false, newVal);
-	}
-
-	set disabled(val) {
-		if (val) {
-			this.setAttribute('aria-disabled', 'true');
-		}
-		else {
-			this.removeAttribute('aria-disabled');
-		}
-	}
-
-	_dispatchItemSelectedEvent(triggeredByUserAction, selected) {
-		var eventName = triggeredByUserAction ? 'd2l-squishy-button-selected' : 'd2l-squishy-button-selection-changed';
-		this.dispatchEvent(new CustomEvent(eventName, {
-			detail: {
-				index: this.index,
-				data: this.buttonData,
-				selected: selected
-			},
-			bubbles: true
-		}));
-	}
 }
 
 customElements.define('d2l-squishy-button', D2lSquishyButton);

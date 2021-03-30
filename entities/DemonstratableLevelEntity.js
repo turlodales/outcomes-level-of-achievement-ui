@@ -1,5 +1,5 @@
-import { SelflessEntity } from 'siren-sdk/src/es6/SelflessEntity';
 import { AchievementLevelEntity } from './AchievementLevelEntity';
+import { SelflessEntity } from 'siren-sdk/src/es6/SelflessEntity';
 
 export class DemonstratableLevelEntity extends SelflessEntity {
 	static get class() { return 'demonstratable-level'; }
@@ -17,14 +17,6 @@ export class DemonstratableLevelEntity extends SelflessEntity {
 		};
 	}
 
-	isSelected() {
-		return this._entity.hasClass(DemonstratableLevelEntity.classes.selected);
-	}
-
-	isSuggested() {
-		return this._entity.hasClass(DemonstratableLevelEntity.classes.suggested);
-	}
-
 	getAction(deferred = false) {
 		if (deferred) {
 			return this._entity && (this._entity.getAction('select-deferred') || this._entity.getActionByName('deselect-deferred'));
@@ -38,6 +30,14 @@ export class DemonstratableLevelEntity extends SelflessEntity {
 
 	getSelectAction() {
 		return this._entity && this._entity.getActionByName('select');
+	}
+
+	isSelected() {
+		return this._entity.hasClass(DemonstratableLevelEntity.classes.selected);
+	}
+
+	isSuggested() {
+		return this._entity.hasClass(DemonstratableLevelEntity.classes.suggested);
 	}
 
 	onLevelChanged(onChange) {
