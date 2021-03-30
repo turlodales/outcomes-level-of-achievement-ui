@@ -29,10 +29,12 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test
-        run: npm run test:wct
+        run: |
+          npm install karma-sauce-launcher@2 --no-save
+          npx karma start karma.sauce.conf.js
         env:
-          SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN}}
           SAUCE_USERNAME: Desire2Learn
+          SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN}}
   lint:
     name: Lint
     timeout-minutes: 5

@@ -1,15 +1,10 @@
 {
-    "acceptedScopes": [
-        "d2l"
-    ],
-    "manualOverrides": {
-        "cli-table@^0.3.1": "MIT",
-        "d2l-polymer-langtools@^1.4.0": "Public-Domain",
-        "emitter-component@^1.1.1": "MIT",
-        "fork-stream@^0.0.4": "BSD-3-Clause",
-        "glob-to-regexp@^0.3.0": "BSD-2-Clause",
-        "url-template@^2.0.8": "BSD-3-Clause",
-        "valid-url@^1.0.9": "MIT",
-        "wct-browser-legacy@^1.0.2": "BSD-3-Clause"
-    }
+  "acceptedScopes": [
+    "d2l"
+  ],
+  "manualOverrides": {
+    "axe-core@>=3": "D2L-Open-Source-Special-Exemption (MPL-2.0)",
+    "trim@^0.0.1": "MIT",
+    "valid-url@^1.0.9": "MIT"
+  }
 }
