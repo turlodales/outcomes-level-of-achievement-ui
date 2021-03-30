@@ -89,14 +89,6 @@ describe('<d2l-squishy-button-selector>', () => {
 			element.removeAttribute('disabled');
 			verifyTabindex(0);
 		});
-
-		it('If possible, sets the tabindex to its previous value when changing back from readonly', () => {
-			element.setAttribute('tabindex', '3');
-			element.setAttribute('disabled', true);
-			verifyTabindex(0);
-			element.removeAttribute('disabled');
-			verifyTabindex(3);
-		});
 	});
 
 	describe('_onFocus', () => {
