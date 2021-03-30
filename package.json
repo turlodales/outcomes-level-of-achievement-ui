@@ -23,7 +23,7 @@
     "format:eslint": "npm run lint:eslint -- --fix",
     "test": "npm run lint && npm run test:wct:local",
     "test:wct": "polymer test --skip-plugin local",
-    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test --skip-plugin sauce",
+    "test:wct:local": "cross-env LAUNCHPAD_BROWSERS=chrome NODE_TLS_REJECT_UNAUTHORIZED=0 polymer test --skip-plugin sauce",
     "serve": "polymer analyze > analysis.json && polymer serve",
     "start": "es-dev-server --app-index demo/index.html --node-resolve --dedupe --watch --open --preserve-symlinks"
   },
