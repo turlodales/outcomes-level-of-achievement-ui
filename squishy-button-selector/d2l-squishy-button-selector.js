@@ -107,12 +107,27 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		this._buttons = [];
 	}
 
-	render() {
-		return this.arrowKeysContainer(html`<slot></slot>`);
-	}
+	set disabled(disabled) {
+		const buttonList = this;
 
-	async arrowKeysFocusablesProvider() {
-		return this._buttons;
+		this._setButtonProperties();
+		if (!this.focusWhenDisabled) {
+			if (disabled && buttonList.getAttribute('tabindex') === '-1'
+				|| !disabled && buttonList.getAttribute('tabindex') === '0'
+			) {
+				return;
+			}
+
+			buttonList.setAttribute('tabindex', '0');
+
+		}
+
+		if (disabled) {
+			this.setAttribute('aria-disabled', 'true');
+		}
+		else {
+			this.removeAttribute('aria-disabled');
+		}
 	}
 
 	firstUpdated() {
@@ -121,20 +136,23 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		this.addEventListener('mouseover', this._onHover, true);
 	}
 
+	render() {
+		return this.arrowKeysContainer(html`<slot></slot>`);
+	}
+
 	updated() {
 		this._handleDomChanges();
 		this._setShortTextIfAppropriate();
 	}
 
-	_handleDomChanges() {
-		this._setButtonProperties();
-		this._updateButtonSelectedAttribute();
+	async arrowKeysFocusablesProvider() {
+		return this._buttons;
 	}
 
 	_getListOfAllButtons() {
 		const childElements = this.children;
 		this._buttons = [];
-		for (var i = 0; i < childElements.length; i++) {
+		for (let i = 0; i < childElements.length; i++) {
 			const element = childElements[i];
 			if (element.tagName === 'D2L-SQUISHY-BUTTON') {
 				this._buttons.push(element);
@@ -142,12 +160,57 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		}
 	}
 
+	_handleDomChanges() {
+		this._setButtonProperties();
+		this._updateButtonSelectedAttribute();
+	}
+
+	_onBlur() {
+		this._focused = false;
+		this._popTabIndex('-1');
+	}
+
+	_onFocus(event) {
+		if (this._focused) {
+			return;
+		}
+		this._handleDomChanges();
+		this._pushTabIndex('-1');
+
+		const focusIndex = (this.selectedIndex > -1 && this.selectedIndex) || 0;
+		if ((this._buttons || [])[focusIndex] && event.target.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR') {
+			this._buttons[focusIndex].focus();
+		}
+		this._focused = true;
+	}
+
+	_onItemSelected(event) {
+		if (event.detail.selected) {
+			this.selectedIndex = event.detail.index;
+		} else if (this.selectedIndex === event.detail.index) {
+			this.selectedIndex = undefined;
+		}
+		event.preventDefault();
+	}
+
+	_popTabIndex() {
+		this.setAttribute('tabindex', this._prevTabIndex);
+		this._prevTabIndex = null;
+	}
+
+	_pushTabIndex(tabindex) {
+		if (this._prevTabIndex === null || this._prevTabIndex === undefined) {
+			this._prevTabIndex = this.hasAttribute('tabindex') ? this.getAttribute('tabindex') : null;
+		}
+		this.setAttribute('tabindex', tabindex);
+	}
+
 	_setButtonProperties() {
 		if (!this._buttons) {
 			return;
 		}
-		for (var i = 0; i < this._buttons.length; i++) {
-			var button = this._buttons[i];
+		for (let i = 0; i < this._buttons.length; i++) {
+			const button = this._buttons[i];
 			button.setAttribute('index', i);
 			if (this.hasAttribute('disabled')) {
 				button.setAttribute('disabled', '');
@@ -160,63 +223,28 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		}
 	}
 
-	_updateButtonSelectedAttribute() {
-		if (!this._buttons) {
-			return;
-		}
-
-		if (this.selectedIndex === undefined) {
-			var selected = this._buttons.filter(function(button) {
-				return button.hasAttribute('selected');
-			});
-			if (selected.length > 0) {
-				this.selectedIndex = selected[0].index;
-				return;
-			}
-		}
-
-		for (var i = 0; i < this._buttons.length; i++) {
-			if (i === this.selectedIndex) {
-				this._buttons[i].setAttribute('selected', '');
-				this._buttons[i].setAttribute('aria-checked', 'true');
-			} else {
-				this._buttons[i].removeAttribute('selected');
-				this._buttons[i].setAttribute('aria-checked', 'false');
-			}
-		}
-	}
-
-	_onItemSelected(event) {
-		if (event.detail.selected) {
-			this.selectedIndex = event.detail.index;
-		} else if (this.selectedIndex === event.detail.index) {
-			this.selectedIndex = undefined;
-		}
-		event.preventDefault();
-	}
-
 	_setShortTextIfAppropriate() {
 		if (!this._buttons || this._buttons.length === 0) {
 			return;
 		}
 
-		var regex = /([^\d]*)(\d+)$/;
+		const regex = /([^\d]*)(\d+)$/;
 
-		var toMatch;
-		var prevNum;
+		let toMatch;
+		let prevNum;
 
-		var toSet = [];
-		var hasShortText = true;
+		const toSet = [];
+		let hasShortText = true;
 
-		for (var i = 0; i < this._buttons.length; i++) {
-			var text = this._buttons[i].getAttribute('text');
-			var match = regex.exec(text || '');
+		for (let i = 0; i < this._buttons.length; i++) {
+			const text = this._buttons[i].getAttribute('text');
+			const match = regex.exec(text || '');
 			if (!match) {
 				hasShortText = false;
 				break;
 			}
-			var preText = match[1];
-			var num = Number.parseInt(match[2]);
+			const preText = match[1];
+			const num = Number.parseInt(match[2]);
 			if (!toMatch) {
 				toMatch = preText;
 				prevNum = num;
@@ -234,65 +262,39 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 		}
 
 		if (hasShortText) {
-			toSet.forEach(function(item) {
+			toSet.forEach((item) => {
 				item.button.setAttribute('short-text', item.text);
 			});
 		} else {
-			this._buttons.forEach(function(button) {
+			this._buttons.forEach((button) => {
 				button.removeAttribute('short-text');
 			});
 		}
 	}
 
-	_onFocus(event) {
-		if (this._focused) {
+	_updateButtonSelectedAttribute() {
+		if (!this._buttons) {
 			return;
 		}
-		this._handleDomChanges();
-		this._pushTabIndex('-1');
 
-		var focusIndex = (this.selectedIndex > -1 && this.selectedIndex) || 0;
-		if ((this._buttons || [])[focusIndex] && event.target.nodeName === 'D2L-SQUISHY-BUTTON-SELECTOR') {
-			this._buttons[focusIndex].focus();
-		}
-		this._focused = true;
-	}
-
-	_onBlur() {
-		this._focused = false;
-		this._popTabIndex('-1');
-	}
-
-	_pushTabIndex(tabindex) {
-		if (this._prevTabIndex === null || this._prevTabIndex === undefined) {
-			this._prevTabIndex = this.hasAttribute('tabindex') ? this.getAttribute('tabindex') : null;
-		}
-		this.setAttribute('tabindex', tabindex);
-	}
-
-	_popTabIndex() {
-		this.setAttribute('tabindex', this._prevTabIndex);
-		this._prevTabIndex = null;
-	}
-
-	set disabled(disabled) {
-		var buttonList = this;
-
-		this._setButtonProperties();
-		if (!this.focusWhenDisabled) {
-			if (disabled && buttonList.getAttribute('tabindex') === '-1'
-				|| !disabled && buttonList.getAttribute('tabindex') === '0'
-			) {
+		if (this.selectedIndex === undefined) {
+			const selected = this._buttons.filter((button) => {
+				return button.hasAttribute('selected');
+			});
+			if (selected.length > 0) {
+				this.selectedIndex = selected[0].index;
 				return;
 			}
-			buttonList.setAttribute('tabindex', '0');
 		}
 
-		if (disabled) {
-			this.setAttribute('aria-disabled', 'true');
-		}
-		else {
-			this.removeAttribute('aria-disabled');
+		for (let i = 0; i < this._buttons.length; i++) {
+			if (i === this.selectedIndex) {
+				this._buttons[i].setAttribute('selected', '');
+				this._buttons[i].setAttribute('aria-checked', 'true');
+			} else {
+				this._buttons[i].removeAttribute('selected');
+				this._buttons[i].setAttribute('aria-checked', 'false');
+			}
 		}
 	}
 

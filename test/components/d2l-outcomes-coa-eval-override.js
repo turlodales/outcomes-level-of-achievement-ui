@@ -1,22 +1,21 @@
 /* global suite, test, fixture, expect, describe, it, suiteSetup, suiteTeardown, sinon */
 
-'use strict';
-describe('<d2l-outcomes-coa-eval-override>', function() {
+describe('<d2l-outcomes-coa-eval-override>', () => {
 
-	var element, sandbox;
+	let element, sandbox;
 
-	suiteSetup(function() {
+	suiteSetup(() => {
 		sandbox = sinon.sandbox.create();
 		element = fixture('basic');
 	});
 
-	suiteTeardown(function() {
+	suiteTeardown(() => {
 		sandbox.restore();
 	});
 
-	suite('smoke test', function() {
+	suite('smoke test', () => {
 
-		test('can be instantiated', function() {
+		test('can be instantiated', () => {
 			expect(element.tagName).to.equal('D2L-OUTCOMES-COA-EVAL-OVERRIDE');
 		});
 

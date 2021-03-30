@@ -4,15 +4,15 @@ LitElement component to display levels of achievements
 @demo demo/d2l-outcomes-level-of-achievements.html
 */
 
-import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
-import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
-
 import './squishy-button-selector/d2l-squishy-button.js';
 import './squishy-button-selector/d2l-squishy-button-selector.js';
-import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
 import { DemonstrationEntity } from './entities/DemonstrationEntity';
+import { EntityMixinLit } from 'siren-sdk/src/mixin/entity-mixin-lit.js';
 import { LocalizeMixin } from './localize-mixin.js';
+import { performSirenAction } from 'siren-sdk/src/es6/SirenAction.js';
+
 export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin(LitElement)) {
 
 	static get properties() {
@@ -59,41 +59,6 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		];
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('refresh-outcome-demonstrations', this._refresh);
-	}
-
-	disconnectedCallback() {
-		window.removeEventListener('refresh-outcome-demonstrations', this._refresh);
-		super.disconnectedCallback();
-	}
-
-	_renderSuggestedLevel() {
-		if (this._shouldShowSuggestion()) {
-			return html`
-			<div id="suggestion-label">
-				<p class="d2l-body-small">${this.localize('suggestedLevel', 'level', this._suggestedLevel.text)}</p>
-			</div>`;
-		}
-		return null;
-	}
-
-	_renderDemonstrationLevel(item, index) {
-		return html`
-		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}" tabindex=-1>
-			${item.text}
-		</d2l-squishy-button>`;
-	}
-
-	render() {
-		return html`
-			${this._renderSuggestedLevel()}
-			<d2l-squishy-button-selector role="radiogroup" tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction} ?focus-when-disabled=${this.focusWhenDisabled}>
-				${this._demonstrationLevels.map((item, i) => this._renderDemonstrationLevel(item, i))}
-			</d2l-squishy-button-selector>`;
-	}
-
 	constructor() {
 		super();
 
@@ -109,9 +74,55 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		this._refresh = this._refresh.bind(this);
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('refresh-outcome-demonstrations', this._refresh);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('refresh-outcome-demonstrations', this._refresh);
+		super.disconnectedCallback();
+	}
+
 	firstUpdated() {
 		this._onItemSelected = this._onItemSelected.bind(this);
 		this.shadowRoot.querySelector('d2l-squishy-button-selector').addEventListener('d2l-squishy-button-selected', this._onItemSelected);
+	}
+
+	render() {
+		return html`
+			${this._renderSuggestedLevel()}
+			<d2l-squishy-button-selector role="radiogroup" tooltip-position="top" ?disabled=${this.readOnly || !this._hasAction} ?focus-when-disabled=${this.focusWhenDisabled}>
+				${this._demonstrationLevels.map((item, i) => this._renderDemonstrationLevel(item, i))}
+			</d2l-squishy-button-selector>`;
+	}
+
+	enableAndFocus() {
+		this.readOnly = false;
+		const selector = this.shadowRoot.querySelector('d2l-squishy-button-selector');
+		selector.removeAttribute('disabled');
+		selector.focus();
+	}
+
+	resetToSuggested() {
+		let suggestedElement;
+		this._demonstrationLevels.map((level, i) => {
+			const currentElement = this.shadowRoot.getElementById(`item-${  i.toString()}`);
+			if (!currentElement) {
+				return;
+			}
+
+			if (this._suggestedLevel && i === this._suggestedLevel.index) {
+				suggestedElement = currentElement;
+			}
+			else if (currentElement.hasAttribute('selected')) {
+				currentElement.click();
+			}
+		});
+
+		if (suggestedElement) {
+			suggestedElement.select();
+		}
 	}
 
 	set _entity(entity) {
@@ -120,17 +131,22 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			super._entity = entity;
 		}
 	}
+
+	_getSuggestedLevelText(level) {
+		return this.localize('suggestedLevel', 'level', level);
+	}
+
 	_onEntityChanged(entity) {
 		if (!entity) {
 			return;
 		}
 		const demonstratableLevelEntities = entity.getAllDemonstratableLevels();
 		const demonstratableLevelsDict = {};
-		for (var i = 0; i < demonstratableLevelEntities.length; i++) {
+		for (let i = 0; i < demonstratableLevelEntities.length; i++) {
 			const level = demonstratableLevelEntities[i];
 			level.onLevelChanged(achievementLevel => {
 				const levelId = level.getLevelId();
-				var levelObj = {
+				const levelObj = {
 					action: level.getAction(this.disableAutoSave),
 					selected: level.isSelected(),
 					color: achievementLevel.getColor(),
@@ -145,9 +161,9 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 			this._demonstrationLevels = Object.values(demonstratableLevelsDict).sort((left, right) => {
 				return left.sortOrder - right.sortOrder;
 			});
-			var firstSuggested = undefined;
-			var firstSuggestedIndex = null;
-			for (var i = 0; i < this._demonstrationLevels.length; i++) {
+			let firstSuggested = undefined;
+			let firstSuggestedIndex = null;
+			for (let i = 0; i < this._demonstrationLevels.length; i++) {
 				const level = this._demonstrationLevels[i];
 				if (level.isSuggested) {
 					firstSuggested = level;
@@ -170,18 +186,14 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		});
 	}
 
-	_shouldShowSuggestion() {
-		return (!this.readOnly && this._hasAction && !this.disableSuggestion && !!this._suggestedLevel);
-	}
-
 	_onItemSelected(event) {
-		var action = event.detail.data.action;
+		const action = event.detail.data.action;
 		if (!this.token || !action) {
 			return;
 		}
 
 		const sirenActionPromise = performSirenAction(this.token, action)
-			.catch(function() { });
+			.catch(() => { });
 		this.dispatchEvent(new CustomEvent('d2l-outcomes-level-of-achievements-item-selected', {
 			bubbles: true,
 			composed: true,
@@ -191,43 +203,33 @@ export class D2lOutcomesLevelOfAchievements extends EntityMixinLit(LocalizeMixin
 		}));
 	}
 
-	_getSuggestedLevelText(level) {
-		return this.localize('suggestedLevel', 'level', level);
-	}
-
-	enableAndFocus() {
-		this.readOnly = false;
-		const selector = this.shadowRoot.querySelector('d2l-squishy-button-selector');
-		selector.removeAttribute('disabled');
-		selector.focus();
-	}
-
-	resetToSuggested() {
-		let suggestedElement;
-		this._demonstrationLevels.map((level, i) => {
-			const currentElement = this.shadowRoot.getElementById('item-' + i.toString());
-			if (!currentElement) {
-				return;
-			}
-
-			if (this._suggestedLevel && i === this._suggestedLevel.index) {
-				suggestedElement = currentElement;
-			}
-			else if (currentElement.hasAttribute('selected')) {
-				currentElement.click();
-			}
-		});
-
-		if (suggestedElement) {
-			suggestedElement.select();
-		}
-	}
-
 	_refresh() {
 		const newEntity = window.D2L.Siren.EntityStore.fetch(this.href, this.token, true);
 		this.entity = null;
 		this.entity = newEntity;
 	}
+
+	_renderDemonstrationLevel(item, index) {
+		return html`
+		<d2l-squishy-button role="radio" color="${item.color}" ?selected="${item.selected}" .buttonData="${{ action: item.action }}" index="${index}" id="item-${index}" tabindex=-1>
+			${item.text}
+		</d2l-squishy-button>`;
+	}
+
+	_renderSuggestedLevel() {
+		if (this._shouldShowSuggestion()) {
+			return html`
+			<div id="suggestion-label">
+				<p class="d2l-body-small">${this.localize('suggestedLevel', 'level', this._suggestedLevel.text)}</p>
+			</div>`;
+		}
+		return null;
+	}
+
+	_shouldShowSuggestion() {
+		return (!this.readOnly && this._hasAction && !this.disableSuggestion && !!this._suggestedLevel);
+	}
+
 }
 
 customElements.define('d2l-outcomes-level-of-achievements', D2lOutcomesLevelOfAchievements);
