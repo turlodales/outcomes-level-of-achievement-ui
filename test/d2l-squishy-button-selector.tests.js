@@ -1,14 +1,13 @@
 import '../d2l-outcomes-coa-eval-override.js';
 import '../squishy-button-selector/d2l-squishy-button-selector.js';
 import '../squishy-button-selector/d2l-squishy-button.js';
-import { createSandbox, spy } from 'sinon';
 import { expect, fixture, html } from '@open-wc/testing';
+import { spy } from 'sinon';
 
 describe('<d2l-squishy-button-selector>', () => {
-	let element, sandbox;
+	let element;
 
 	beforeEach(async() => {
-		sandbox = createSandbox();
 		element = await fixture(html`
 			<d2l-squishy-button-selector>
 				<d2l-squishy-button>BUTTON 1</d2l-squishy-button>
@@ -16,10 +15,6 @@ describe('<d2l-squishy-button-selector>', () => {
 				<d2l-squishy-button>BUTTON 3</d2l-squishy-button>
 			</d2l-squishy-button-selector>
 		`);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	describe('smoke test', () => {
