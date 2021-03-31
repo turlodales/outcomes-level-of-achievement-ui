@@ -77,25 +77,17 @@ describe('<d2l-squishy-button-selector>', () => {
 			expect(element.getAttribute('tabindex')).to.equal(num.toString());
 		}
 
-		it('sets the tabindex to -1 when readonly', () => {
+		it('sets the tabindex to 0 when readonly', () => {
 			verifyTabindex(0);
 			element.setAttribute('disabled', true);
-			verifyTabindex(-1);
+			verifyTabindex(0);
 		});
 
 		it('sets the tabindex to 0 when changing back from readonly', () => {
 			element.setAttribute('disabled', true);
-			verifyTabindex(-1);
+			verifyTabindex(0);
 			element.removeAttribute('disabled');
 			verifyTabindex(0);
-		});
-
-		it('If possible, sets the tabindex to its previous value when changing back from readonly', () => {
-			element.setAttribute('tabindex', '3');
-			element.setAttribute('disabled', true);
-			verifyTabindex(-1);
-			element.removeAttribute('disabled');
-			verifyTabindex(3);
 		});
 	});
 

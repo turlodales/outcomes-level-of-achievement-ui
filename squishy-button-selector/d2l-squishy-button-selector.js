@@ -118,13 +118,8 @@ export class D2lSquishyButtonSelector extends ArrowKeysMixin(LitElement) {
 				return;
 			}
 
-			if (disabled) {
-				this._pushTabIndex('-1');
-			} else if (this._prevTabIndex !== null && this._prevTabIndex !== '-1') {
-				this._popTabIndex();
-			} else {
-				buttonList.setAttribute('tabindex', '0');
-			}
+			buttonList.setAttribute('tabindex', '0');
+
 		}
 
 		if (disabled) {
