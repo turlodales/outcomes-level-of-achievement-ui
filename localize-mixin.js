@@ -5,7 +5,7 @@ const LocalizeMixinInternal = (superclass) => class extends LocalizeDynamicMixin
 
 	static get localizeConfig() {
 		return {
-			importFunc: async lang => (await import(`../lang/${lang}.js`)).default
+			importFunc: async lang => (await import(`./lang/${lang}.js`)).default
 		};
 	}
 
