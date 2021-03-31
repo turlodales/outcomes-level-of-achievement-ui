@@ -23,6 +23,10 @@ To deal with pedantic issues that will not pass linting you can run `npm run
 format`. This will run the various linters in fix mode to help get rid of
 issues.
 
+## Testing
+
+Simply run `npm test` to run all local tests including linting.
+
 <!-- links -->
 [CI Badge]: https://github.com/Brightspace/outcomes-level-of-achievement-ui/workflows/CI/badge.svg?branch=master
 [CI Workflows]: https://github.com/Brightspace/outcomes-level-of-achievement-ui/actions?query=workflow%3ACI+branch%3Amaster

@@ -1,18 +1,20 @@
-/* global it, fixture, expect, beforeEach, afterEach, describe, sinon */
-
-import '../../squishy-button-selector/d2l-squishy-button-selector.js';
+import '../d2l-outcomes-coa-eval-override.js';
+import '../squishy-button-selector/d2l-squishy-button-selector.js';
+import '../squishy-button-selector/d2l-squishy-button.js';
+import { expect, fixture, html } from '@open-wc/testing';
+import { spy } from 'sinon';
 
 describe('<d2l-squishy-button-selector>', () => {
-
-	let element, sandbox;
+	let element;
 
 	beforeEach(async() => {
-		sandbox = sinon.sandbox.create();
-		element = await fixture('basic');
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		element = await fixture(html`
+			<d2l-squishy-button-selector>
+				<d2l-squishy-button>BUTTON 1</d2l-squishy-button>
+				<d2l-squishy-button>BUTTON 2</d2l-squishy-button>
+				<d2l-squishy-button>BUTTON 3</d2l-squishy-button>
+			</d2l-squishy-button-selector>
+		`);
 	});
 
 	describe('smoke test', () => {
@@ -22,14 +24,12 @@ describe('<d2l-squishy-button-selector>', () => {
 	});
 
 	describe('_buttons', () => {
-
 		it('Is a list of all the buttons', () => {
 			expect(element._buttons.length).to.equal(3);
 			expect(element._buttons[0].getAttribute('text').trim()).to.equal('BUTTON 1');
 			expect(element._buttons[1].getAttribute('text').trim()).to.equal('BUTTON 2');
 			expect(element._buttons[2].getAttribute('text').trim()).to.equal('BUTTON 3');
 		});
-
 	});
 
 	describe('_updateButtonSelectedAttribute', () => {
@@ -93,14 +93,14 @@ describe('<d2l-squishy-button-selector>', () => {
 
 	describe('_onFocus', () => {
 		it('focuses the first element if nothing is selected', () => {
-			element._buttons[0].focus = sinon.spy();
+			element._buttons[0].focus = spy();
 			element._onFocus({ target: element });
 			expect(element._buttons[0].focus.called).to.equal(true);
 		});
 
 		it('focuses the selected element', () => {
 			element.selectedIndex = 1;
-			element._buttons[1].focus = sinon.spy();
+			element._buttons[1].focus = spy();
 			element._onFocus({ target: element });
 			expect(element._buttons[1].focus.called).to.equal(true);
 		});
@@ -109,14 +109,14 @@ describe('<d2l-squishy-button-selector>', () => {
 			element.disabled = true;
 			await element.updateComplete;
 			element.selectedIndex = 1;
-			element._buttons[0].focus = sinon.spy();
+			element._buttons[0].focus = spy();
 			element._onFocus({ target: element });
 			expect(element._buttons[0].focus.called).to.equal(false);
 		});
 
 		it('focuses nothing if a button is selected rather than the list', () => {
 			element.selectedIndex = 1;
-			element._buttons[1].focus = sinon.spy();
+			element._buttons[1].focus = spy();
 			element._onFocus({ target: element._buttons[0] });
 			expect(element._buttons[1].focus.called).to.equal(false);
 		});
