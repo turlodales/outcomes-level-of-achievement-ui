@@ -30,7 +30,7 @@ jobs:
         run: npm ci
       - name: Test
         run: |
-          npm install karma-sauce-launcher@2 --no-save
+          npm i karma-sauce-launcher@2 --no-save
           npx karma start karma.sauce.conf.js
         env:
           SAUCE_USERNAME: Desire2Learn
