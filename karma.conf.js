@@ -11,17 +11,17 @@ module.exports = config => {
 				{
 					pattern: config.grep ? config.grep : defaultPattern,
 					type: 'module'
-				},
+				}
 			],
 			esm: {
-				nodeResolve: true,
+				nodeResolve: true
 			},
 			client: {
 				mocha: {
 					timeout: 10000
 				}
 			}
-		}),
+		})
 	);
 
 	return config;

@@ -38,10 +38,10 @@ module.exports = config => {
 				{
 					pattern: config.grep ? config.grep : defaultPattern,
 					type: 'module'
-				},
+				}
 			],
 			esm: {
-				nodeResolve: true,
+				nodeResolve: true
 			},
 			sauceLabs: {
 				testName: 'Outcomes Level of Achievement Unit Tests',
@@ -56,8 +56,8 @@ module.exports = config => {
 				mocha: {
 					timeout: 10000
 				}
-			},
-		}),
+			}
+		})
 	);
 
 	return config;
