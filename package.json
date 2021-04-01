@@ -2,19 +2,8 @@
   "name": "d2l-outcomes-level-of-achievements",
   "version": "3.0.22",
   "description": "Polymer-based web components for D2L Outcome Level of Achievements",
+  "repository": "https://github.com/Brightspace/outcomes-level-of-achievement-ui.git",
   "main": "outcomes-level-of-achievement.js",
-  "keywords": [
-    "D2L",
-    "Outcomes"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements.git"
-  },
-  "homepage": "https://github.com/Brightspace/d2l-outcomes-level-of-achievements-ui",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "license-check": "d2l-license-checker",
     "lint": "npm run lint:eslint",
