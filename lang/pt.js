@@ -1,3 +1,5 @@
+/* eslint quotes: 0 */
+
 export default {
 	calcHelpTitle: "Detalhes do método de cálculo",
 	calculatedValue: "{calcMethod}: {value}",

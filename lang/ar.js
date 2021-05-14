@@ -1,3 +1,5 @@
+/* eslint quotes: 0 */
+
 export default {
 	calcHelpTitle: "تفاصيل طريقة الاحتساب",
 	calculatedValue: "{calcMethod}: {value}",
