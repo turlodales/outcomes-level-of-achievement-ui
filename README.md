@@ -2,30 +2,62 @@
 
 [![CI][CI Badge]][CI Workflows]
 
-## Prerequisites
+## Developing
 
-- NPM (Installs with [NodeJS](https://nodejs.org))
+After cloning the repo, run `npm install` to install dependencies.
 
-## Setup
+### Running the Demos
 
-Run `npm i` in project root directory
+Start local dev server that hosts the demo pages.
 
-## Version Bump
+```sh
+npm start
+```
+
+### Linting
+
+```sh
+# eslint and messageformat-validator
+npm run lint
+
+# eslint only
+npm run lint:eslint
+
+# messageformat-validator only
+npm run lint:lang
+```
+
+### Formatting
+
+```sh
+# eslint
+npm run format
+
+# eslint only
+npm run format:eslint
+```
+
+### Testing
+
+```sh
+# lint and unit tests
+npm test
+
+# unit tests
+npm run test:headless
+
+# debug or run a subset of local unit tests
+# then navigate to `http://localhost:9876/debug.html`
+npm run test:headless:watch
+```
+
+### Versioning & Releasing
 
 Run `npm version --no-git-tag-version [major | minor | patch]` in project
 root directory, selecting the appropriate version increase type. This will bump
 the version in both `package.json` and `package-lock.json` and leave it in your
-working changes.
-
-## Formatting
-
-To deal with pedantic issues that will not pass linting you can run `npm run
-format`. This will run the various linters in fix mode to help get rid of
-issues.
-
-## Testing
-
-Simply run `npm test` to run all local tests including linting.
+working changes. Once checking this in and it being merged to `master` create
+a GitHub release matching the version in the `package.json`.
 
 <!-- links -->
 [CI Badge]: https://github.com/Brightspace/outcomes-level-of-achievement-ui/workflows/CI/badge.svg?branch=master
