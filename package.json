@@ -9,7 +9,7 @@
     "lint": "npm run lint:eslint && npm run lint:lang",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lang": "mfv -e",
-    "format": "npm run format:eslint",
+    "format": "npm run format:lang && npm run format:eslint",
     "format:eslint": "npm run lint:eslint -- --fix",
     "start": "wds --app-index demo/index.html --node-resolve --dedupe --watch --open --preserve-symlinks",
     "test": "npm run lint && npm run test:headless",
@@ -43,7 +43,7 @@
     "eslint-plugin-lit": "^1",
     "eslint-plugin-mocha": "^8",
     "eslint-plugin-sort-class-members": "^1",
-    "messageformat-validator": "^1",
+    "messageformat-validator": "github:bearfriend/messageformat-validator",
     "mocha": "^8",
     "sinon": "^10"
   }
