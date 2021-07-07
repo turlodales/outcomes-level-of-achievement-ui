@@ -30,11 +30,14 @@ npm run lint:lang
 ### Formatting
 
 ```sh
-# eslint
+# eslint and messageformat-validator
 npm run format
 
 # eslint only
 npm run format:eslint
+
+# messageformat-validator only
+npm run format:lang
 ```
 
 ### Testing
