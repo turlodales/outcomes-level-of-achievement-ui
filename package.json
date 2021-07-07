@@ -30,17 +30,17 @@
     "@open-wc/testing-karma": "^4",
     "@web/dev-server": "^0.1",
     "@webcomponents/webcomponentsjs": "^2",
-    "d2l-license-checker": "^3",
+    "d2l-license-checker": "^4",
     "deepmerge": "^4",
     "eslint": "^7",
     "eslint-config-brightspace": "^0.14",
-    "eslint-plugin-chai-friendly": "^0.6",
+    "eslint-plugin-chai-friendly": "^0.7",
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
-    "eslint-plugin-mocha": "^8",
+    "eslint-plugin-mocha": "^9",
     "eslint-plugin-sort-class-members": "^1",
     "messageformat-validator": "github:bearfriend/messageformat-validator",
-    "mocha": "^8",
-    "sinon": "^10"
+    "mocha": "^9",
+    "sinon": "^11"
   }
 }
