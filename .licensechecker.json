@@ -1,10 +1,5 @@
 {
   "acceptedScopes": [
     "d2l"
-  ],
-  "manualOverrides": {
-    "axe-core@>=3": "D2L-Open-Source-Special-Exemption (MPL-2.0)",
-    "trim@^0.0.1": "MIT",
-    "valid-url@^1.0.9": "MIT"
-  }
+  ]
 }
