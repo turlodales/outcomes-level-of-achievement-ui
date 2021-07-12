@@ -54,6 +54,15 @@ npm run test:headless
 npm run test:headless:watch
 ```
 
+### Adding/Updating Lang Term
+
+1. Add the new term to `/lang/en.js`.
+2. Run `npm run format`, this will add any new terms to all other languages and
+   remove any terms not in `/lang/en.js` from all other languages.
+3. Manually add french translations to `/lang/fr.js`.
+   - Google translate. This is in case auto-translations don't run in time, if
+     we don't have french, we can get fined.
+
 ## Versioning & Releasing
 
 > TL;DR: Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `master`. Read on for more details...
